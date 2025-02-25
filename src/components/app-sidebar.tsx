@@ -1,6 +1,6 @@
 "use client"
 import type * as React from "react"
-import {AudioWaveform, Command, Frame, GalleryVerticalEnd, Map, PieChart, SquareTerminal,} from "lucide-react"
+import {AudioWaveform, Frame, GalleryVerticalEnd, Map, PieChart, SquareTerminal,} from "lucide-react"
 import {NavSubmenu} from "./nav-submenu.tsx"
 import {NavUtils} from "./nav-utils.tsx"
 import {NavUser} from "./nav-user"
@@ -15,28 +15,21 @@ const data = {
     },
     teams: [
         {
-            name: "SMAN8",
+            name: "Siswa",
             logo: GalleryVerticalEnd,
-            plan: "Enterprise",
+            plan: "SMAN 8 Tamsel",
+            url: "/siwa"
         },
         {
-            name: "Acme Corp.",
+            name: "Guru",
             logo: AudioWaveform,
-            plan: "Startup",
+            plan: "SMAN 8 Tamsel",
+            url: "/guru"
         },
-        {
-            name: "Evil Corp.",
-            logo: Command,
-            plan: "Free",
-        },
+
     ],
     navMain: [
-        {
-            title: "Dashboard",
-            url: "/dashboard",
-            icon: SquareTerminal,
-            isActive: true,
-        },
+
         {
             title: "Ujian Online",
             url: "#",
@@ -46,6 +39,8 @@ const data = {
                 {
                     title: "Dashboard",
                     url: "/dashboard",
+
+
                 },
                 {
                     title: "Home",
@@ -56,13 +51,14 @@ const data = {
     ],
     utils: [
         {
-            name: "Design Engineering",
-            url: "#",
+            name: "Dashboard",
+            url: "/dashboard",
             icon: Frame,
+
         },
         {
-            name: "Sales & Marketing",
-            url: "#",
+            name: "Materi",
+            url: "/materi",
             icon: PieChart,
         },
         {
@@ -80,8 +76,8 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
                 <TeamSwitcher teams={data.teams}/>
             </SidebarHeader>
             <SidebarContent>
+                <NavUtils utils={data.utils}/>
                 <NavSubmenu items={data.navMain}/>
-                <NavUtils projects={data.utils}/>
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={data.user}/>

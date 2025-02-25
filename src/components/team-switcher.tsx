@@ -1,24 +1,27 @@
 "use client"
 import * as React from "react"
-import {ChevronsUpDown, Plus} from "lucide-react"
+import {
+    ChevronsUpDown,
+    // Plus
+} from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
+    // DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar} from "@/components/ui/sidebar"
+import {Link} from "react-router-dom";
 
-export function TeamSwitcher({
-                                 teams,
-                             }: {
+export function TeamSwitcher({teams}: {
     teams: {
         name: string
         logo: React.ElementType
         plan: string
+        url:string
     }[]
 }) {
     const {isMobile} = useSidebar()
@@ -52,20 +55,20 @@ export function TeamSwitcher({
                         <DropdownMenuLabel className="text-xs text-muted-foreground">Teams</DropdownMenuLabel>
                         {teams.map((team, index) => (
                             <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className="gap-2 p-2">
-                                <div className="flex size-6 items-center justify-center rounded-sm border">
+                                <Link to={team.url} className="flex size-6 items-center justify-center rounded-sm border">
                                     <team.logo className="size-4 shrink-0"/>
-                                </div>
-                                {team.name}
+                                </Link>
+                                <Link to={team.url}>{team.name}</Link>
                                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         ))}
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuItem className="gap-2 p-2">
-                            <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                                <Plus className="size-4"/>
-                            </div>
-                            <div className="font-medium text-muted-foreground">Add team</div>
-                        </DropdownMenuItem>
+
+                        {/*<DropdownMenuItem className="gap-2 p-2">*/}
+                        {/*    <div className="flex size-6 items-center justify-center rounded-md border bg-background">*/}
+                        {/*        <Plus className="size-4"/>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="font-medium text-muted-foreground">Add team</div>*/}
+                        {/*</DropdownMenuItem>*/}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>
