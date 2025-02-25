@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/sidebar"
 import {Link} from "react-router-dom";
 
-export function NavMain({
-                            items,
-                        }: {
+export function NavSubmenu({
+                               items,
+                           }: {
     items: {
         title: string
         url: string
@@ -29,7 +29,7 @@ export function NavMain({
 }) {
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupLabel>CBT</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => (
                     <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">

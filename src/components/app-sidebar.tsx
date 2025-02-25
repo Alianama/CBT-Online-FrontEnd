@@ -1,32 +1,21 @@
 "use client"
 import type * as React from "react"
-import {
-    AudioWaveform,
-    BookOpen,
-    Bot,
-    Command,
-    Frame,
-    GalleryVerticalEnd,
-    Map,
-    PieChart,
-    Settings2,
-    SquareTerminal,
-} from "lucide-react"
-import {NavMain} from "./nav-main"
-import {NavProjects} from "./nav-projects"
+import {AudioWaveform, Command, Frame, GalleryVerticalEnd, Map, PieChart, SquareTerminal,} from "lucide-react"
+import {NavSubmenu} from "./nav-submenu.tsx"
+import {NavUtils} from "./nav-utils.tsx"
 import {NavUser} from "./nav-user"
 import {TeamSwitcher} from "./team-switcher"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar"
 // This is sample data.
 const data = {
     user: {
-        name: "shadcn",
-        email: "m@example.com",
+        name: "Ali Purnama",
+        email: "ali@gamil.com",
         avatar: "/avatars/shadcn.jpg",
     },
     teams: [
         {
-            name: "Acme Inc",
+            name: "SMAN8",
             logo: GalleryVerticalEnd,
             plan: "Enterprise",
         },
@@ -64,73 +53,8 @@ const data = {
                 },
             ],
         },
-        {
-            title: "Models",
-            url: "#",
-            icon: Bot,
-            items: [
-                {
-                    title: "Genesis",
-                    url: "#",
-                },
-                {
-                    title: "Explorer",
-                    url: "#",
-                },
-                {
-                    title: "Quantum",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Documentation",
-            url: "#",
-            icon: BookOpen,
-            items: [
-                {
-                    title: "Introduction",
-                    url: "#",
-                },
-                {
-                    title: "Get Started",
-                    url: "#",
-                },
-                {
-                    title: "Tutorials",
-                    url: "#",
-                },
-                {
-                    title: "Changelog",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Settings",
-            url: "#",
-            icon: Settings2,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "#",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
-        },
     ],
-    projects: [
+    utils: [
         {
             name: "Design Engineering",
             url: "#",
@@ -156,8 +80,8 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
                 <TeamSwitcher teams={data.teams}/>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain}/>
-                <NavProjects projects={data.projects}/>
+                <NavSubmenu items={data.navMain}/>
+                <NavUtils projects={data.utils}/>
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={data.user}/>
