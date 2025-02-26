@@ -8,11 +8,17 @@ import {
     BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbPage,
-    BreadcrumbSeparator
+    BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx";
 import {ModeToggle} from "@/components/Theme/mode-toggle.tsx";
+import {useNavigate} from "react-router-dom"
 
-export default function Layout({children}: { children: React.ReactNode }) {
+export default function Layout({children, data}: {
+    data: {
+        name: string, url: string
+    }[], children: React.ReactNode
+}) {
+    const navigate = useNavigate()
     return (
         <SidebarProvider>
             <AppSidebar/>
@@ -26,18 +32,25 @@ export default function Layout({children}: { children: React.ReactNode }) {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">Building Your Application</BreadcrumbLink>
+                                    <BreadcrumbLink onClick={() => navigate("/")}>Home</BreadcrumbLink>
                                 </BreadcrumbItem>
-                                <BreadcrumbSeparator className="hidden md:block"/>
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                                </BreadcrumbItem>
+                                {data.map((item, index) => (
+                                    <React.Fragment key={index}>
+                                        <BreadcrumbSeparator className="hidden md:block"/>
+                                        <BreadcrumbItem>
+                                            <BreadcrumbPage>{item.name}</BreadcrumbPage>
+                                        </BreadcrumbItem>
+                                    </React.Fragment>
+                                ))}
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>
                     <ModeToggle/>
                 </header>
-                {children}
+                <div className="px-5 pt-0">
+                    {children}
+                </div>
+
             </SidebarInset>
 
         </SidebarProvider>

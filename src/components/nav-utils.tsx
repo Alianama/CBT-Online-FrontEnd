@@ -76,9 +76,6 @@
 //         </SidebarGroup>
 //     )
 // }
-
-
-
 "use client"
 import {type LucideIcon} from "lucide-react"
 import {
@@ -88,31 +85,39 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {Link} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export function NavUtils({utils}: {
     utils: {
-       name: string
-         url: string
-         icon: LucideIcon
-        isActive?: boolean
-     }[]
+        name: string
+        url: string
+        icon: LucideIcon
+    }[]
 }) {
+    const navigate = useNavigate();
+    const location = useLocation(); // Use location to track the current route
     return (
-      <SidebarGroup>
-          <SidebarGroupLabel>CBT</SidebarGroupLabel>
-          <SidebarMenu>
-              {utils.map((item) => (
-                // <Collapsible key={item.name} asChild defaultOpen={item.isActive} className="group/collapsible">
+        <SidebarGroup>
+            <SidebarGroupLabel>CBT</SidebarGroupLabel>
+            <SidebarMenu>
+                {utils.map((item) => (
                     <SidebarMenuItem key={item.name}>
-                            <SidebarMenuButton tooltip={item.name}>
-                                {item.icon && <item.icon/>}
-                                <Link to={item.url} >{item.name}</Link>
-                            </SidebarMenuButton>
+                        <SidebarMenuButton
+                            isActive={location.pathname === item.url}
+                            // className={`
+                            //     ${location.pathname === item.url
+                            //     ? 'bg-primary text-white'
+                            //     : 'hover:bg-primary'}
+                            // `}
+                            onClick={() => navigate(`${item.url}`)}
+                            tooltip={item.name}
+                        >
+                            {item.icon && <item.icon/>}
+                            <span>{item.name}</span>
+                        </SidebarMenuButton>
                     </SidebarMenuItem>
-                // </Collapsible>
-              ))}
-          </SidebarMenu>
-      </SidebarGroup>
-    )
+                ))}
+            </SidebarMenu>
+        </SidebarGroup>
+    );
 }

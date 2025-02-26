@@ -11,11 +11,9 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-export function NavSubmenu({
-                               items,
-                           }: {
+export function NavSubmenu({items}: {
     items: {
         title: string
         url: string
@@ -27,6 +25,7 @@ export function NavSubmenu({
         }[]
     }[]
 }) {
+    const navigate = useNavigate();
     return (
         <SidebarGroup>
             <SidebarGroupLabel>CBT</SidebarGroupLabel>
@@ -39,17 +38,16 @@ export function NavSubmenu({
                                     {item.icon && <item.icon/>}
                                     <span>{item.title}</span>
                                     <ChevronRight
-                                        className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"/>
+                                        className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                                    />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
                                 <SidebarMenuSub>
                                     {item.items?.map((subItem) => (
                                         <SidebarMenuSubItem key={subItem.title}>
-                                            <SidebarMenuSubButton asChild>
-                                                <Link to={subItem.url}>
-                                                    <span>{subItem.title}</span>
-                                                </Link>
+                                            <SidebarMenuSubButton onClick={() => navigate(`${subItem.url}`)}>
+                                                <span>{subItem.title}</span>
                                             </SidebarMenuSubButton>
                                         </SidebarMenuSubItem>
                                     ))}
@@ -60,5 +58,5 @@ export function NavSubmenu({
                 ))}
             </SidebarMenu>
         </SidebarGroup>
-    )
+    );
 }

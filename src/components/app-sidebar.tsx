@@ -18,18 +18,16 @@ const data = {
             name: "Siswa",
             logo: GalleryVerticalEnd,
             plan: "SMAN 8 Tamsel",
-            url: "/siwa"
+            url: "siwa"
         },
         {
             name: "Guru",
             logo: AudioWaveform,
             plan: "SMAN 8 Tamsel",
-            url: "/guru"
+            url: "guru"
         },
-
     ],
     navMain: [
-
         {
             title: "Ujian Online",
             url: "#",
@@ -37,24 +35,21 @@ const data = {
             isActive: true,
             items: [
                 {
-                    title: "Dashboard",
-                    url: "/dashboard",
-
-
+                    title: "Jadwal Ujian",
+                    url: "/schedule",
                 },
                 {
-                    title: "Home",
-                    url: "/",
+                    title: "Hasil Ujian",
+                    url: "/result",
                 },
             ],
         },
     ],
     utils: [
         {
-            name: "Dashboard",
-            url: "/dashboard",
+            name: "Home",
+            url: "/",
             icon: Frame,
-
         },
         {
             name: "Materi",
