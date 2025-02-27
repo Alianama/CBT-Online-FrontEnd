@@ -7,6 +7,7 @@ export default function Materi() {
     }
     return (
         <Layout data={[pagedata]}>
+            <title>Materi</title>
             <div>Home</div>
         </Layout>
     )

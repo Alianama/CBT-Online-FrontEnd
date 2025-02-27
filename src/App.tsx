@@ -43,9 +43,9 @@ export default function App() {
                 window.outerHeight - window.innerHeight > threshold
             ) {
                 toast.error("Mode pengembang terdeteksi! Mengalihkan halaman...");
-                setTimeout(() => {
+                setTimeout((): void => {
                     navigate("/fokus");
-                }, 0);
+                }, 2000);
             }
         };
         window.addEventListener("resize", checkDevTools);

@@ -6,7 +6,7 @@ import {NavUtils} from "./nav-utils.tsx"
 import {NavUser} from "./nav-user"
 import {TeamSwitcher} from "./team-switcher"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar"
-// This is sample data.
+
 const data = {
     user: {
         name: "Ali Purnama",

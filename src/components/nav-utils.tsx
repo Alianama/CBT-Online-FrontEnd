@@ -27,8 +27,7 @@ export function NavUtils({utils}: {
                         <SidebarMenuButton
                             isActive={location.pathname === item.url}
                             onClick={() => navigate(`${item.url}`)}
-                            tooltip={item.name}
-                        >
+                            tooltip={item.name}>
                             {item.icon && <item.icon/>}
                             <span>{item.name}</span>
                         </SidebarMenuButton>
