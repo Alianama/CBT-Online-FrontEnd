@@ -1,4 +1,4 @@
-import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar"
+import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar";
 import * as React from "react";
 import {AppSidebar} from "@/components/app-sidebar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -11,14 +11,19 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx";
 import {ModeToggle} from "@/components/Theme/mode-toggle.tsx";
-import {useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom";
+import LangContext from "@/context/LangContext.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
-export default function Layout({children, data}: {
-    data: {
-        name: string, url: string
-    }[], children: React.ReactNode
+export default function Layout({
+                                   children,
+                                   data,
+                               }: {
+    data: { name: string; url: string }[];
+    children: React.ReactNode;
 }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {locale, toggleLocale} = React.useContext(LangContext);
     return (
         <SidebarProvider>
             <AppSidebar/>
@@ -32,7 +37,9 @@ export default function Layout({children, data}: {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink onClick={() => navigate("/")}>Home</BreadcrumbLink>
+                                    <BreadcrumbLink onClick={() => navigate("/")}>
+                                        Home
+                                    </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 {data.map((item, index) => (
                                     <React.Fragment key={index}>
@@ -45,14 +52,18 @@ export default function Layout({children, data}: {
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>
-                    <ModeToggle/>
+                    <div className="flex items-center gap-2">
+                        <ModeToggle/>
+                        <Button
+                            className="bg-primary px-3"
+                            onClick={toggleLocale}
+                        >
+                            {locale === "en" ? "id" : "en"}
+                        </Button>
+                    </div>
                 </header>
-                <div className="px-5 pt-0">
-                    {children}
-                </div>
-
+                <div className="px-5 pt-0">{children}</div>
             </SidebarInset>
-
         </SidebarProvider>
-    )
+    );
 }
