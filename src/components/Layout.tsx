@@ -50,13 +50,13 @@ export default function Layout({children, data}: {
                         </Breadcrumb>
                     </div>
                     <div className="flex items-center gap-2">
-                        <ModeToggle/>
                         <Button
                             className="bg-primary px-3"
                             onClick={toggleLocale}
                         >
                             {locale === "en" ? "id" : "en"}
                         </Button>
+                        <ModeToggle/>
                     </div>
                 </header>
                 <div className="px-5 pt-0">{children}</div>
