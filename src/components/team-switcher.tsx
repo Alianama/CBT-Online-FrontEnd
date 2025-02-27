@@ -9,7 +9,8 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar} from "@/components/ui/sidebar"
+import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar"
+import useSidebar from "@/hooks/useSIdebar.tsx";
 import {useNavigate} from "react-router-dom";
 
 export function TeamSwitcher({teams}: {
