@@ -6,11 +6,14 @@ import {NavUtils} from "./nav-utils.tsx"
 import {NavUser} from "./nav-user"
 import {TeamSwitcher} from "./team-switcher"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar"
+import LangContext from "@/context/LangContext.tsx";
+import {useContext} from "react";
+
 
 const data = {
     user: {
         name: "Ali Purnama",
-        email: "ali@gamil.com",
+        email: "ali@gmail.com",
         avatar: "/avatars/shadcn.jpg",
     },
     teams: [
@@ -45,39 +48,59 @@ const data = {
             ],
         },
     ],
-    utils: [
-        {
-            name: "Home",
-            url: "/",
-            icon: Frame,
-        },
-        {
-            name: "Materi",
-            url: "/materi",
-            icon: PieChart,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: Map,
-        },
-    ],
+    utils: {
+        id: [
+            {
+                name: "Beranda",
+                url: "/",
+                icon: Frame,
+            },
+            {
+                name: "Materi",
+                url: "/materi",
+                icon: PieChart,
+            },
+            {
+                name: "Laporan",
+                url: "#",
+                icon: Map,
+            },
+        ],
+        en: [
+            {
+                name: "Home",
+                url: "/",
+                icon: Frame,
+            },
+            {
+                name: "Lesson",
+                url: "/materi",
+                icon: PieChart,
+            },
+            {
+                name: "Report",
+                url: "#",
+                icon: Map,
+            },
+        ]
+    }
 }
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
+    const {locale} = useContext(LangContext);
     return (
-        <Sidebar collapsible="icon" {...props}>
-            <SidebarHeader>
-                <TeamSwitcher teams={data.teams}/>
-            </SidebarHeader>
-            <SidebarContent>
-                <NavUtils utils={data.utils}/>
-                <NavSubmenu items={data.navMain}/>
-            </SidebarContent>
-            <SidebarFooter>
-                <NavUser user={data.user}/>
-            </SidebarFooter>
-            <SidebarRail/>
-        </Sidebar>
+      <Sidebar collapsible="icon" {...props}>
+          <SidebarHeader>
+              <TeamSwitcher teams={data.teams}/>
+          </SidebarHeader>
+          <SidebarContent>
+              <NavUtils utils={locale === "id" ? data.utils.id : data.utils.en}/>
+              <NavSubmenu items={data.navMain}/>
+          </SidebarContent>
+          <SidebarFooter>
+              <NavUser user={data.user}/>
+          </SidebarFooter>
+          <SidebarRail/>
+      </Sidebar>
     )
 }

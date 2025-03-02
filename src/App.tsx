@@ -3,11 +3,13 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import {toast, Toaster} from "sonner";
 import Home from "@/pages/Home.tsx";
 import Materi from "@/pages/Materi.tsx";
+import Login from "@/pages/Login.tsx";
 import LangContext from "@/context/LangContext.tsx";
 
 const isSecurityEnabled: boolean = false;
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
+    const [userAuth, setUserAuth] = useState<boolean>(true);
     const showToast = (message: string) => {
         toast.error(message, {
             action: {
@@ -81,13 +83,23 @@ export default function App() {
     const contexValue = useMemo(() => {
         return {locale, toggleLocale};
     }, [locale])
-    return (
-        <LangContext.Provider value={contexValue}>
-            <Toaster position="top-right" richColors/>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/materi" element={<Materi/>}/>
-            </Routes>
-        </LangContext.Provider>
-    );
+
+    if (!userAuth) {
+        return <Login/>;
+    } else {
+
+        return (
+
+            <LangContext.Provider value={contexValue}>
+                <Toaster position="top-right" richColors/>
+                <Routes>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/materi" element={<Materi/>}/>
+                </Routes>
+            </LangContext.Provider>
+        );
+
+    }
+
 }

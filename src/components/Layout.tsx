@@ -24,7 +24,6 @@ export default function Layout({children, data}: {
     return (
         <SidebarProvider>
             <AppSidebar/>
-
             <SidebarInset>
                 <header
                     className="flex h-16 pr-4 justify-between shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -35,7 +34,7 @@ export default function Layout({children, data}: {
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
                                     <BreadcrumbLink onClick={() => navigate("/")}>
-                                        Home
+                                        {locale === "en" ? "Home" : "Beranda"}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 {data.map((item, index) => (
