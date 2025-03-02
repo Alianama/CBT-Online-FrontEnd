@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar"
 import useSidebar from "@/hooks/useSIdebar.tsx";
+import useAuth from "@/hooks/useAuth.tsx";
+
 
 export function NavUser({user}: {
     user: {
@@ -21,6 +23,7 @@ export function NavUser({user}: {
     }
 }) {
     const {isMobile} = useSidebar()
+    const { onLogoutSuccess } = useAuth()
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -70,8 +73,8 @@ export function NavUser({user}: {
 
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator/>
-                        <DropdownMenuItem>
-                            <LogOut/>
+                        <DropdownMenuItem onClick={onLogoutSuccess}>
+                            <LogOut />
                             Log out
                         </DropdownMenuItem>
                     </DropdownMenuContent>

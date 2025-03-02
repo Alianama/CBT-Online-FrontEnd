@@ -1,105 +1,84 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {toast, Toaster} from "sonner";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Toaster } from "sonner";
 import Home from "@/pages/Home.tsx";
 import Materi from "@/pages/Materi.tsx";
 import Login from "@/pages/Login.tsx";
 import LangContext from "@/context/LangContext.tsx";
+import useAuth from "@/hooks/useAuth";
+import useSecurity from "@/hooks/useSecurity";
+import Fokus from "@/pages/Fokus";
+import Exam from "@/pages/Exam.tsx";
 
-const isSecurityEnabled: boolean = false;
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
-    const [userAuth, setUserAuth] = useState<boolean>(true);
-    const showToast = (message: string) => {
-        toast.error(message, {
-            action: {
-                label: "OK",
-                onClick: () => console.log("User acknowledged the warning"),
-            },
-        });
-    };
-    const disableRightClick = useCallback((e: MouseEvent) => {
-        if (!isSecurityEnabled) return;
-        e.preventDefault();
-        showToast("Klik kanan tidak diperbolehkan!");
-    }, []);
-    const disableShortcut = useCallback((e: KeyboardEvent) => {
-        if (!isSecurityEnabled) return;
-        const forbiddenKeys = ["u", "i", "c", "x", "v", "s", "j", "k", "f12"];
-        if (
-            e.ctrlKey && forbiddenKeys.includes(e.key.toLowerCase()) ||
-            e.key === "F12" ||
-            (e.ctrlKey && e.shiftKey && ["i", "c", "j"].includes(e.key.toLowerCase()))
-        ) {
-            e.preventDefault();
-            showToast("Shortcut ini tidak diperbolehkan!");
-        }
-    }, []);
+    const { userAuth, onLoginSuccess } = useAuth();
+    const { disableRightClick, disableShortcut, isSecurityEnabled, showToast } = useSecurity();
     const navigate = useNavigate();
+
     const detectDevTools = useCallback(() => {
         if (!isSecurityEnabled) return;
-        const threshold: number = 160; // Ukuran minimum DevTools
+        const threshold = 160;
         const checkDevTools = () => {
             if (
-                window.outerWidth - window.innerWidth > threshold ||
-                window.outerHeight - window.innerHeight > threshold
+              window.outerWidth - window.innerWidth > threshold ||
+              window.outerHeight - window.innerHeight > threshold
             ) {
-                toast.error("Mode pengembang terdeteksi! Mengalihkan halaman...");
-                setTimeout((): void => {
+                showToast("Mode pengembang terdeteksi! Mengalihkan halaman...");
+                setTimeout(() => {
                     navigate("/fokus");
-                }, 2000);
+                }, 10000);
             }
         };
         window.addEventListener("resize", checkDevTools);
         checkDevTools();
         return () => window.removeEventListener("resize", checkDevTools);
-    }, [navigate]);
+    }, [navigate, isSecurityEnabled, showToast]);
+
     useEffect(() => {
         detectDevTools();
     }, [detectDevTools]);
+
     useEffect(() => {
         if (isSecurityEnabled) {
             document.addEventListener("contextmenu", disableRightClick);
             document.addEventListener("keydown", disableShortcut);
-            window.addEventListener("resize", detectDevTools);
         } else {
             document.removeEventListener("contextmenu", disableRightClick);
             document.removeEventListener("keydown", disableShortcut);
-            window.removeEventListener("resize", detectDevTools);
         }
         return () => {
             document.removeEventListener("contextmenu", disableRightClick);
             document.removeEventListener("keydown", disableShortcut);
-            window.removeEventListener("resize", detectDevTools);
         };
-    }, [disableRightClick, disableShortcut, detectDevTools]);
+    }, [disableRightClick, disableShortcut, isSecurityEnabled]);
+
     const toggleLocale = () => {
         setLanguage((prevLocale) => {
             const newLocale = prevLocale === "id" ? "en" : "id";
-            localStorage.setItem("locale", newLocale)
+            localStorage.setItem("locale", newLocale);
             return newLocale;
-        })
-    }
-    const contexValue = useMemo(() => {
-        return {locale, toggleLocale};
-    }, [locale])
+        });
+    };
+
+    const contextValue = useMemo(() => {
+        return { locale, toggleLocale };
+    }, [locale]);
 
     if (!userAuth) {
-        return <Login/>;
-    } else {
-
-        return (
-
-            <LangContext.Provider value={contexValue}>
-                <Toaster position="top-right" richColors/>
-                <Routes>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/materi" element={<Materi/>}/>
-                </Routes>
-            </LangContext.Provider>
-        );
-
+        return <Login onSuccess={onLoginSuccess} />;
     }
 
+    return (
+      <LangContext.Provider value={contextValue}>
+          <Toaster position="top-right" richColors />
+          <Routes>
+              <Route path="/login" element={<Login onSuccess={onLoginSuccess} />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/materi" element={<Materi />} />
+              <Route path="/fokus" element={<Fokus />} />
+              <Route path="/exam" element={<Exam />} />
+          </Routes>
+      </LangContext.Provider>
+    );
 }

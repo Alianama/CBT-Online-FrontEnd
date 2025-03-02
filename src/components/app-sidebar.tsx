@@ -45,6 +45,10 @@ const data = {
                     title: "Hasil Ujian",
                     url: "/result",
                 },
+                {
+                    title: "Ujian",
+                    url: "/exam",
+                }
             ],
         },
     ],
