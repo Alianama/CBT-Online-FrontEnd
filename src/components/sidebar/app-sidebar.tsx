@@ -1,14 +1,23 @@
 "use client"
 import type * as React from "react"
-import {AudioWaveform, Frame, GalleryVerticalEnd, Map, PieChart, SquareTerminal,} from "lucide-react"
+import {useContext} from "react";
+import {
+    AudioWaveform,
+    BookMarked,
+    Calendar1,
+    ClipboardList,
+    FileCheck,
+    GalleryVerticalEnd,
+    House,
+    Map,
+    Pencil,
+} from "lucide-react"
 import {NavSubmenu} from "./nav-submenu.tsx"
 import {NavUtils} from "./nav-utils.tsx"
-import {NavUser} from "./nav-user"
-import {TeamSwitcher} from "./team-switcher"
-import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar"
+import {NavUser} from "./nav-user.tsx"
+import {TeamSwitcher} from "./team-switcher.tsx"
+import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar.tsx"
 import LangContext from "@/context/LangContext.tsx";
-import {useContext} from "react";
-
 
 const data = {
     user: {
@@ -34,21 +43,24 @@ const data = {
         {
             title: "Ujian Online",
             url: "#",
-            icon: SquareTerminal,
+            icon: Pencil,
             isActive: true,
             items: [
                 {
+                    title: "Ujian",
+                    url: "/exam",
+                    icon: ClipboardList
+                },
+                {
                     title: "Jadwal Ujian",
                     url: "/schedule",
+                    icon: Calendar1
                 },
                 {
                     title: "Hasil Ujian",
                     url: "/result",
+                    icon: FileCheck
                 },
-                {
-                    title: "Ujian",
-                    url: "/exam",
-                }
             ],
         },
     ],
@@ -57,12 +69,12 @@ const data = {
             {
                 name: "Beranda",
                 url: "/",
-                icon: Frame,
+                icon: House,
             },
             {
                 name: "Materi",
                 url: "/materi",
-                icon: PieChart,
+                icon: BookMarked,
             },
             {
                 name: "Laporan",
@@ -74,12 +86,12 @@ const data = {
             {
                 name: "Home",
                 url: "/",
-                icon: Frame,
+                icon: House,
             },
             {
                 name: "Lesson",
                 url: "/materi",
-                icon: PieChart,
+                icon: BookMarked,
             },
             {
                 name: "Report",
@@ -93,18 +105,18 @@ const data = {
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     const {locale} = useContext(LangContext);
     return (
-      <Sidebar collapsible="icon" {...props}>
-          <SidebarHeader>
-              <TeamSwitcher teams={data.teams}/>
-          </SidebarHeader>
-          <SidebarContent>
-              <NavUtils utils={locale === "id" ? data.utils.id : data.utils.en}/>
-              <NavSubmenu items={data.navMain}/>
-          </SidebarContent>
-          <SidebarFooter>
-              <NavUser user={data.user}/>
-          </SidebarFooter>
-          <SidebarRail/>
-      </Sidebar>
+        <Sidebar collapsible="icon" {...props}>
+            <SidebarHeader>
+                <TeamSwitcher teams={data.teams}/>
+            </SidebarHeader>
+            <SidebarContent>
+                <NavUtils utils={locale === "id" ? data.utils.id : data.utils.en}/>
+                <NavSubmenu items={data.navMain}/>
+            </SidebarContent>
+            <SidebarFooter>
+                <NavUser user={data.user}/>
+            </SidebarFooter>
+            <SidebarRail/>
+        </Sidebar>
     )
 }

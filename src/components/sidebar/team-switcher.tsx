@@ -8,8 +8,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar"
+} from "@/components/ui/dropdown-menu.tsx"
+import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar.tsx"
 import useSidebar from "@/hooks/useSIdebar.tsx";
 import {useNavigate} from "react-router-dom";
 

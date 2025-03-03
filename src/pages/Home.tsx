@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout"
+import Layout from "@/components/sidebar/Layout.tsx"
 
 export default function Home() {
     const pagedata = {

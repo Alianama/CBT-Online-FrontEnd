@@ -6,7 +6,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar.tsx"
 import {useLocation, useNavigate} from "react-router-dom";
 
 export function NavUtils({utils}: {

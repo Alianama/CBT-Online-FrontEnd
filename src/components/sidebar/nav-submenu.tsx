@@ -1,6 +1,6 @@
 "use client"
 import {ChevronRight, type LucideIcon} from "lucide-react"
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible"
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx"
 import {
     SidebarGroup,
     SidebarGroupLabel,
@@ -10,7 +10,7 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar.tsx"
 import {useNavigate} from "react-router-dom";
 
 export function NavSubmenu({items}: {
@@ -22,6 +22,7 @@ export function NavSubmenu({items}: {
         items?: {
             title: string
             url: string
+            icon?: LucideIcon
         }[]
     }[]
 }) {
@@ -47,6 +48,7 @@ export function NavSubmenu({items}: {
                                     {item.items?.map((subItem) => (
                                         <SidebarMenuSubItem key={subItem.title}>
                                             <SidebarMenuSubButton onClick={() => navigate(`${subItem.url}`)}>
+                                                {subItem.icon && <subItem.icon/>}
                                                 <span>{subItem.title}</span>
                                             </SidebarMenuSubButton>
                                         </SidebarMenuSubItem>
