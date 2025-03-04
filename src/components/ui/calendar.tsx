@@ -1,74 +1,112 @@
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+"use client";
+import {useContext, useEffect, useState} from "react";
+import {cn} from "@/lib/utils";
+import type {Event} from "@/types/event";
+import {EventIndicator} from "@/components/schedule/event-indicator";
+import LangContext from "@/context/LangContext.tsx";
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
-
-function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true,
-  ...props
-}: CalendarProps) {
-  return (
-    <DayPicker
-      showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
-      classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
-        nav_button: cn(
-          buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
-        ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-y-1",
-        head_row: "flex",
-        head_cell:
-          "text-neutral-500 rounded-md w-8 font-normal text-[0.8rem] dark:text-neutral-400",
-        row: "flex w-full mt-2",
-        cell: cn(
-          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-neutral-100 [&:has([aria-selected].day-outside)]:bg-neutral-100/50 [&:has([aria-selected].day-range-end)]:rounded-r-md dark:[&:has([aria-selected])]:bg-neutral-800 dark:[&:has([aria-selected].day-outside)]:bg-neutral-800/50",
-          props.mode === "range"
-            ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
-            : "[&:has([aria-selected])]:rounded-md"
-        ),
-        day: cn(
-          buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
-        ),
-        day_range_start: "day-range-start",
-        day_range_end: "day-range-end",
-        day_selected:
-          "bg-neutral-900 text-neutral-50 hover:bg-neutral-900 hover:text-neutral-50 focus:bg-neutral-900 focus:text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50 dark:hover:text-neutral-900 dark:focus:bg-neutral-50 dark:focus:text-neutral-900",
-        day_today: "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50",
-        day_outside:
-          "day-outside text-neutral-500 aria-selected:bg-neutral-100/50 aria-selected:text-neutral-500 dark:text-neutral-400 dark:aria-selected:bg-neutral-800/50 dark:aria-selected:text-neutral-400",
-        day_disabled: "text-neutral-500 opacity-50 dark:text-neutral-400",
-        day_range_middle:
-          "aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50",
-        day_hidden: "invisible",
-        ...classNames,
-      }}
-      components={{
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("h-4 w-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn("h-4 w-4", className)} {...props} />
-        ),
-      }}
-      {...props}
-    />
-  )
+interface CalendarProps {
+    currentDate: Date;
+    events: Event[];
 }
-Calendar.displayName = "Calendar"
 
-export { Calendar }
+export function Calendar({currentDate, events}: CalendarProps) {
+    const [calendarDays, setCalendarDays] = useState<Date[]>([]);
+    const {locale} = useContext(LangContext);
+    const weekDays =
+        locale === "id"
+            ? ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"]
+            : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    useEffect(() => {
+        const days: Date[] = [];
+        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        const firstDayOfWeek = firstDayOfMonth.getDay();
+        const prevMonthLastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
+        for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+            days.push(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, prevMonthLastDay - i));
+        }
+        // Add all days of the current month
+        for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+            days.push(new Date(currentDate.getFullYear(), currentDate.getMonth(), i));
+        }
+        // Add next month's days to complete the last week
+        const remainingDays = 7 - (days.length % 7);
+        if (remainingDays < 7) {
+            for (let i = 1; i <= remainingDays; i++) {
+                days.push(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, i));
+            }
+        }
+        setCalendarDays(days);
+    }, [currentDate]);
+    const isSameDate = (date1: Date, date2: Date) =>
+        date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear();
+    const isCurrentMonth = (date: Date) => date.getMonth() === currentDate.getMonth();
+    const isToday = (date: Date) => isSameDate(date, new Date());
+    const getEventsForDate = (date: Date) => {
+        return events.filter((event) => {
+            const eventStart = new Date(event.startDate);
+            const eventEnd = new Date(event.endDate);
+            const dateToCheck = new Date(date).setHours(0, 0, 0, 0);
+            return dateToCheck >= eventStart.setHours(0, 0, 0, 0) && dateToCheck <= eventEnd.setHours(0, 0, 0, 0);
+        });
+    };
+    const isRangeBoundary = (date: Date, event: Event, type: "start" | "end") => {
+        const eventDate = new Date(type === "start" ? event.startDate : event.endDate);
+        return isSameDate(date, eventDate);
+    };
+    const isInRange = (date: Date, event: Event) => {
+        const dateToCheck = new Date(date).setHours(0, 0, 0, 0);
+        const start = new Date(event.startDate).setHours(0, 0, 0, 0);
+        const end = new Date(event.endDate).setHours(0, 0, 0, 0);
+        return dateToCheck > start && dateToCheck < end;
+    };
+    return (
+        <div className="w-full">
+            <div className="grid grid-cols-7 gap-px">
+                {weekDays.map((day, index) => (
+                    <div key={index} className="p-2 text-center font-medium text-muted-foreground">
+                        {day}
+                    </div>
+                ))}
+
+                {calendarDays.map((day, index) => {
+                    const dayEvents = getEventsForDate(day);
+                    return (
+                        <div
+                            key={index}
+                            className={cn(
+                                "min-h-[100px] p-1 border border-border relative",
+                                !isCurrentMonth(day) && "bg-muted/30",
+                                isToday(day) && "bg-muted/50"
+                            )}
+                        >
+                            <div
+                                className={cn(
+                                    "text-sm font-medium h-6 w-6 flex items-center justify-center rounded-full",
+                                    isToday(day) && "bg-primary text-primary-foreground"
+                                )}
+                            >
+                                {day.getDate()}
+                            </div>
+
+                            <div className="mt-1 space-y-1 max-h-[80px] overflow-y-auto">
+                                {dayEvents.map((event) => (
+                                    <EventIndicator
+                                        key={event.id}
+                                        event={event}
+                                        isRangeStart={isRangeBoundary(day, event, "start")}
+                                        isRangeEnd={isRangeBoundary(day, event, "end")}
+                                        isInRange={isInRange(day, event)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}

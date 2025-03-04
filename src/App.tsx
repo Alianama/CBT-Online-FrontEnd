@@ -10,6 +10,7 @@ import useSecurity from "@/hooks/useSecurity";
 import Fokus from "@/pages/Fokus";
 import Exam from "@/pages/Exam.tsx";
 import Schedule from "@/pages/Schedule.tsx";
+import NotFound from "@/pages/NotFound.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -73,6 +74,8 @@ export default function App() {
                 <Route path="/fokus" element={<Fokus/>}/>
                 <Route path="/exam" element={<Exam/>}/>
                 <Route path="/schedule" element={<Schedule/>}/>
+                <Route path="/*" element={<NotFound/>}/>
+
             </Routes>
         </LangContext.Provider>
     );

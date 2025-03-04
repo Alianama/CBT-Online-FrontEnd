@@ -1,10 +1,9 @@
 export interface Event {
     id: string
     title: string
-    date: string
-    time: string
-    location?: string
-    description?: string
-    category: "work" | "personal" | "other"
+    description: string
+    startDate: Date
+    endDate: Date
+    color: string
 }
 

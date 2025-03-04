@@ -13,7 +13,7 @@ import {
     Pencil,
 } from "lucide-react"
 import {NavSubmenu} from "./nav-submenu.tsx"
-import {NavUtils} from "./nav-utils.tsx"
+import {NavPrimary} from "./nav-primary.tsx"
 import {NavUser} from "./nav-user.tsx"
 import {TeamSwitcher} from "./team-switcher.tsx"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar.tsx"
@@ -110,7 +110,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
                 <TeamSwitcher teams={data.teams}/>
             </SidebarHeader>
             <SidebarContent>
-                <NavUtils utils={locale === "id" ? data.utils.id : data.utils.en}/>
+                <NavPrimary utils={locale === "id" ? data.utils.id : data.utils.en}/>
                 <NavSubmenu items={data.navMain}/>
             </SidebarContent>
             <SidebarFooter>

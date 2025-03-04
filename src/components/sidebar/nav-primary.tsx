@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sidebar.tsx"
 import {useLocation, useNavigate} from "react-router-dom";
 
-export function NavUtils({utils}: {
+export function NavPrimary({utils}: {
     utils: {
         name: string
         url: string
