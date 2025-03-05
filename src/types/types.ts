@@ -7,3 +7,7 @@ export interface Event {
     color: string
 }
 
+export interface User {
+    username: string
+    password: string
+}

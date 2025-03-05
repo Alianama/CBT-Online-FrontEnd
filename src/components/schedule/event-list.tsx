@@ -1,6 +1,6 @@
 "use client"
 import {useContext, useMemo} from "react"
-import type {Event} from "@/types/event"
+import type {Event} from "@/types/types"
 import {formatDate} from "@/lib/utils"
 import LangContext from "@/context/LangContext.tsx";
 

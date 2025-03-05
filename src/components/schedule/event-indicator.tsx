@@ -1,6 +1,6 @@
 "use client"
 import {cn} from "@/lib/utils"
-import type {Event} from "@/types/event"
+import type {Event} from "@/types/types"
 
 interface EventIndicatorProps {
     event: Event
