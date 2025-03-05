@@ -11,3 +11,10 @@ export interface User {
     username: string
     password: string
 }
+
+export interface Question {
+    id: number
+    text: string
+    options: { id: string; text: string }[]
+    correctAnswer: string
+}
