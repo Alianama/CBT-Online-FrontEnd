@@ -1,11 +1,12 @@
 "use client"
-import {useContext, useState} from "react"
+import {useContext, useEffect, useState} from "react"
 import {Calendar} from "@/components/ui/calendar"
 import {EventList} from "@/components/schedule/event-list"
 import {CalendarHeader} from "@/components/schedule/calendar-header"
 import type {Event} from "@/types/event"
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 const sampleEvents: Event[] = [
     {
@@ -57,9 +58,26 @@ const sampleEvents: Event[] = [
         color: "bg-indigo-200 hover:bg-indigo-300 dark:bg-indigo-800 dark:hover:bg-indigo-700",
     },
 ]
-export default function CalendarPage() {
+export default function SchedulePage() {
     const [currentDate, setCurrentDate] = useState<Date>(new Date())
-    const [events] = useState<Event[]>(sampleEvents)
+    const [events, setEvents] = useState<Event[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const response: Event[] = await new Promise((resolve) =>
+                    setTimeout(() => resolve(sampleEvents), 1000)
+                );
+                setEvents(response);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     const handlePrevMonth = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
     }
@@ -80,25 +98,40 @@ export default function CalendarPage() {
             url: "/schedule",
         }
     }
-    return (
-        <Layout data={locale === "id" ? [pageData.id] : [pageData.en]}>
-            <div className="flex flex-col min-h-screen">
-                <CalendarHeader
-                    currentDate={currentDate}
-                    onPrevMonth={handlePrevMonth}
-                    onNextMonth={handleNextMonth}
-                    onToday={handleToday}
-                />
-                <div className="flex flex-col md:flex-row flex-1 gap-4 p-4">
-                    <div className="md:w-3/4 bg-card rounded-lg shadow-sm border">
-                        <Calendar currentDate={currentDate} events={events}/>
-                    </div>
-                    <div className="md:w-1/4 bg-card rounded-lg shadow-sm border p-4">
-                        <EventList currentDate={currentDate} events={events}/>
+    if (isLoading) {
+        return (
+            <Layout data={locale === "id" ? [pageData.id] : [pageData.en]}>
+                <title>Home</title>
+                <div className="flex w-full h-screen gap-4 p-4 pt-0">
+                    <div className="w-full pt-20 gap-5 max-md:flex-col flex">
+                        <Skeleton className="w-[75%] h-[100%] max-md:w-[100%] max-md:h-[50%]  rounded-20"/>
+                        <Skeleton className="w-[25%] h-[100%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
                     </div>
                 </div>
-            </div>
-        </Layout>
-    )
+            </Layout>
+        )
+    } else {
+        return (
+            <Layout data={locale === "id" ? [pageData.id] : [pageData.en]}>
+                <title>Home</title>
+                <div className="flex flex-col min-h-screen">
+                    <CalendarHeader
+                        currentDate={currentDate}
+                        onPrevMonth={handlePrevMonth}
+                        onNextMonth={handleNextMonth}
+                        onToday={handleToday}
+                    />
+                    <div className="flex flex-col md:flex-row flex-1 gap-4 p-4">
+                        <div className="md:w-3/4 bg-card rounded-lg shadow-sm border">
+                            <Calendar currentDate={currentDate} events={events}/>
+                        </div>
+                        <div className="md:w-1/4 bg-card rounded-lg shadow-sm border p-4">
+                            <EventList currentDate={currentDate} events={events}/>
+                        </div>
+                    </div>
+                </div>
+            </Layout>
+        )
+    }
 }
 
