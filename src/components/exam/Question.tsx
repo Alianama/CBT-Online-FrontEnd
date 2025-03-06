@@ -149,13 +149,11 @@ export default function ExamInterface() {
         }, 1000)
         return () => clearInterval(timer)
     }, [examStarted, timeLeft])
-    // Format time as MM:SS
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60)
         const secs = seconds % 60
         return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
     }
-    // Calculate completion percentage
     const completionPercentage = questions.length > 0 ? (Object.keys(answers).length / questions.length) * 100 : 0
     // Handle answer selection
     const handleAnswerSelect = (questionId: number, answerId: string) => {

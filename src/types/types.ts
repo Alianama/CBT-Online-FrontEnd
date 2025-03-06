@@ -24,6 +24,8 @@ export interface SearchInputProps {
 }
 
 export interface BookCardProps {
+    id: number;
+    category: string;
     title: string
     imageUrl?: string
     description: string

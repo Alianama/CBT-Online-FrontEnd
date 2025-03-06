@@ -1,6 +1,7 @@
 import {sampleEvents} from "./eventData";
 import {users} from "@/app/api/LoginData.ts";
-import {Event, User} from "@/types/types.ts";
+import {BookCardProps, Event, User} from "@/types/types.ts";
+import {books} from "@/app/api/bookData.ts";
 
 export const getEvents = (): Promise<Event[]> => {
     return new Promise((resolve) => {
@@ -23,8 +24,15 @@ export const loginUser = (username: string, password: string): Promise<boolean> 
             if (user) {
                 resolve(true);
             } else {
-                reject(new Error("Username atau password salah!"));  // Login gagal
+                reject(new Error("Username atau password salah!"));
             }
         }, 1000);
     });
 };
+export const getBooks = (): Promise<BookCardProps[]> => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(books);
+        }, 1000)
+    })
+}
