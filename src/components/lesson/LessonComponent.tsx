@@ -71,17 +71,34 @@ export default function LessonComponent() {
                     <SearchInput onSearch={handleSearch}/>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    {bookCategory.map(([key, value]) => (
-                        <Button
-                            key={key}
-                            className={`border-none shadow-none bg-transparent hover:bg-secondary/80 text-sidebar-secondary
-                            ${activeCategory === key ? "bg-secondary text-sidebar-secondary" : ""}`}
-                            variant="default"
-                            onClick={() => setSearchParams({category: key, q: searchQuery})}
-                        >
-                            {value}
-                        </Button>
-                    ))}
+                    {bookCategory.map(([key, value]) => {
+                        const pastelColors = [
+                            "#FF6B6B",
+                            "#FFD93D",
+                            "#FF5E78",
+                            "#FFA45B",
+                            "#00C9A7",
+                            "#7F7CFF",
+                            "#6BCB77",
+                            "#C084FC",
+                            "#FF4848",
+                            "#FFB830"
+                        ];
+                        const randomColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+                        return (
+                            <Button
+                                key={key}
+                                style={activeCategory ? {color: randomColor} : {}}
+                                className={`border-none shadow-none bg-transparent hover:bg-secondary/80 text-sidebar-secondary
+                                ${activeCategory === key ? "bg-secondary text-sidebar-secondary" : ""}`}
+                                variant="default"
+                                onClick={() => setSearchParams({category: key, q: searchQuery})}
+                            >
+                                {value}
+                            </Button>
+                        );
+                    })}
+
                 </div>
 
 
