@@ -2,7 +2,6 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {Toaster} from "sonner";
 import Home from "@/pages/Home.tsx";
-import Materi from "@/pages/Materi.tsx";
 import Login from "@/pages/Login.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import useAuth from "@/hooks/useAuth";
@@ -11,6 +10,7 @@ import Fokus from "@/pages/Fokus";
 import Exam from "@/pages/Exam.tsx";
 import Schedule from "@/pages/Schedule.tsx";
 import NotFound from "@/pages/NotFound.tsx";
+import Lesson from "@/pages/Lesson.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -70,10 +70,11 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login onSuccess={onLoginSuccess}/>}/>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/materi" element={<Materi/>}/>
                 <Route path="/fokus" element={<Fokus/>}/>
                 <Route path="/exam" element={<Exam/>}/>
                 <Route path="/schedule" element={<Schedule/>}/>
+                <Route path="/lesson" element={<Lesson/>}/>
+
                 <Route path="/*" element={<NotFound/>}/>
 
             </Routes>

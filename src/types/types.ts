@@ -18,3 +18,15 @@ export interface Question {
     options: { id: string; text: string }[]
     correctAnswer: string
 }
+
+export interface SearchInputProps {
+    onSearch: (query: string) => void;
+}
+
+export interface BookCardProps {
+    title: string
+    imageUrl?: string
+    description: string
+    openUrl?: string
+    downloadUrl?: string
+}

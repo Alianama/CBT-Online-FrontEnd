@@ -73,7 +73,7 @@ const data = {
             },
             {
                 name: "Materi",
-                url: "/materi",
+                url: "/lesson",
                 icon: BookMarked,
             },
             {
@@ -90,7 +90,7 @@ const data = {
             },
             {
                 name: "Lesson",
-                url: "/materi",
+                url: "/lesson",
                 icon: BookMarked,
             },
             {

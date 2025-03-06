@@ -1,6 +1,7 @@
 import Layout from "@/components/sidebar/Layout.tsx"
 import LangContext from "@/context/LangContext.tsx";
 import {useContext} from "react";
+import LessonComponent from "@/components/lesson/LessonComponent.tsx";
 
 export default function Materi() {
     const {locale} = useContext(LangContext);
@@ -16,8 +17,7 @@ export default function Materi() {
     }
     return (
         <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
-            <title>Materi</title>
-            <div>Home</div>
+            <LessonComponent/>
         </Layout>
     )
 }
