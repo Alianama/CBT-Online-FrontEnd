@@ -36,3 +36,4 @@ export const getBooks = (): Promise<BookCardProps[]> => {
         }, 1000)
     })
 }
+

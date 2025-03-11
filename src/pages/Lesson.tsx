@@ -18,6 +18,7 @@ export default function Materi() {
     return (
         <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
             <LessonComponent/>
+            <h1>ff</h1>
         </Layout>
     )
 }

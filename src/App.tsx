@@ -1,20 +1,20 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {Toaster} from "sonner";
-import Home from "@/pages/Home.tsx";
-import Login from "@/pages/Login.tsx";
 import LangContext from "@/context/LangContext.tsx";
-import useAuth from "@/hooks/useAuth";
 import useSecurity from "@/hooks/useSecurity";
 import Fokus from "@/pages/Fokus";
 import Exam from "@/pages/Exam.tsx";
 import Schedule from "@/pages/Schedule.tsx";
 import NotFound from "@/pages/NotFound.tsx";
 import Lesson from "@/pages/Lesson.tsx";
+import Auth from "@/pages/Auth.tsx";
+import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
+import PrivateRoute from "@/components/privateRoute/PrivateRoute.tsx";
+import Home from "@/pages/Home.tsx"
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
-    const {userAuth, onLoginSuccess} = useAuth();
     const {disableRightClick, disableShortcut, isSecurityEnabled, showToast} = useSecurity();
     const navigate = useNavigate();
     const detectDevTools = useCallback(() => {
@@ -61,22 +61,29 @@ export default function App() {
     const contextValue = useMemo(() => {
         return {locale, toggleLocale};
     }, [locale]);
-    if (!userAuth) {
-        return <Login onSuccess={onLoginSuccess}/>;
-    }
+    useTokenRefresh();
     return (
         <LangContext.Provider value={contextValue}>
             <Toaster position="top-right" richColors/>
             <Routes>
-                <Route path="/login" element={<Login onSuccess={onLoginSuccess}/>}/>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/fokus" element={<Fokus/>}/>
+                {/*<Route path="/login/:token" element={<Login onSuccess={onLoginSuccess}/>}/>*/}
+                <Route path="/" element={
+                    <PrivateRoute>
+                        <Home/>
+                    </PrivateRoute>
+                }
+                />
+                <Route path="/fokus" element={
+                    <PrivateRoute>
+                        <Fokus/>
+                    </PrivateRoute>
+                }
+                />
                 <Route path="/exam" element={<Exam/>}/>
                 <Route path="/schedule" element={<Schedule/>}/>
                 <Route path="/lesson" element={<Lesson/>}/>
-
+                <Route path="/auth/:token" element={<Auth/>}/>
                 <Route path="/*" element={<NotFound/>}/>
-
             </Routes>
         </LangContext.Provider>
     );

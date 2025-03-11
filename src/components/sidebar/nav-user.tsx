@@ -1,5 +1,5 @@
 "use client"
-import {BadgeCheck, ChevronsUpDown, LogOut} from "lucide-react"
+import {BadgeCheck, ChevronsUpDown} from "lucide-react"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx"
 import {
     DropdownMenu,
@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu.tsx"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar.tsx"
 import useSidebar from "@/hooks/useSIdebar.tsx";
-import useAuth from "@/hooks/useAuth.tsx";
 
+// import useAuth from "@/hooks/notuse-useAuth.tsx";
 export function NavUser({user}: {
     user: {
         name: string
@@ -22,7 +22,7 @@ export function NavUser({user}: {
     }
 }) {
     const {isMobile} = useSidebar()
-    const {onLogoutSuccess} = useAuth()
+    // const {onLogoutSuccess} = useAuth()
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -72,10 +72,10 @@ export function NavUser({user}: {
 
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator/>
-                        <DropdownMenuItem onClick={onLogoutSuccess}>
-                            <LogOut/>
-                            Log out
-                        </DropdownMenuItem>
+                        {/*<DropdownMenuItem onClick={onLogoutSuccess}>*/}
+                        {/*    <LogOut/>*/}
+                        {/*    Log out*/}
+                        {/*</DropdownMenuItem>*/}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>

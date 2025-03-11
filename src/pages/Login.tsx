@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import logo from "../assets/Image/Logo.png";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {toast, Toaster} from "sonner";
 import {loginUser} from "@/app/api/api.ts";
 import {ModeToggle} from "@/components/Theme/mode-toggle.tsx";
@@ -12,6 +12,7 @@ interface LoginProps {
 }
 
 export default function Login({onSuccess}: LoginProps) {
+    const {token} = useParams<string>();
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -37,6 +38,7 @@ export default function Login({onSuccess}: LoginProps) {
             setIsLoading(false);
         }
     }
+    console.log(token)
     return (
         <div className="flex w-full h-screen p-10 justify-center items-center gap-4 max-md:flex-col max-md:p-2">
             <Toaster position="top-right" richColors/>
@@ -79,6 +81,7 @@ export default function Login({onSuccess}: LoginProps) {
                     />
                     Remember me?
                 </label>
+                <h1>{token}</h1>
 
                 <Button type="submit" className="w-3/4 bg-primary max-md:w-full">
                     {IsLoading ? "Loading..." : "Login"}
