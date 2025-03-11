@@ -32,3 +32,18 @@ export interface BookCardProps {
     openUrl?: string
     downloadUrl?: string
 }
+
+export interface Token {
+    token: string;
+    expired_at: number;
+}
+
+export interface UserData {
+    user_id: number;
+    user_type: number;
+    id_kelas: number;
+    nama_siswa: string;
+    nis: string;
+    ban: number;
+    username: string;
+}   

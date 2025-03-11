@@ -1,17 +1,4 @@
-export interface Token {
-    token: string;
-    expired_at: number;
-}
-
-export interface UserData {
-    user_id: number;
-    user_type: number;
-    id_kelas: number;
-    nama_siswa: string;
-    nis: string;
-    ban: number;
-    username: string;
-}
+import {Token, UserData} from "@/types/types.ts"
 
 export const setAuthData = (accessToken: Token, refreshToken: Token, userData: UserData) => {
     localStorage.setItem("access_token", JSON.stringify(accessToken));
