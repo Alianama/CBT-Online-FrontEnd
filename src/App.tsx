@@ -79,7 +79,12 @@ export default function App() {
                     </PrivateRoute>
                 }
                 />
-                <Route path="/exam" element={<Exam/>}/>
+                <Route path="/exam" element={
+                    <PrivateRoute>
+                        <Exam/>
+                    </PrivateRoute>
+                }
+                />
                 <Route path="/schedule" element={<Schedule/>}/>
                 <Route path="/lesson" element={<Lesson/>}/>
                 <Route path="/auth/:token" element={<Auth/>}/>

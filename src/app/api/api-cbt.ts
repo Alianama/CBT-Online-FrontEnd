@@ -2,9 +2,10 @@ import axios from 'axios';
 import axiosInstance from "@/utils/axiosInstance.ts";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 export const userAuth = async (token: string) => {
     try {
-        const response = await axios.post(`${BASE_URL}/auth`, {token}, {
+        const response = await axios.post(`${BASE_URL}/auth`, { auth_token: token }, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -18,9 +19,10 @@ export const userAuth = async (token: string) => {
         }
     }
 };
+
 export const getUserById = async (id: number) => {
     try {
-        const response = await axiosInstance.post(`${BASE_URL}/siswa`, {id});
+        const response = await axiosInstance.post(`${BASE_URL}/siswa`, { id });
         console.log(response);
         return response.data;
     } catch (error) {
@@ -30,4 +32,4 @@ export const getUserById = async (id: number) => {
             throw new Error('An unknown error occurred');
         }
     }
-}
+};

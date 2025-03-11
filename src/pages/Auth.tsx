@@ -1,41 +1,53 @@
-import {useParams} from 'react-router-dom';
-import {useEffect, useState} from 'react';
-import {userAuth} from '@/app/api/api-cbt.ts';
-import {toast, Toaster} from "sonner";
-import {setAuthData} from "@/utils/storage.ts";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { userAuth } from '@/app/api/api-cbt.ts';
+import { toast, Toaster } from "sonner";
+import { setAuthData } from "@/utils/storage.ts";
 
 export default function Auth() {
-    const {token} = useParams();
+    const { token } = useParams();
+    const navigate = useNavigate();
     const [message, setMessage] = useState<string>('');
+
     useEffect(() => {
         (async () => {
             if (token) {
                 try {
                     const response = await userAuth(token);
-                    if (response.status === 200) {
-                        const {access_token, refresh_token, user_data} = response.data; // 🔥 Ambil data dari response
+                    if (response) {
+                        const { access_token, refresh_token, user_data } = response;
                         setAuthData(access_token, refresh_token, user_data);
-                        console.log('User authenticated:', response);
+                        console.log('✅ User authenticated:', response);
                         setMessage('Authentication successful! 🎉');
                         toast.success("Login success!");
+                        setTimeout(() => {
+                            navigate('/');
+                        }, 1000);
                     } else {
-                        console.warn('Authentication failed with status:', response.status);
-                        setMessage(`Authentication failed! Status: ${response.status}`);
-                        toast.error(`Login failed with status: ${response.status}`);
+                        console.warn('⚠️ Authentication failed:', response);
+                        setMessage('Authentication failed! Invalid response.');
+                        toast.error('Login failed. Invalid response.');
                     }
                 } catch (error) {
-                    console.error('Authentication failed:', error);
-                    setMessage('Authentication error! ❌');
-                    toast.error(error instanceof Error ? error.message : "Login Error!");
+                    console.error('❌ Authentication error:', error);
+
+                    if (error) {
+                        setMessage(`Authentication failed! ${error ?? 'Unknown error'}`);
+                        toast.error('Login failed.');
+                    } else {
+                        setMessage('Authentication error! Please try again.');
+                        toast.error('Login error! Something went wrong.');
+                    }
                 }
             }
         })();
-    }, [token]);
+    }, [token, navigate]);
+
     return (
-        <div>
-            <Toaster position="top-right" richColors/>
-            <h1>{token}</h1>
-            <p>{message}</p>
-        </div>
+      <div>
+          <Toaster position="top-right" richColors />
+          <h1>{token}</h1>
+          <p>{message}</p>
+      </div>
     );
 }
