@@ -12,6 +12,7 @@ import Auth from "@/pages/Auth.tsx";
 import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
 import PrivateRoute from "@/components/privateRoute/PrivateRoute.tsx";
 import Home from "@/pages/Home.tsx"
+import Profile from "@/pages/Profile.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -96,7 +97,12 @@ export default function App() {
                         <Lesson/>
                     </PrivateRoute>
                 }
-                />
+                /><Route path="/profile" element={
+                <PrivateRoute>
+                    <Profile/>
+                </PrivateRoute>
+            }
+            />
                 <Route path="/auth/:token" element={<Auth/>}/>
                 <Route path="/*" element={
                     <PrivateRoute>

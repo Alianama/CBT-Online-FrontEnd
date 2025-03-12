@@ -1,5 +1,5 @@
 "use client"
-import {BadgeCheck, ChevronsUpDown} from "lucide-react"
+import {BadgeCheck, ChevronsUpDown, LogOut} from "lucide-react"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx"
 import {
     DropdownMenu,
@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu.tsx"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar.tsx"
 import useSidebar from "@/hooks/useSIdebar.tsx";
+import {clearAuthData} from "@/utils/storage.ts";
+import {useNavigate} from "react-router-dom";
 
-// import useAuth from "@/hooks/notuse-useAuth.tsx";
+const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
+
 export function NavUser({user}: {
     user: {
         name: string
@@ -21,8 +24,15 @@ export function NavUser({user}: {
         avatar: string
     }
 }) {
+    const navigate = useNavigate();
     const {isMobile} = useSidebar()
-    // const {onLogoutSuccess} = useAuth()
+    const onLogout = () => {
+        clearAuthData()
+        window.location.href = LOGOUT_URL;
+    }
+    const handleClickProfile = () => {
+        navigate(`/profile`);
+    }
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -65,17 +75,17 @@ export function NavUser({user}: {
 
                         <DropdownMenuSeparator/>
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleClickProfile}>
                                 <BadgeCheck/>
                                 Profile
                             </DropdownMenuItem>
 
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator/>
-                        {/*<DropdownMenuItem onClick={onLogoutSuccess}>*/}
-                        {/*    <LogOut/>*/}
-                        {/*    Log out*/}
-                        {/*</DropdownMenuItem>*/}
+                        <DropdownMenuItem onClick={onLogout}>
+                            <LogOut/>
+                            Log out
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>
