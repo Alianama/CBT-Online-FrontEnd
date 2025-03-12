@@ -1,12 +1,17 @@
 import React from "react";
-import {Navigate} from "react-router-dom";
 import {isAuthenticated} from "@/utils/auth";
+
+const LOGIN_URL: string = import.meta.env.VITE_LOGIN_URL;
 
 interface PrivateRouteProps {
     children: React.ReactNode;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({children}) => {
-    return isAuthenticated() ? children : <Navigate to="/login"/>;
+    if (!isAuthenticated()) {
+        window.location.href = LOGIN_URL;
+        return null;
+    }
+    return <>{children}</>;
 };
 export default PrivateRoute;

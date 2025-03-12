@@ -1,6 +1,7 @@
 import axiosInstance from "./axiosInstance";
 import {clearAuthData, getAuthData, setAuthData} from "./storage";
 
+const LOGIN_URL: string = import.meta.env.VITE_LOGIN_URL;
 export const refreshAccessToken = async () => {
     const {refreshToken} = getAuthData();
     if (refreshToken) {
@@ -13,7 +14,7 @@ export const refreshAccessToken = async () => {
             console.error("Failed to refresh token, logging out...");
             console.log(error);
             clearAuthData();
-            window.location.href = "/login";
+            window.location.href = LOGIN_URL;
         }
     }
 };

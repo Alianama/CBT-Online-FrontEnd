@@ -2,9 +2,9 @@ import axios from "axios";
 import {clearAuthData, getAuthData, setAuthData} from "./storage";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-
+const LOGIN_URL = import.meta.env.VITE_LOGIN_URL;
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api",
+    baseURL: BASE_URL,
     headers: {"Content-Type": "application/json"},
 });
 // Intercept request untuk menambahkan Authorization header
@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
             const {refreshToken} = getAuthData();
             if (refreshToken) {
                 try {
-                    const {data} = await axios.post("http://localhost:8000/api/refresh-token", {
+                    const {data} = await axios.post(`${BASE_URL}/refresh`, {refreshToken}, {
                         refresh_token: refreshToken.token,
                     });
                     // Perbarui token
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
                     console.error("Token refresh failed, logging out...");
                     console.log(error);
                     clearAuthData();
-                    window.location.href = "/login";
+                    window.location.href = LOGIN_URL;
                 }
             }
         }

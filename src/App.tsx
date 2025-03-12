@@ -85,10 +85,24 @@ export default function App() {
                     </PrivateRoute>
                 }
                 />
-                <Route path="/schedule" element={<Schedule/>}/>
-                <Route path="/lesson" element={<Lesson/>}/>
+                <Route path="/schedule" element={
+                    <PrivateRoute>
+                        <Schedule/>
+                    </PrivateRoute>
+                }
+                />
+                <Route path="/lesson" element={
+                    <PrivateRoute>
+                        <Lesson/>
+                    </PrivateRoute>
+                }
+                />
                 <Route path="/auth/:token" element={<Auth/>}/>
-                <Route path="/*" element={<NotFound/>}/>
+                <Route path="/*" element={
+                    <PrivateRoute>
+                        <NotFound/>
+                    </PrivateRoute>
+                }/>
             </Routes>
         </LangContext.Provider>
     );
