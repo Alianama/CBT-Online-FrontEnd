@@ -1,8 +1,12 @@
 import {Token, UserData} from "@/types/types.ts"
 
-export const setAuthData = (accessToken: Token, refreshToken: Token, userData: UserData) => {
+export const setAccessToken = (accessToken: Token) => {
     localStorage.setItem("access_token", JSON.stringify(accessToken));
+};
+export const setRefreshToken = (refreshToken: Token) => {
     localStorage.setItem("refresh_token", JSON.stringify(refreshToken));
+};
+export const setUserData = (userData: UserData) => {
     localStorage.setItem("user_data", JSON.stringify(userData));
 };
 export const getAuthData = () => {

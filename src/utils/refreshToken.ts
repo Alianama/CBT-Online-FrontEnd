@@ -1,20 +1,27 @@
 import axiosInstance from "./axiosInstance";
-import {clearAuthData, getAuthData, setAuthData} from "./storage";
+import {clearAuthData, getAuthData, setAccessToken} from "./storage";
 
-const LOGIN_URL: string = import.meta.env.VITE_LOGIN_URL;
+const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 export const refreshAccessToken = async () => {
-    const {refreshToken} = getAuthData();
-    if (refreshToken) {
-        try {
-            const {data} = await axiosInstance.post("/refresh-token", {
-                refresh_token: refreshToken.token,
-            });
-            setAuthData(data.access_token, data.refresh_token, getAuthData().userData!);
-        } catch (error) {
-            console.error("Failed to refresh token, logging out...");
-            console.log(error);
+    const authData = getAuthData();
+    const refreshToken = authData?.refreshToken;
+    if (!refreshToken) return;
+    try {
+        const {data} = await axiosInstance.post("/auth/refresh", {
+            refresh_token: refreshToken,
+            type: "access"
+        });
+        console.log(data)
+        if (!data?.access_token || !data?.refresh_token) {
+            console.warn("Invalid token response, logging out...");
             clearAuthData();
-            window.location.href = LOGIN_URL;
+            window.location.href = LOGOUT_URL;
+            return;
         }
+        setAccessToken(data.access_token);
+    } catch (error) {
+        console.error("Failed to refresh token, logging out...", error);
+        clearAuthData();
+        window.location.href = LOGOUT_URL;
     }
 };

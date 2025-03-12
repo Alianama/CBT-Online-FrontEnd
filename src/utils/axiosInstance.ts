@@ -1,13 +1,12 @@
 import axios from "axios";
-import {clearAuthData, getAuthData, setAuthData} from "./storage";
+import {clearAuthData, getAuthData, setAccessToken} from "./storage";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const LOGIN_URL = import.meta.env.VITE_LOGIN_URL;
+const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL;
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
     headers: {"Content-Type": "application/json"},
 });
-// Intercept request untuk menambahkan Authorization header
 axiosInstance.interceptors.request.use(
     (config) => {
         const {accessToken} = getAuthData();
@@ -18,7 +17,6 @@ axiosInstance.interceptors.request.use(
     },
     (error) => Promise.reject(error)
 );
-// Intercept response untuk menangani token expired (401)
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -28,19 +26,28 @@ axiosInstance.interceptors.response.use(
             const {refreshToken} = getAuthData();
             if (refreshToken) {
                 try {
-                    const {data} = await axios.post(`${BASE_URL}/refresh`, {refreshToken}, {
+                    const {data} = await axios.post(`${BASE_URL}/auth/refresh`, {
                         refresh_token: refreshToken.token,
+                        type: "access"
                     });
-                    // Perbarui token
-                    setAuthData(data.access_token, data.refresh_token, getAuthData().userData!);
-                    // Ulangi request dengan token baru
-                    originalRequest.headers["Authorization"] = `Bearer ${data.access_token.token}`;
+                    console.log("New Access Token:", data);
+                    if (!data?.access_token || !data.access_token.access_token || !Number.isFinite(data.access_token.expired_at)) {
+                        console.error("Invalid access token response:", data);
+                        return Promise.reject(new Error("Invalid access token response structure"));
+                    }
+                    const newAccessToken = {
+                        token: data.access_token.access_token,
+                        expired_at: data.access_token.expired_at
+                    };
+                    setAccessToken(newAccessToken);
+                    originalRequest.headers["Authorization"] = `Bearer ${newAccessToken.token}`;
+                    console.log("berhasil")
                     return axiosInstance(originalRequest);
-                } catch (error) {
+                } catch (refreshError) {
                     console.error("Token refresh failed, logging out...");
-                    console.log(error);
+                    console.log(refreshError);
                     clearAuthData();
-                    window.location.href = LOGIN_URL;
+                    window.location.href = LOGOUT_URL;
                 }
             }
         }
