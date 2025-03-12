@@ -1,7 +1,7 @@
 import React from "react";
 import {isAuthenticated} from "@/utils/auth";
 
-const LOGOUT_URL: string = import.meta.env.VITE_LOGIN_URL;
+const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 
 interface PrivateRouteProps {
     children: React.ReactNode;
