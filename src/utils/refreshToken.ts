@@ -8,7 +8,7 @@ export const refreshAccessToken = async () => {
     if (!refreshToken) return;
     try {
         const {data} = await axiosInstance.post("/auth/refresh", {
-            refresh_token: refreshToken,
+            refresh_token: refreshToken.token,
             type: "access"
         });
         console.log(data)
@@ -18,6 +18,7 @@ export const refreshAccessToken = async () => {
             window.location.href = LOGOUT_URL;
             return;
         }
+        // Simpan token baru
         setAccessToken(data.access_token);
     } catch (error) {
         console.error("Failed to refresh token, logging out...", error);
