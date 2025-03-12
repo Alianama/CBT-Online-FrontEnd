@@ -1,6 +1,6 @@
 "use client"
 import type * as React from "react"
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {
     AudioWaveform,
     BookMarked,
@@ -12,25 +12,20 @@ import {
     Map,
     Pencil,
 } from "lucide-react"
-import {NavSubmenu} from "./nav-submenu.tsx"
 import {NavPrimary} from "./nav-primary.tsx"
 import {NavUser} from "./nav-user.tsx"
 import {TeamSwitcher} from "./team-switcher.tsx"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar.tsx"
 import LangContext from "@/context/LangContext.tsx";
+import {getAuthData} from "@/utils/storage.ts";
 
 const data = {
-    user: {
-        name: "Ali Purnama",
-        email: "ali@gmail.com",
-        avatar: "/avatars/shadcn.jpg",
-    },
     teams: [
         {
             name: "Siswa",
             logo: GalleryVerticalEnd,
             plan: "SMAN 8 Tamsel",
-            url: "siwa"
+            url: "/"
         },
         {
             name: "Guru",
@@ -81,6 +76,21 @@ const data = {
                 url: "#",
                 icon: Map,
             },
+            {
+                name: "Ujian",
+                url: "/exam",
+                icon: ClipboardList
+            },
+            {
+                name: "Jadwal Ujian",
+                url: "/schedule",
+                icon: Calendar1
+            },
+            {
+                name: "Hasil Ujian",
+                url: "/result",
+                icon: FileCheck
+            },
         ],
         en: [
             {
@@ -98,12 +108,51 @@ const data = {
                 url: "#",
                 icon: Map,
             },
+            {
+                name: "Exam",
+                url: "/exam",
+                icon: ClipboardList
+            },
+            {
+                name: "Exam Schedule",
+                url: "/schedule",
+                icon: Calendar1
+            },
+            {
+                name: "Exam Result",
+                url: "/result",
+                icon: FileCheck
+            },
         ]
     }
 }
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     const {locale} = useContext(LangContext);
+    const [name, setName] = useState("");
+    const [nis, setNis] = useState<string | undefined>();
+    const avatar = "/avatars/shadcn.jpg"
+    useEffect(() => {
+        const authData = getAuthData();
+        if (!authData || !authData.userData) {
+            console.error("User data not found");
+            return;
+        }
+        let userData;
+        try {
+            userData = typeof authData.userData === "object"
+                ? authData.userData
+                : JSON.parse(authData.userData);
+            if (!userData || typeof userData !== "object") {
+                console.error("Invalid User data");
+            }
+            const {nama_siswa, nis,} = userData;
+            setName(nama_siswa);
+            setNis(nis);
+        } catch (error) {
+            console.error("Failed to parse user data:", error);
+        }
+    }, []);
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
@@ -111,10 +160,10 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavPrimary utils={locale === "id" ? data.utils.id : data.utils.en}/>
-                <NavSubmenu items={data.navMain}/>
+                {/*<NavSubmenu items={data.navMain}/>*/}
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user}/>
+                <NavUser user={{name, nis, avatar}}/>
             </SidebarFooter>
             <SidebarRail/>
         </Sidebar>

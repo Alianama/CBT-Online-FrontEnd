@@ -105,9 +105,7 @@ export default function App() {
             />
                 <Route path="/auth/:token" element={<Auth/>}/>
                 <Route path="/*" element={
-                    <PrivateRoute>
-                        <NotFound/>
-                    </PrivateRoute>
+                    <NotFound/>
                 }/>
             </Routes>
         </LangContext.Provider>

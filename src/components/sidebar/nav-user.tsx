@@ -20,7 +20,7 @@ const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 export function NavUser({user}: {
     user: {
         name: string
-        email: string
+        nis: string | undefined
         avatar: string
     }
 }) {
@@ -48,7 +48,7 @@ export function NavUser({user}: {
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-semibold">{user.name}</span>
-                                <span className="truncate text-xs">{user.email}</span>
+                                <span className="truncate text-xs">NIS: {user.nis}</span>
                             </div>
                             <ChevronsUpDown className="ml-auto size-4"/>
                         </SidebarMenuButton>
@@ -67,7 +67,7 @@ export function NavUser({user}: {
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold">{user.name}</span>
-                                    <span className="truncate text-xs">{user.email}</span>
+                                    <span className="truncate text-xs">NIS: {user.nis}</span>
                                 </div>
                             </div>
                         </DropdownMenuLabel>

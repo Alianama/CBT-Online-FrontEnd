@@ -25,7 +25,7 @@ export const getUserById = async (id: number | null) => {
     }
     try {
         const response = await axiosInstance.post(`${BASE_URL}/siswa`, {user_id: id});
-        return response.data; // Kembalikan data langsung
+        return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             throw new Error(error.response?.data?.message || "Failed to fetch user data");
