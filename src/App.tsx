@@ -9,7 +9,6 @@ import Schedule from "@/pages/Schedule.tsx";
 import NotFound from "@/pages/NotFound.tsx";
 import Lesson from "@/pages/Lesson.tsx";
 import Auth from "@/pages/Auth.tsx";
-import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
 import PrivateRoute from "@/components/privateRoute/PrivateRoute.tsx";
 import Home from "@/pages/Home.tsx"
 import Profile from "@/pages/Profile.tsx";
@@ -62,7 +61,7 @@ export default function App() {
     const contextValue = useMemo(() => {
         return {locale, toggleLocale};
     }, [locale]);
-    useTokenRefresh();
+    // useTokenRefresh();
     return (
         <LangContext.Provider value={contextValue}>
             <Toaster position="top-right" richColors/>
