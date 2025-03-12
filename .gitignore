@@ -30,3 +30,4 @@ dist-ssr
 
 # Ignore env files
 *.env
+.env
