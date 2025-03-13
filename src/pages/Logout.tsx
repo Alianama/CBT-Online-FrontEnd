@@ -4,6 +4,8 @@ import {AnimatePresence, motion} from "framer-motion"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {Card, CardContent} from "@/components/ui/card"
 import {CheckCircle} from "lucide-react"
+import {getAuthData} from "@/utils/storage.ts";
+import {UserData} from "@/types/types.ts";
 
 const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL
 export default function LogoutAnimation() {
@@ -25,6 +27,13 @@ export default function LogoutAnimation() {
             clearTimeout(redirectTimer)
         }
     }, [])
+    const userData = getAuthData()?.userData || {} as UserData;
+    const getInitials = (name: string) => {
+        const words = name.split(" ");
+        return words.length === 1
+            ? name.charAt(0).toUpperCase()
+            : (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+    };
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
             <Card className="w-full max-w-md overflow-hidden bg-white shadow-xl rounded-xl">
@@ -57,12 +66,12 @@ export default function LogoutAnimation() {
                                 >
                                     <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
                                         <AvatarImage src="/placeholder.svg?height=128&width=128" alt="User"/>
-                                        <AvatarFallback className="text-3xl">JD</AvatarFallback>
+                                        <AvatarFallback
+                                            className="text-3xl">{getInitials(userData.nama_siswa)}</AvatarFallback>
                                     </Avatar>
                                 </motion.div>
                                 <div className="text-center">
-                                    <h3 className="text-xl font-medium">John Doe</h3>
-                                    <p className="text-sm text-slate-500">john.doe@example.com</p>
+                                    <h3 className="text-xl font-medium">{userData.nama_siswa}</h3>
                                 </div>
                             </motion.div>
                         )}
@@ -117,7 +126,7 @@ export default function LogoutAnimation() {
                                         },
                                     }}
                                 >
-                                    <CheckCircle className="h-32 w-32 text-green-500" strokeWidth={1.5}/>
+                                    <CheckCircle className="h-32 w-32 text-primary" strokeWidth={1.5}/>
                                 </motion.div>
                                 <motion.div
                                     initial={{opacity: 0, y: 20}}

@@ -25,8 +25,6 @@ export function NavUser({user}: {
     const {isMobile} = useSidebar()
     const onLogout = () => {
         navigate("/logout");
-        // clearAuthData()
-        // window.location.href = LOGOUT_URL;
     }
     const handleClickProfile = () => {
         navigate(`/profile`);
