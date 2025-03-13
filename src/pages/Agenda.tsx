@@ -3,11 +3,11 @@ import {useContext, useEffect, useState} from "react"
 import {Calendar} from "@/components/ui/calendar"
 import {EventList} from "@/components/schedule/event-list"
 import {CalendarHeader} from "@/components/schedule/calendar-header"
-import type {Event} from "@/types/types"
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-import {getEvents} from "@/app/api/api.ts";
+import {getAgenda} from "@/app/api/api-cbt.ts";
+import {Event} from "@/types/types.ts";
 
 export default function SchedulePage() {
     const [currentDate, setCurrentDate] = useState<Date>(new Date())
@@ -18,8 +18,9 @@ export default function SchedulePage() {
         (async () => {
             setIsLoading(true);
             try {
-                const data = await getEvents();
-                setEvents(data);
+                const data = await getAgenda()
+                setEvents(data.data)
+                console.log(data)
                 setError(null);
             } catch (err: unknown) {
                 const errorMessage = err instanceof Error ? err.message : "Failed to get Event data";
