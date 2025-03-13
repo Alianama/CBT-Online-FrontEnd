@@ -1,6 +1,7 @@
 "use client";
 import {cn} from "@/lib/utils";
 import type {Event} from "@/types/types";
+import {hexToRGBA} from "@/utils/rgbConverter.ts"
 
 interface EventIndicatorProps {
     event: Event;
@@ -21,7 +22,7 @@ export function EventIndicator({event, isRangeStart, isRangeEnd, isInRange}: Eve
                 isMultiDay && isRangeEnd && "rounded-l-none",
                 isMultiDay && isInRange && "rounded-none"
             )}
-            style={{backgroundColor: event.color}}
+            style={{backgroundColor: hexToRGBA(event.color, 0.7)}}
             title={`${event.title}: ${event.semester}`}
         >
             {(isRangeStart || !isMultiDay) && event.title}

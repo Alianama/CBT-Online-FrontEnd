@@ -33,7 +33,7 @@ export function EventList({currentDate, events}: EventListProps) {
     const {locale} = useContext(LangContext);
     return (
         <div className="space-y-4">
-            <h2 className="text-xl font-bold">{locale === "id" ? "Jadwal" : "Schedule"}</h2>
+            <h2 className="text-xl font-bold">Agenda</h2>
 
             {monthEvents.length === 0 ? (
                 <p className="text-muted-foreground">
