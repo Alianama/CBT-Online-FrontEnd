@@ -82,8 +82,8 @@ const data = {
                 icon: ClipboardList
             },
             {
-                name: "Jadwal Ujian",
-                url: "/schedule",
+                name: "Agenda",
+                url: "/agenda",
                 icon: Calendar1
             },
             {
@@ -114,8 +114,8 @@ const data = {
                 icon: ClipboardList
             },
             {
-                name: "Exam Schedule",
-                url: "/schedule",
+                name: "Agenda",
+                url: "/agenda",
                 icon: Calendar1
             },
             {
