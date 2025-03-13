@@ -12,10 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar.tsx"
 import useSidebar from "@/hooks/useSIdebar.tsx";
-import {clearAuthData} from "@/utils/storage.ts";
 import {useNavigate} from "react-router-dom";
-
-const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 
 export function NavUser({user}: {
     user: {
@@ -27,8 +24,9 @@ export function NavUser({user}: {
     const navigate = useNavigate();
     const {isMobile} = useSidebar()
     const onLogout = () => {
-        clearAuthData()
-        window.location.href = LOGOUT_URL;
+        navigate("/logout");
+        // clearAuthData()
+        // window.location.href = LOGOUT_URL;
     }
     const handleClickProfile = () => {
         navigate(`/profile`);
