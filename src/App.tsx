@@ -12,6 +12,7 @@ import Auth from "@/pages/Auth.tsx";
 import PrivateRoute from "@/components/privateRoute/PrivateRoute.tsx";
 import Home from "@/pages/Home.tsx"
 import Profile from "@/pages/Profile.tsx";
+import Logout from "@/pages/Logout.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -66,46 +67,20 @@ export default function App() {
         <LangContext.Provider value={contextValue}>
             <Toaster position="top-right" richColors/>
             <Routes>
-                {/*<Route path="/login/:token" element={<Login onSuccess={onLoginSuccess}/>}/>*/}
-                <Route path="/" element={
-                    <PrivateRoute>
-                        <Home/>
-                    </PrivateRoute>
-                }
-                />
-                <Route path="/fokus" element={
-                    <PrivateRoute>
-                        <Fokus/>
-                    </PrivateRoute>
-                }
-                />
-                <Route path="/exam" element={
-                    <PrivateRoute>
-                        <Exam/>
-                    </PrivateRoute>
-                }
-                />
-                <Route path="/schedule" element={
-                    <PrivateRoute>
-                        <Schedule/>
-                    </PrivateRoute>
-                }
-                />
-                <Route path="/lesson" element={
-                    <PrivateRoute>
-                        <Lesson/>
-                    </PrivateRoute>
-                }
-                /><Route path="/profile" element={
-                <PrivateRoute>
-                    <Profile/>
-                </PrivateRoute>
-            }
-            />
+                {[
+                    {path: "/", element: <Home/>},
+                    {path: "/fokus", element: <Fokus/>},
+                    {path: "/exam", element: <Exam/>},
+                    {path: "/schedule", element: <Schedule/>},
+                    {path: "/lesson", element: <Lesson/>},
+                    {path: "/profile", element: <Profile/>},
+                    {path: "/logout", element: <Logout/>},
+                ].map(({path, element}) => (
+                    <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>}/>
+                ))}
+
                 <Route path="/auth/:token" element={<Auth/>}/>
-                <Route path="/*" element={
-                    <NotFound/>
-                }/>
+                <Route path="/*" element={<NotFound/>}/>
             </Routes>
         </LangContext.Provider>
     );
