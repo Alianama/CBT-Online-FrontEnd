@@ -5,12 +5,10 @@ import {toast, Toaster} from "sonner";
 import {setAccessToken, setRefreshToken, setUserData} from "@/utils/storage.ts";
 import logo from "@/assets/Image/Logo.png";
 
-const LOGIN_URL: string = import.meta.env.VITE_LOGIN_URL;
 const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 export default function Auth() {
     const {token} = useParams();
     const navigate = useNavigate();
-    const [isError, setIsError] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
     useEffect(() => {
         (async () => {
@@ -28,7 +26,6 @@ export default function Auth() {
                         setTimeout(() => {
                             navigate('/');
                         }, 1000);
-                        setIsError(false);
                     } else {
                         console.warn('⚠️ Authentication failed:', response);
                         setMessage('Authentication failed! Invalid response.');
@@ -36,7 +33,6 @@ export default function Auth() {
                         setTimeout(() => {
                             window.location.href = LOGOUT_URL;
                         }, 3000);
-                        setIsError(true);
                     }
                 } catch (error) {
                     console.error('❌ Authentication error:', error);
@@ -47,7 +43,6 @@ export default function Auth() {
                         setMessage('Authentication error! Please try again.');
                         toast.error('Login error! Something went wrong.');
                     }
-                    setIsError(false);
                     setTimeout(() => {
                         window.location.href = LOGOUT_URL;
                     }, 3000);
@@ -55,9 +50,6 @@ export default function Auth() {
             }
         })();
     }, [token, navigate]);
-    const onLogin = () => {
-        window.location.href = LOGIN_URL
-    }
     return (
         <div>
             <Toaster position="top-right" richColors/>
@@ -68,13 +60,6 @@ export default function Auth() {
 
                 <p>{message}</p>
                 <img src={logo} alt="logo" className="w-1/2"/>
-
-                {!isError ?
-                    <button className="bg-primary text-secondary p-4 rounded-full shadow-xl" onClick={onLogin}>Back to
-                        Login
-                    </button> : <h1>Redirect to Home</h1>
-                }
-
 
             </div>
         </div>
