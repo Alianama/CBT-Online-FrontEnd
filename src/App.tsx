@@ -14,6 +14,8 @@ import Home from "@/pages/Home.tsx"
 import Profile from "@/pages/Profile.tsx";
 import Logout from "@/pages/Logout.tsx";
 
+
+
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
     const {disableRightClick, disableShortcut, isSecurityEnabled, showToast} = useSecurity();

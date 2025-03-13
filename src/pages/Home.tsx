@@ -1,100 +1,120 @@
-import Layout from "@/components/sidebar/Layout.tsx"
-import {useContext} from "react";
+import Layout from "@/components/sidebar/Layout.tsx";
+import { useContext } from "react";
 import LangContext from "@/context/LangContext.tsx";
-import {ArrowRight, CheckCircle2} from "lucide-react";
-import {getAuthData} from "@/utils/storage.ts";
-import {UserData} from "@/types/types.ts";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { getAuthData } from "@/utils/storage.ts";
+import { UserData } from "@/types/types.ts";
+
+// Ambil data pengguna yang sedang login
+const authData = getAuthData();
+const userData: UserData | null = authData.userData ?? null;
 
 export default function Home() {
-    const {locale} = useContext(LangContext);
-    const pagedata = {
+    const { locale } = useContext(LangContext);
+    const safeLocale = (locale === "id" || locale === "en") ? locale : "en";
+    const pageData: Record<"id" | "en", { name: string; url: string }> = {
+        id: { name: "Beranda", url: "/" },
+        en: { name: "Home", url: "/" }
+    };
+    const translations: Record<"id" | "en", { [key: string]: string }> = {
         id: {
-            name: "Beranda",
-            url: "/",
+            welcome: `Selamat Datang, ${userData?.nama_siswa ?? "User Error"}!`,
+            examMessage: "Selamat mengerjakan ujian! Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
+            instructions: "Petunjuk Penggunaan",
+            instructionsDesc: "Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal.",
+            videoTutorial: "Video Tutorial",
+            videoDesc: "Tonton video ini untuk memahami lebih lanjut tentang fitur-fitur website.",
+            aboutVideo: "Tentang Video Ini",
+            aboutVideoDesc: "Video ini menjelaskan cara menggunakan fitur-fitur utama website kami. Anda dapat memutar video ini langsung di halaman tanpa perlu mengunjungi YouTube."
         },
         en: {
-            name: "Home",
-            url: "/",
+            welcome: `Welcome, ${userData?.nama_siswa ?? "User Error"}!`,
+            examMessage: "Good luck with your exam! Stay focused and do your best.",
+            instructions: "Instructions",
+            instructionsDesc: "Follow these steps to take the exam optimally.",
+            videoTutorial: "Video Tutorial",
+            videoDesc: "Watch this video to learn more about the website features.",
+            aboutVideo: "About This Video",
+            aboutVideoDesc: "This video explains how to use the main features of our website. You can play this video directly on the page without visiting YouTube."
         }
-    }
-    const authData = getAuthData();
-    const userData: UserData | null = authData.userData ?? null;
+    };
 
     return (
-        <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
-            <title>Home</title>
-            <main className="min-h-screen bg-gradient-to-b from-background to-background/80">
-                <section className="container mx-auto px-4 pt-0 pb-12">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h1 className="text-3xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-                            {`Selamat Datang, ${userData?.nama_siswa ?? "User Error"} !`}
-                        </h1>
-                        <p className="text-xl text-muted-foreground mb-8">
-                            Kami senang Anda mengunjungi platform kami. Nikmati konten dan fitur yang tersedia.
-                        </p>
-                        <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
-                    </div>
-                </section>
+      <Layout data={[pageData[safeLocale]]}>
+          <title>{pageData[safeLocale].name}</title>
+          <main className="min-h-screen bg-gradient-to-b from-background to-background/80">
+              <section className="container mx-auto px-4 pt-0 pb-12">
+                  <div className="max-w-3xl mx-auto text-center">
+                      <h1 className="text-3xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+                          {translations[safeLocale].welcome}
+                      </h1>
+                      <p className="text-xl text-muted-foreground mb-8">
+                          {translations[safeLocale].examMessage}
+                      </p>
+                      <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+                  </div>
+              </section>
 
-                <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-                    <section className="space-y-8">
-                        <div>
-                            <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
-                                Petunjuk Penggunaan
-                                <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
-                            </h2>
-                            <p className="text-muted-foreground mb-8">
-                                Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal
-                            </p>
-                        </div>
+              <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                  {/* Petunjuk Penggunaan */}
+                  <section className="space-y-8">
+                      <div>
+                          <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
+                              {translations[safeLocale].instructions}
+                              <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
+                          </h2>
+                          <p className="text-muted-foreground mb-8">
+                              {translations[safeLocale].instructionsDesc}
+                          </p>
+                      </div>
 
-                        <ul className="space-y-6">
-                            {instructionSteps.map((step, index) => (
-                              <InstructionStep key={index} number={index + 1} title={step.title} description={step.description} />
-                            ))}
-                        </ul>
-                    </section>
+                      <ul className="space-y-6">
+                          {instructionSteps[safeLocale].map((step, index) => (
+                            <InstructionStep key={index} number={index + 1} title={step.title} description={step.description} />
+                          ))}
+                      </ul>
+                  </section>
 
-                    <section className="space-y-6">
-                        <div>
-                            <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
-                                Video Tutorial
-                                <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
-                            </h2>
-                            <p className="text-muted-foreground mb-8">
-                                Tonton video ini untuk memahami lebih lanjut tentang fitur-fitur website
-                            </p>
-                        </div>
+                  {/* Video Tutorial */}
+                  <section className="space-y-6">
+                      <div>
+                          <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
+                              {translations[safeLocale].videoTutorial}
+                              <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
+                          </h2>
+                          <p className="text-muted-foreground mb-8">
+                              {translations[safeLocale].videoDesc}
+                          </p>
+                      </div>
 
-                        <div className="aspect-video w-full overflow-hidden rounded-xl border shadow-lg bg-muted relative group">
-                            <iframe
-                              src="https://www.youtube.com/embed/OZLeEzWJR6s?si=_L7MZyA_2EYVU2_2"
-                              title="YouTube video player"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                              className="w-full h-full"
-                            ></iframe>
-                            <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                        </div>
+                      <div className="aspect-video w-full overflow-hidden rounded-xl border shadow-lg bg-muted relative group">
+                          <iframe
+                            src="https://www.youtube.com/embed/OZLeEzWJR6s?si=_L7MZyA_2EYVU2_2"
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                          ></iframe>
+                          <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
 
-                        <div className="bg-muted/50 p-4 rounded-lg border border-border/50">
-                            <h3 className="font-medium mb-2 flex items-center">
-                                <CheckCircle2 className="h-5 w-5 text-primary mr-2" />
-                                Tentang Video Ini
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                                Video ini menjelaskan cara menggunakan fitur-fitur utama website kami. Anda dapat memutar video ini
-                                langsung di halaman tanpa perlu mengunjungi YouTube.
-                            </p>
-                        </div>
-                    </section>
-                </div>
-            </main>
-        </Layout>
-    )
+                      <div className="bg-muted/50 p-4 rounded-lg border border-border/50">
+                          <h3 className="font-medium mb-2 flex items-center">
+                              <CheckCircle2 className="h-5 w-5 text-primary mr-2" />
+                              {translations[safeLocale].aboutVideo}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                              {translations[safeLocale].aboutVideoDesc}
+                          </p>
+                      </div>
+                  </section>
+              </div>
+          </main>
+      </Layout>
+    );
 }
 
-function InstructionStep({ number, title, description } : {number: number; title: string , description: string }) {
+function InstructionStep({ number, title, description }: { number: number; title: string; description: string }) {
     return (
       <li className="relative pl-12 group">
           <div className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
@@ -110,30 +130,22 @@ function InstructionStep({ number, title, description } : {number: number; title
           </div>
           {number < 5 && <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-border h-[calc(100%+1rem)]"></div>}
       </li>
-    )
+    );
 }
 
-const instructionSteps = [
-    {
-        title: "Jadwal Ujian",
-        description: "di TAB Jadwal Ujian, siswa yang sudah didaftarkan operator sebagai peserta ujian dapat melihat jadwal ujian di TAB Jadwal Ujian.",
-    },
-    {
-        title: "Hasil Ujian",
-        description: "di TAB Hasil Ujian, siswa dapat melihat langsung hasil ujian yang telah di selesaikan melalui TAB Jadwal Ujian.",
-    },
-    {
-        title: "Mulai Ujian",
-        description:"Tombol MULAI UJIAN hanya muncul selama durasi ujian berlangsung. Contoh ujian jam 07:00 dengan durasi 30 menit , maka tombol MULAI UJIAN muncul dari jam 07:00 sampai 07:30.\n",
-    },
-    {
-        title: "Peraturan Ujian",
-        description: "Siswa diharuskan login kurang lebih 15 menit sebelum ujian berlangsung. Pastikan memulai dan mengakhiri proses pengerjaan soal tepat waktu sebelum durasi ujian berakhir.\n",
-    },
-    {
-        title: "Info",
-        description: "Apabila terdapat masalah selama ujian, silahkan hubungi operator untuk mendapatkan informasi lebih lanjut.",
-    },
-]
-
-
+const instructionSteps: Record<"id" | "en", { title: string; description: string }[]> = {
+    id: [
+        { title: "Jadwal Ujian", description: "Siswa dapat melihat jadwal ujian di TAB Jadwal Ujian." },
+        { title: "Hasil Ujian", description: "Siswa dapat melihat hasil ujian yang telah selesai." },
+        { title: "Mulai Ujian", description: "Tombol MULAI UJIAN hanya muncul selama durasi ujian berlangsung." },
+        { title: "Peraturan Ujian", description: "Siswa harus login sebelum ujian dimulai dan menyelesaikan tepat waktu." },
+        { title: "Info", description: "Hubungi operator jika ada masalah selama ujian." }
+    ],
+    en: [
+        { title: "Exam Schedule", description: "Students can check the exam schedule in the Exam Schedule tab." },
+        { title: "Exam Results", description: "Students can view their completed exam results." },
+        { title: "Start Exam", description: "The START EXAM button only appears during the exam duration." },
+        { title: "Exam Rules", description: "Students must log in before the exam starts and finish on time." },
+        { title: "Info", description: "Contact the operator if you have any issues during the exam." }
+    ]
+};

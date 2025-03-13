@@ -15,6 +15,7 @@ import {useNavigate} from "react-router-dom";
 import LangContext from "@/context/LangContext.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
+
 export default function Layout({children, data}: {
     data: { name: string; url: string }[];
     children: React.ReactNode;
