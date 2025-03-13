@@ -1,9 +1,9 @@
 export interface Event {
-    id: string
+    id: number;
+    semester: number
     title: string
-    description: string
-    startDate: Date
-    endDate: Date
+    date_started: string
+    date_ended: string
     color: string
 }
 

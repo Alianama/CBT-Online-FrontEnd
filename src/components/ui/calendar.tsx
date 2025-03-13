@@ -47,20 +47,20 @@ export function Calendar({currentDate, events}: CalendarProps) {
     const isToday = (date: Date) => isSameDate(date, new Date());
     const getEventsForDate = (date: Date) => {
         return events.filter((event) => {
-            const eventStart = new Date(event.startDate);
-            const eventEnd = new Date(event.endDate);
+            const eventStart = new Date(event.date_started);
+            const eventEnd = new Date(event.date_ended);
             const dateToCheck = new Date(date).setHours(0, 0, 0, 0);
             return dateToCheck >= eventStart.setHours(0, 0, 0, 0) && dateToCheck <= eventEnd.setHours(0, 0, 0, 0);
         });
     };
     const isRangeBoundary = (date: Date, event: Event, type: "start" | "end") => {
-        const eventDate = new Date(type === "start" ? event.startDate : event.endDate);
+        const eventDate = new Date(type === "start" ? event.date_started : event.date_ended);
         return isSameDate(date, eventDate);
     };
     const isInRange = (date: Date, event: Event) => {
         const dateToCheck = new Date(date).setHours(0, 0, 0, 0);
-        const start = new Date(event.startDate).setHours(0, 0, 0, 0);
-        const end = new Date(event.endDate).setHours(0, 0, 0, 0);
+        const start = new Date(event.date_started).setHours(0, 0, 0, 0);
+        const end = new Date(event.date_ended).setHours(0, 0, 0, 0);
         return dateToCheck > start && dateToCheck < end;
     };
     return (

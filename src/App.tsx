@@ -5,7 +5,7 @@ import LangContext from "@/context/LangContext.tsx";
 import useSecurity from "@/hooks/useSecurity";
 import Fokus from "@/pages/Fokus";
 import Exam from "@/pages/Exam.tsx";
-import Schedule from "@/pages/Schedule.tsx";
+import Agenda from "@/pages/Agenda.tsx";
 import NotFound from "@/pages/NotFound.tsx";
 import Lesson from "@/pages/Lesson.tsx";
 import Auth from "@/pages/Auth.tsx";
@@ -71,7 +71,7 @@ export default function App() {
                     {path: "/", element: <Home/>},
                     {path: "/fokus", element: <Fokus/>},
                     {path: "/exam", element: <Exam/>},
-                    {path: "/schedule", element: <Schedule/>},
+                    {path: "/Agenda", element: <Agenda/>},
                     {path: "/lesson", element: <Lesson/>},
                     {path: "/profile", element: <Profile/>},
                     {path: "/logout", element: <Logout/>},

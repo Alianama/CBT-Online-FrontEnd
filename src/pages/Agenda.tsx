@@ -42,12 +42,12 @@ export default function SchedulePage() {
     const {locale} = useContext(LangContext)
     const pageData = {
         id: {
-            name: "Jadwal",
-            url: "/schedule",
+            name: "Agenda",
+            url: "/agenda",
         },
         en: {
-            name: "Schedule",
-            url: "/schedule",
+            name: "Agenda",
+            url: "/agenda",
         }
     }
     if (error) {

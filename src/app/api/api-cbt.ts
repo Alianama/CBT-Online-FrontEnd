@@ -34,3 +34,15 @@ export const getUserById = async (id: number | null) => {
         }
     }
 };
+export const getAgenda = async () => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/agenda`, {})
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to fetch agenda data");
+        } else {
+            throw new Error("An unknown error occurred");
+        }
+    }
+}
