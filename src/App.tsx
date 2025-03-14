@@ -13,8 +13,7 @@ import PrivateRoute from "@/components/privateRoute/PrivateRoute.tsx";
 import Home from "@/pages/Home.tsx"
 import Profile from "@/pages/Profile.tsx";
 import Logout from "@/pages/Logout.tsx";
-
-
+import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -64,7 +63,7 @@ export default function App() {
     const contextValue = useMemo(() => {
         return {locale, toggleLocale};
     }, [locale]);
-    // useTokenRefresh();
+    useTokenRefresh();
     return (
         <LangContext.Provider value={contextValue}>
             <Toaster position="top-right" richColors/>
