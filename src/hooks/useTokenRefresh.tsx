@@ -9,7 +9,7 @@ const useTokenRefresh = () => {
             } catch (error) {
                 console.error("Error refreshing token:", error);
             }
-        }, 5 * 60 * 1000); // Setiap 5 menit
+        }, 10 * 60 * 1000);
         return () => clearInterval(interval);
     }, []);
     return null;
