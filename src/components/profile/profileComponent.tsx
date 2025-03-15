@@ -2,7 +2,7 @@
 import {useEffect, useState} from "react"
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {Badge} from "@/components/ui/badge"
-import {Book, Hash, Mail, School, ShieldAlert, User, UserCheck} from "lucide-react"
+import {Book, Hash, Key, Mail, School, ShieldAlert, User, UserCheck} from "lucide-react"
 import {getAuthData} from "@/utils/storage"
 import InfoPanel from "@/components/profile/InfoPanel.tsx";
 
@@ -67,7 +67,7 @@ export default function ProfileComponent() {
                                     className="text-2xl font-bold tracking-tight">{name}</CardTitle>
                                 <p className="text-muted-foreground mt-1">@{username}</p>
 
-                                <div className="mt-4 flex justify-center">
+                                <div className="mt-4 flex gap-3 flex-col items-center justify-center">
                                     {ban === 0 ? (
                                         <Badge
                                             className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition-colors duration-300 px-3 py-1">
@@ -79,6 +79,10 @@ export default function ProfileComponent() {
                                             <ShieldAlert className="h-3.5 w-3.5 mr-1"/> Diblokir
                                         </Badge>
                                     )}
+                                    <Badge
+                                      className="bg-blue-50 text-blue-700 cursor-pointer border-blue-200 hover:bg-emerald-100 transition-colors duration-300 md:hidden px-3 py-1">
+                                        <Key className="h-3.5 w-3.5 mr-1"/> Ubah Password
+                                    </Badge>
                                 </div>
                             </div>
                         </CardHeader>
