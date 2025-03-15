@@ -7,14 +7,11 @@ import { CalendarHeader } from "@/components/schedule/calendar-header";
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import {Event} from "@/types/types.ts";
+import {AgendaResponse} from "@/types/types.ts";
 
-interface ExamResponse {
-    total: number;
-    data: Event[];
-}
 
-export default function SchedulePage({data, isLoading, error} : { data?: ExamResponse; isLoading: boolean; error?: Error | null }) {
+
+export default function SchedulePage({data, isLoading, error} : { data?: AgendaResponse; isLoading: boolean; error?: Error | null }) {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const handlePrevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     const handleNextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));

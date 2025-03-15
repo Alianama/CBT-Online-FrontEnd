@@ -1,10 +1,17 @@
-export interface Event {
+import React from "react";
+
+export interface Agenda {
     id?: number;
     semester: number
     title: string
     date_started: string
     date_ended: string
     color: string
+}
+
+export interface AgendaResponse {
+    total: number;
+    data: Agenda[];
 }
 
 export interface User {
@@ -46,4 +53,38 @@ export interface UserData {
     nis: string;
     ban: number;
     username: string;
-}   
+}
+
+export interface Mapel {
+    materials: number;
+    id_mapel: number;
+    kode_mapel: string;
+    nama_mapel: string;
+    icon: string;
+    status: number;
+    id_kelas: number;
+    nama_kelas: string;
+    id_angkatan: number;
+    angkatan: string;
+}
+
+export interface MapelResponse {
+    total: number;
+    data: Mapel[];
+}
+
+export interface LessonProps {
+    data: MapelResponse | undefined;
+    error?: Error | null;
+    isLoading: boolean;
+}
+export
+interface SubjectCardProps {
+    title: string;
+    description: string;
+    mapel_code: string;
+    icon: React.ReactNode;
+    color: string;
+    textColor: string;
+    materials: number;
+}

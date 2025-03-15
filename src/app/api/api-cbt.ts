@@ -48,9 +48,9 @@ export const getAgenda = async () => {
 }
 
 
-export const getMapel = async () => {
+export const getMapel = async (id: number | undefined) => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL}/mapel`, {})
+        const response = await axiosInstance.get(`${BASE_URL}/mapel?id_kelas=${id}`, {})
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

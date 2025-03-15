@@ -7,12 +7,12 @@ import {UserData} from "@/types/types.ts";
 
 export default function Home() {
     const { locale } = useContext(LangContext);
-    const [userData, setName] = useState<UserData>();
+    const [userData, setUserData] = useState<UserData>();
     const safeLocale = (locale === "id" || locale === "en") ? locale : "en";
     useEffect(() => {
         (async () => {
             const authData = getAuthData();
-            setName(authData?.userData ?? undefined);
+            setUserData(authData?.userData ?? undefined);
         })();
     }, []);
     const pageData: Record<"id" | "en", { name: string; url: string }> = {
