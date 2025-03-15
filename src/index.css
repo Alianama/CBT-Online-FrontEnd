@@ -94,6 +94,14 @@
     }
 }
 
+@layer utilities {
+    .group:hover .card {
+        transform: rotateX(8deg) rotateY(8deg) translateY(-5px);
+        transition: transform 0.3s ease-out;
+    }
+}
+
+
 .sx-react-calendar-wrapper {
     width: 1200px;
     max-width: 100vw;

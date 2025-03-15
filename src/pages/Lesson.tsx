@@ -1,15 +1,13 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Search, FlaskRoundIcon as Flask } from "lucide-react";
+import { Search } from "lucide-react";
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-import {LessonProps, SubjectCardProps} from "@/types/types.ts";
+import {LessonProps} from "@/types/types.ts";
+import MapelCard from "@/components/lesson/MapelCard.tsx";
 
 
 
@@ -18,19 +16,19 @@ export default function Lesson({ data, isLoading, error }: LessonProps) {
   const { locale } = useContext(LangContext);
 
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
-  const pageData: Record<"id" | "en", { name: string; url: string }> = {
-    id: { name: "Materi", url: "/lesson" },
-    en: { name: "Lesson", url: "/lesson" },
+  const pageData = {
+    id: { title: "Materi", header: "Portal Materi Pembelajaran", subHeader: "Pilih mata pelajaran untuk melihat materi pembelajaran", searchPlaceholder: "Cari mata pelajaran...", noData: "Tidak ada mata pelajaran tersedia.", error: "Terjadi kesalahan:" },
+    en: { title: "Lesson", header: "Learning Materials Portal", subHeader: "Select a subject to view learning materials", searchPlaceholder: "Search subjects...", noData: "No subjects available.", error: "Error occurred:" }
   };
 
   return (
-    <Layout data={[pageData[safeLocale]]}>
+    <Layout data={[{ name: pageData[safeLocale].title, url: "/lesson" }]}>
+      <title>{pageData[safeLocale].title}</title>
+
       <div className="container mx-auto py-6 px-4 md:px-6">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Portal Materi Pembelajaran</h1>
-          <p className="text-muted-foreground">
-            Pilih mata pelajaran untuk melihat materi pembelajaran
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">{pageData[safeLocale].header}</h1>
+          <p className="text-muted-foreground">{pageData[safeLocale].subHeader}</p>
         </header>
 
         {isLoading ? (
@@ -41,43 +39,41 @@ export default function Lesson({ data, isLoading, error }: LessonProps) {
             </div>
           </div>
         ) : error ? (
-          <p className="text-center text-red-500 text-lg">Error: {error.message}</p>
+          <p className="text-center text-red-500 text-lg">{pageData[safeLocale].error} {error.message}</p>
         ) : (
           <div className="flex flex-col gap-6 mb-8">
             <div className="relative w-full">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Cari mata pelajaran..."
+                placeholder={pageData[safeLocale].searchPlaceholder}
                 className="w-full pl-8"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {data?.data.length === 0 ? (
-                <p className="text-center text-gray-500 col-span-full">Tidak ada mata pelajaran tersedia.</p>
+                <p className="text-center text-gray-500 col-span-full">{pageData[safeLocale].noData}</p>
               ) : (
                 data?.data
                   .filter((mapel) =>
                     mapel.nama_mapel.toLowerCase().includes(searchTerm.toLowerCase())
                   )
-                  .sort((a, b) => b.materials - a.materials) // ✅ Urutkan berdasarkan jumlah materi (descending)
+                  .sort((a, b) => b.materials - a.materials)
                   .map((mapel) => (
-                    <SubjectCard
+                    <MapelCard
                       key={mapel.id_mapel}
                       title={mapel.nama_mapel}
-                      icon={<Flask className="h-8 w-8"/>}
                       mapel_code={mapel.kode_mapel}
-                      color="bg-blue-100"
-                      textColor="text-blue-600"
-                      materials={mapel.materials} // ✅ Pastikan jumlah materi sesuai data
-                      description={""}                    />
+                      materials={5}
+                      // materials={mapel.materials}
+                      bgImage={mapel.icon}
+                    />
                   ))
               )}
             </div>
-
           </div>
         )}
       </div>
@@ -87,28 +83,4 @@ export default function Lesson({ data, isLoading, error }: LessonProps) {
 
 
 
-function SubjectCard({ title, icon, color, textColor, materials, mapel_code }: SubjectCardProps) {
-  return (
-    <Link to={`/subjects/${title.toLowerCase().replace(/\s+/g, "-")}`}>
-      <Card className="h-full transition-all hover:shadow-md hover:border-primary/50">
-        <CardHeader className="pb-2 px-3 pt-3 sm:px-6 sm:pt-6">
-          <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center mb-2 ${color}`}>
-            <div className={textColor}>{icon}</div>
-          </div>
-          <CardTitle className="text-lg sm:text-xl">{title}</CardTitle>
-          <p className="text-xs text-sidebar-primary/40" >{mapel_code}</p>
-        </CardHeader>
-        <CardContent className="pb-2 px-3 sm:px-6">
-          <p className={`text-sm ${materials === 0 ? "text-red-600" : ""}`}>
-            {materials} materi pembelajaran
-          </p>
-        </CardContent>
-        <CardFooter className="px-3 pb-3 sm:px-6 sm:pb-6">
-          <Button variant="ghost" className="w-full text-primary justify-start p-2 h-8 text-sm">
-            Lihat Materi
-          </Button>
-        </CardFooter>
-      </Card>
-    </Link>
-  );
-}
+
