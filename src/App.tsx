@@ -3,7 +3,7 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import {Toaster} from "sonner";
 import LangContext from "@/context/LangContext.tsx";
 import useSecurity from "@/hooks/useSecurity";
-import Fokus from "@/pages/Fokus";
+import Focus from "@/pages/Fokus";
 import Exam from "@/pages/Exam.tsx";
 import Agenda from "@/pages/Agenda.tsx";
 import NotFound from "@/pages/NotFound.tsx";
@@ -14,6 +14,8 @@ import Home from "@/pages/Home.tsx"
 import Profile from "@/pages/Profile.tsx";
 import Logout from "@/pages/Logout.tsx";
 import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {getAgenda} from "@/app/api/api-cbt.ts";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -29,7 +31,7 @@ export default function App() {
             ) {
                 showToast("Mode pengembang terdeteksi! Mengalihkan halaman...");
                 setTimeout(() => {
-                    navigate("/fokus");
+                    navigate("/focus");
                 }, 10000);
             }
         };
@@ -64,15 +66,22 @@ export default function App() {
         return {locale, toggleLocale};
     }, [locale]);
     useTokenRefresh();
+
+    const { data: agendaData, error: agendaError, isLoading: agendaIsLoading } = useQuery({
+        queryKey: ["agenda"],
+        queryFn: getAgenda,
+        staleTime: 10 * 60 * 1000, // 10 menit (600.000 milidetik)
+        refetchOnWindowFocus: false,
+    });
     return (
         <LangContext.Provider value={contextValue}>
             <Toaster position="top-right" richColors/>
             <Routes>
                 {[
                     {path: "/", element: <Home/>},
-                    {path: "/fokus", element: <Fokus/>},
+                    {path: "/focus", element: <Focus/>},
                     {path: "/exam", element: <Exam/>},
-                    {path: "/Agenda", element: <Agenda/>},
+                    {path: "/Agenda", element: <Agenda data={agendaData} error={agendaError} isLoading={agendaIsLoading}/>},
                     {path: "/lesson", element: <Lesson/>},
                     {path: "/profile", element: <Profile/>},
                     {path: "/logout", element: <Logout/>},

@@ -7,22 +7,18 @@ import { CalendarHeader } from "@/components/schedule/calendar-header";
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { getAgenda } from "@/app/api/api-cbt.ts";
-import { useQuery } from "@tanstack/react-query";
+import {Event} from "@/types/types.ts";
 
-export default function SchedulePage() {
+interface ExamResponse {
+    total: number;
+    data: Event[];
+}
+
+export default function SchedulePage({data, isLoading, error} : { data?: ExamResponse; isLoading: boolean; error?: Error | null }) {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
-    const { data, error, isLoading } = useQuery({
-        queryKey: ["agenda"],
-        queryFn: getAgenda,
-        staleTime: 60000,
-        refetchOnWindowFocus: false,
-    });
-
     const handlePrevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     const handleNextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
     const handleToday = () => setCurrentDate(new Date());
-
     const { locale } = useContext(LangContext);
     const pageData = {
         id: { name: "Agenda", url: "/agenda" },
