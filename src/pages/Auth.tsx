@@ -3,17 +3,19 @@ import {useEffect, useState} from 'react';
 import {userAuth} from '@/app/api/api-cbt.ts';
 import {toast, Toaster} from "sonner";
 import {setAccessToken, setRefreshToken, setUserData} from "@/utils/storage.ts";
-import logo from "@/assets/Image/Logo.png";
+import LoginLoadingAnimation from "@/components/ui/login-loading.tsx";
 
 const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 export default function Auth() {
     const {token} = useParams();
     const navigate = useNavigate();
     const [message, setMessage] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     useEffect(() => {
         (async () => {
             if (token) {
                 try {
+                    setLoading(true);
                     const response = await userAuth(token);
                     if (response) {
                         const {access_token, refresh_token, user_data} = response;
@@ -53,15 +55,7 @@ export default function Auth() {
     return (
         <div>
             <Toaster position="top-right" richColors/>
-            <div className="w-full h-screen text-center flex flex-col p-10 items-center justify-center gap-10">
-                <h1 className="text-2xl font-bold max-md:text-lg">
-                    WELCOME BACK! <br/> SMA N 8 TAMBUN SELATAN
-                </h1>
-
-                <p>{message}</p>
-                <img src={logo} alt="logo" className="w-1/2"/>
-
-            </div>
+            <LoginLoadingAnimation isLoading={loading} text={message}  />
         </div>
     );
 }

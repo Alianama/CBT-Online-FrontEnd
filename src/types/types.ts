@@ -1,5 +1,5 @@
 export interface Event {
-    id: number;
+    id?: number;
     semester: number
     title: string
     date_started: string
