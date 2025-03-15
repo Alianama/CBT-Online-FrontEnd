@@ -1,24 +1,28 @@
 import Layout from "@/components/sidebar/Layout.tsx";
-import { useContext } from "react";
+import {useContext, useEffect, useState} from "react";
 import LangContext from "@/context/LangContext.tsx";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { getAuthData } from "@/utils/storage.ts";
-import { UserData } from "@/types/types.ts";
-
-// Ambil data pengguna yang sedang login
-const authData = getAuthData();
-const userData: UserData | null = authData.userData ?? null;
+import {UserData} from "@/types/types.ts";
 
 export default function Home() {
     const { locale } = useContext(LangContext);
+    const [userData, setName] = useState<UserData>();
     const safeLocale = (locale === "id" || locale === "en") ? locale : "en";
+    useEffect(() => {
+        (async () => {
+            const authData = getAuthData();
+            setName(authData?.userData ?? undefined);
+        })();
+    }, []);
     const pageData: Record<"id" | "en", { name: string; url: string }> = {
         id: { name: "Beranda", url: "/" },
         en: { name: "Home", url: "/" }
+
     };
     const translations: Record<"id" | "en", { [key: string]: string }> = {
         id: {
-            welcome: `Selamat Datang, ${userData?.nama_siswa ?? "User Error"}!`,
+            welcome: `Selamat Datang, ${userData?.nama_siswa}!`,
             examMessage: "Selamat mengerjakan ujian! Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
             instructions: "Petunjuk Penggunaan",
             instructionsDesc: "Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal.",
@@ -28,7 +32,7 @@ export default function Home() {
             aboutVideoDesc: "Video ini menjelaskan cara menggunakan fitur-fitur utama website kami. Anda dapat memutar video ini langsung di halaman tanpa perlu mengunjungi YouTube."
         },
         en: {
-            welcome: `Welcome, ${userData?.nama_siswa ?? "User Error"}!`,
+            welcome: `Welcome, ${userData?.nama_siswa }!`,
             examMessage: "Good luck with your exam! Stay focused and do your best.",
             instructions: "Instructions",
             instructionsDesc: "Follow these steps to take the exam optimally.",
@@ -56,7 +60,7 @@ export default function Home() {
               </section>
 
               <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-                  {/* Petunjuk Penggunaan */}
+
                   <section className="space-y-8">
                       <div>
                           <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
@@ -75,7 +79,6 @@ export default function Home() {
                       </ul>
                   </section>
 
-                  {/* Video Tutorial */}
                   <section className="space-y-6">
                       <div>
                           <h2 className="text-3xl font-bold mb-6 inline-flex items-center">

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useCallback } from "react";
 
-export default function Fokus() {
+export default function Focus() {
   const navigate = useNavigate();
   const detectDevToolsClose = useCallback(() => {
     const threshold = 160;
