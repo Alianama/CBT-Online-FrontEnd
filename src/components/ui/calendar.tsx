@@ -7,7 +7,7 @@ import LangContext from "@/context/LangContext.tsx";
 
 interface CalendarProps {
     currentDate: Date;
-    events: Event[];
+    events: Event[] | undefined;
 }
 
 export function Calendar({currentDate, events}: CalendarProps) {
@@ -46,7 +46,7 @@ export function Calendar({currentDate, events}: CalendarProps) {
     const isCurrentMonth = (date: Date) => date.getMonth() === currentDate.getMonth();
     const isToday = (date: Date) => isSameDate(date, new Date());
     const getEventsForDate = (date: Date) => {
-        return events.filter((event) => {
+        return events?.filter((event) => {
             const eventStart = new Date(event.date_started);
             const eventEnd = new Date(event.date_ended);
             const dateToCheck = new Date(date).setHours(0, 0, 0, 0);
@@ -93,7 +93,7 @@ export function Calendar({currentDate, events}: CalendarProps) {
                             </div>
 
                             <div className="mt-1 space-y-1 max-h-[80px] overflow-y-auto">
-                                {dayEvents.map((event) => (
+                                {dayEvents?.map((event) => (
                                     <EventIndicator
                                         key={event.id}
                                         event={event}
