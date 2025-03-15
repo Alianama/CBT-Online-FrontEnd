@@ -6,6 +6,7 @@ import {Card, CardContent} from "@/components/ui/card"
 import {CheckCircle} from "lucide-react"
 import {getAuthData} from "@/utils/storage.ts";
 import {UserData} from "@/types/types.ts";
+import { clearAuthData} from "@/utils/storage.ts";
 
 const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL
 export default function LogoutAnimation() {
@@ -13,14 +14,16 @@ export default function LogoutAnimation() {
     useEffect(() => {
         setStage("profile")
         const loadingTimer = setTimeout(() => {
+            clearAuthData()
+            console.log()
             setStage("loading")
         }, 1000)
         const successTimer = setTimeout(() => {
             setStage("success")
-        }, 3000)
+        }, 2000)
         const redirectTimer = setTimeout(() => {
             window.location.href = LOGOUT_URL
-        }, 5000)
+        }, 4000)
         return () => {
             clearTimeout(loadingTimer)
             clearTimeout(successTimer)
