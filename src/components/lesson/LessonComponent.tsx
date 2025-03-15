@@ -6,7 +6,8 @@ import SearchInput from "@/components/lesson/SearchInput";
 import {BookCardProps} from "@/types/types.ts";
 import {getBooks} from "@/app/api/api.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-// Definisi kategori buku
+import {getMapel} from "@/app/api/api-cbt.ts";
+
 const BookCategory = {
     all: "All",
     fiction: "Fiction",
@@ -50,6 +51,25 @@ export default function LessonComponent() {
             }
         })();
     }, [])
+
+    useEffect(() => {
+        (async () => {
+          try {
+              const response = await getMapel();
+              if (response){
+                  const { data } = response;
+                  console.log(data);
+              } else {
+                  console.log(response)
+                  console.log("error")
+              }
+          } catch (error){
+              console.log(error)
+          }
+          }
+
+        )()
+    }, []);
     if (isLoading) {
         return (
             <div className="flex flex-col space-y-3">
