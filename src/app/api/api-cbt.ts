@@ -46,3 +46,17 @@ export const getAgenda = async () => {
         }
     }
 }
+
+
+export const getMapel = async () => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/mapel`, {})
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to fetch mapel data");
+        } else {
+            throw new Error("An unknown error occurred");
+        }
+    }
+}
