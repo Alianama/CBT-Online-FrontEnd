@@ -1,10 +1,10 @@
 "use client";
 import {cn} from "@/lib/utils";
-import type {Event} from "@/types/types";
+import type {Agenda} from "@/types/types";
 import {hexToRGBA} from "@/utils/rgbConverter.ts"
 
 interface EventIndicatorProps {
-    event: Event;
+    event: Agenda;
     isRangeStart: boolean;
     isRangeEnd: boolean;
     isInRange: boolean;

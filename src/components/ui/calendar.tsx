@@ -1,13 +1,13 @@
 "use client";
 import {useContext, useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
-import type {Event} from "@/types/types";
+import type {Agenda} from "@/types/types";
 import {EventIndicator} from "@/components/schedule/event-indicator";
 import LangContext from "@/context/LangContext.tsx";
 
 interface CalendarProps {
     currentDate: Date;
-    events: Event[] | undefined;
+    events: Agenda[] | undefined;
 }
 
 export function Calendar({currentDate, events}: CalendarProps) {
@@ -53,11 +53,11 @@ export function Calendar({currentDate, events}: CalendarProps) {
             return dateToCheck >= eventStart.setHours(0, 0, 0, 0) && dateToCheck <= eventEnd.setHours(0, 0, 0, 0);
         });
     };
-    const isRangeBoundary = (date: Date, event: Event, type: "start" | "end") => {
+    const isRangeBoundary = (date: Date, event: Agenda, type: "start" | "end") => {
         const eventDate = new Date(type === "start" ? event.date_started : event.date_ended);
         return isSameDate(date, eventDate);
     };
-    const isInRange = (date: Date, event: Event) => {
+    const isInRange = (date: Date, event: Agenda) => {
         const dateToCheck = new Date(date).setHours(0, 0, 0, 0);
         const start = new Date(event.date_started).setHours(0, 0, 0, 0);
         const end = new Date(event.date_ended).setHours(0, 0, 0, 0);

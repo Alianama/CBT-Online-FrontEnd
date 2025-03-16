@@ -1,12 +1,12 @@
 "use client"
 import {useContext, useMemo} from "react"
-import type {Event} from "@/types/types"
+import type {Agenda} from "@/types/types"
 import {formatDate} from "@/lib/utils"
 import LangContext from "@/context/LangContext.tsx";
 
 interface EventListProps {
     currentDate: Date
-    events: Event[] | undefined;
+    events: Agenda[] | undefined;
 }
 
 export function EventList({currentDate, events}: EventListProps) {

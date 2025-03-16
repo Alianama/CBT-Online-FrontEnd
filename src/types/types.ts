@@ -1,5 +1,3 @@
-
-
 export interface Agenda {
   id?: number;
   semester: number
@@ -56,6 +54,7 @@ export interface UserData {
 }
 
 export interface Mapel {
+  total_materi: number | undefined;
   materials: number;
   id_mapel: number;
   kode_mapel: string;
@@ -82,6 +81,6 @@ export interface LessonProps {
 export interface SubjectCardProps {
   title: string,
   mapel_code: string,
-  materials: number,
   bgImage?: string | undefined,
+  total_materi: number | undefined,
 }
