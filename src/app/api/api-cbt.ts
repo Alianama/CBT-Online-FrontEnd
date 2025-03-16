@@ -24,7 +24,7 @@ export const getUserById = async (id: number | null) => {
         throw new Error("Invalid user ID");
     }
     try {
-        const response = await axiosInstance.post(`${BASE_URL}/siswa`, {user_id: id});
+        const response = await axiosInstance.get(`${BASE_URL}/siswa/${id}`, {});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

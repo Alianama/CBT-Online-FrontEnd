@@ -40,6 +40,9 @@ export interface Token {
 }
 
 export interface UserData {
+  angkatan: string;
+  nama_kelas: string;
+  nama_siswa: string;
   picture: string;
   user_id: number;
   user_type: number;
