@@ -5,6 +5,7 @@ import { toast, Toaster } from "sonner";
 import { setAccessToken, setRefreshToken, setUserData } from "@/utils/storage.ts";
 import LoginLoadingAnimation from "@/components/ui/login-loading.tsx";
 import { isAuthenticated } from "@/utils/auth.ts";
+import {useUser} from "@/context/UserContext.tsx";
 
 const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 
@@ -13,6 +14,7 @@ export default function Auth() {
     const navigate = useNavigate();
     const [message, setMessage] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+    const {refreshUser} = useUser();
 
     useEffect(() => {
         (async () => {
@@ -32,6 +34,7 @@ export default function Auth() {
                         console.log('✅ User authenticated:', response);
                         setMessage('Authentication successful! 🎉');
                         toast.success("Login success!");
+                        await refreshUser()
                         setTimeout(() => {
                             navigate('/');
                         }, 1000);

@@ -74,7 +74,7 @@ export default function Lesson() {
                 <p className="text-center text-gray-500 col-span-full">{pageData[safeLocale].noData}</p>
               ) : (
                 data?.data
-                  .filter((mapel:Mapel) =>
+                  .filter((mapel:Mapel) => mapel.total_materi > 0 &&
                     mapel.nama_mapel.toLowerCase().includes(searchTerm.toLowerCase())
                   )
                   .sort((a: { total_materi: number; }, b: { total_materi: number; }) => b.total_materi - a.total_materi)
