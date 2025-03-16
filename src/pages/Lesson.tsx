@@ -6,20 +6,36 @@ import { Search } from "lucide-react";
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-import {LessonProps} from "@/types/types.ts";
 import MapelCard from "@/components/lesson/MapelCard.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {getMapel} from "@/app/api/api-cbt.ts";
+import {useUser} from "@/context/UserContext.tsx";
+import type {Mapel} from "@/types/types.ts"
 
 
 
-export default function Lesson({ data, isLoading, error }: LessonProps) {
+export default function Lesson() {
   const [searchTerm, setSearchTerm] = useState("");
   const { locale } = useContext(LangContext);
+  const {user} = useUser();
 
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   const pageData = {
     id: { title: "Materi", header: "Portal Materi Pembelajaran", subHeader: "Pilih mata pelajaran untuk melihat materi pembelajaran", searchPlaceholder: "Cari mata pelajaran...", noData: "Tidak ada mata pelajaran tersedia.", error: "Terjadi kesalahan:" },
     en: { title: "Lesson", header: "Learning Materials Portal", subHeader: "Select a subject to view learning materials", searchPlaceholder: "Search subjects...", noData: "No subjects available.", error: "Error occurred:" }
   };
+
+  const {
+    data,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["mapel"],
+    queryFn: () => getMapel(user?.id_kelas),
+    staleTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: true,
+
+  });
 
   return (
     <Layout data={[{ name: pageData[safeLocale].title, url: "/lesson" }]}>
@@ -58,17 +74,16 @@ export default function Lesson({ data, isLoading, error }: LessonProps) {
                 <p className="text-center text-gray-500 col-span-full">{pageData[safeLocale].noData}</p>
               ) : (
                 data?.data
-                  .filter((mapel) =>
+                  .filter((mapel:Mapel) =>
                     mapel.nama_mapel.toLowerCase().includes(searchTerm.toLowerCase())
                   )
-                  .sort((a, b) => b.materials - a.materials)
-                  .map((mapel) => (
+                  .sort((a: { total_materi: number; }, b: { total_materi: number; }) => b.total_materi - a.total_materi)
+                  .map((mapel:Mapel) => (
                     <MapelCard
                       key={mapel.id_mapel}
                       title={mapel.nama_mapel}
                       mapel_code={mapel.kode_mapel}
                       total_materi={mapel.total_materi}
-                      // materials={mapel.materials}
                       bgImage={mapel.icon}
                     />
                   ))

@@ -24,10 +24,6 @@ export interface Question {
   correctAnswer: string
 }
 
-export interface SearchInputProps {
-  onSearch: (query: string) => void;
-}
-
 export interface BookCardProps {
   id: number;
   category: string;
@@ -44,6 +40,7 @@ export interface Token {
 }
 
 export interface UserData {
+  picture: string;
   user_id: number;
   user_type: number;
   id_kelas: number;

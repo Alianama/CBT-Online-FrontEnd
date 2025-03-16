@@ -22,7 +22,7 @@ export default function Home() {
     };
     const translations: Record<"id" | "en", { [key: string]: string }> = {
         id: {
-            welcome: `Selamat Datang, ${userData?.nama_siswa}!`,
+            welcome: `Selamat Datang, ${userData?.nama}!`,
             examMessage: "Selamat mengerjakan ujian! Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
             instructions: "Petunjuk Penggunaan",
             instructionsDesc: "Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal.",
@@ -32,7 +32,7 @@ export default function Home() {
             aboutVideoDesc: "Video ini menjelaskan cara menggunakan fitur-fitur utama website kami. Anda dapat memutar video ini langsung di halaman tanpa perlu mengunjungi YouTube."
         },
         en: {
-            welcome: `Welcome, ${userData?.nama_siswa }!`,
+            welcome: `Welcome, ${userData?.nama }!`,
             examMessage: "Good luck with your exam! Stay focused and do your best.",
             instructions: "Instructions",
             instructionsDesc: "Follow these steps to take the exam optimally.",

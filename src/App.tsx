@@ -1,129 +1,6 @@
-// import {Route, Routes, useNavigate} from "react-router-dom";
-// import {useCallback, useEffect, useMemo, useState} from "react";
-// import {Toaster} from "sonner";
-// import LangContext from "@/context/LangContext.tsx";
-// import useSecurity from "@/hooks/useSecurity";
-// import Focus from "@/pages/Fokus";
-// import Exam from "@/pages/Exam.tsx";
-// import Agenda from "@/pages/Agenda.tsx";
-// import NotFound from "@/pages/NotFound.tsx";
-// import Auth from "@/pages/Auth.tsx";
-// import PrivateRoute from "@/components/privateRoute/PrivateRoute.tsx";
-// import Home from "@/pages/Home.tsx"
-// import Profile from "@/pages/Profile.tsx";
-// import Logout from "@/pages/Logout.tsx";
-// import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
-// import {useQuery} from "@tanstack/react-query";
-// import {getAgenda, getMapel} from "@/app/api/api-cbt.ts";
-//
-// import Lesson from "@/pages/Lesson.tsx"
-// import SubjectPage from "@/components/lesson/SubjectPage"
-// import MaterialPage from "@/components/lesson/MaterialPage"
-// import {getAuthData} from "@/utils/storage.ts";
-// import {UserData} from "@/types/types.ts";
-// import {isAuthenticated} from "@/utils/auth.ts";
-//
-// export default function App() {
-//     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
-//     const {disableRightClick, disableShortcut, isSecurityEnabled, showToast} = useSecurity();
-//     const navigate = useNavigate();
-//     const [userDataLocal, setUserDataLocal] = useState<UserData | undefined>(null);
-//     const detectDevTools = useCallback(() => {
-//         if (!isSecurityEnabled) return;
-//         const threshold = 160;
-//         const checkDevTools = () => {
-//             if (
-//                 window.outerWidth - window.innerWidth > threshold ||
-//                 window.outerHeight - window.innerHeight > threshold
-//             ) {
-//                 showToast("Mode pengembang terdeteksi! Mengalihkan halaman...");
-//                 setTimeout(() => {
-//                     navigate("/focus");
-//                 }, 10000);
-//             }
-//         };
-//         window.addEventListener("resize", checkDevTools);
-//         checkDevTools();
-//         return () => window.removeEventListener("resize", checkDevTools);
-//     }, [navigate, isSecurityEnabled, showToast]);
-//     useEffect(() => {
-//         detectDevTools();
-//     }, [detectDevTools]);
-//     useEffect(() => {
-//         if (isSecurityEnabled) {
-//             document.addEventListener("contextmenu", disableRightClick);
-//             document.addEventListener("keydown", disableShortcut);
-//         } else {
-//             document.removeEventListener("contextmenu", disableRightClick);
-//             document.removeEventListener("keydown", disableShortcut);
-//         }
-//         return () => {
-//             document.removeEventListener("contextmenu", disableRightClick);
-//             document.removeEventListener("keydown", disableShortcut);
-//         };
-//     }, [disableRightClick, disableShortcut, isSecurityEnabled]);
-//     const toggleLocale = () => {
-//         setLanguage((prevLocale) => {
-//             const newLocale = prevLocale === "id" ? "en" : "id";
-//             localStorage.setItem("locale", newLocale);
-//             return newLocale;
-//         });
-//     };
-//     const contextValue = useMemo(() => {
-//         return {locale, toggleLocale};
-//     }, [locale]);
-//     useTokenRefresh();
-//
-//     useEffect(() => {
-//         (async () => {
-//             const authData = getAuthData();
-//             setUserDataLocal(authData?.userData ?? undefined);
-//         })();
-//     }, []);
-//
-//     const { data: agendaData, error: agendaError, isLoading: agendaIsLoading } = useQuery({
-//         queryKey: ["agenda"],
-//         queryFn: getAgenda,
-//         staleTime: 10 * 60 * 1000, // 10 menit (600.000 milidetik)
-//         refetchOnWindowFocus: false,
-//     });
-//
-//     const { data: mapelData, error: mapelError, isLoading: mapelIsLoading } = useQuery({
-//         queryKey: ["mapel", userDataLocal?.id_kelas],
-//         queryFn: () => getMapel(userDataLocal.id_kelas),
-//         staleTime: 10 * 60 * 1000, // 10 menit (600.000 milidetik)
-//         refetchOnWindowFocus: false
-//     });
-//     return (
-//         <LangContext.Provider value={contextValue}>
-//             <Toaster position="top-right" richColors/>
-//             <Routes>
-//                 {[
-//                     {path: "/", element: <Home/>},
-//                     {path: "/focus", element: <Focus/>},
-//                     {path: "/exam", element: <Exam/>},
-//                     {path: "/Agenda", element: <Agenda data={agendaData} error={agendaError} isLoading={agendaIsLoading}/>},
-//                     {path: "/lesson", element: <Lesson data={mapelData} error={mapelError} isLoading={mapelIsLoading}/>},
-//                     {path: "/profile", element: <Profile/>},
-//                     {path: "/logout", element: <Logout/>},
-//                     {path: "/subjects/:subject",  element: <SubjectPage />},
-//                     {path: "/subjects/:subject/:material", element : <MaterialPage />},
-//
-//                 ].map(({path, element}) => (
-//                     <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>}/>
-//                 ))}
-//
-//                 <Route path="/auth/:token" element={<Auth/>}/>
-//                 <Route path="/*" element={<NotFound/>}/>
-//             </Routes>
-//         </LangContext.Provider>
-//     );
-// }
-
 import { Route, Routes, useNavigate } from "react-router-dom";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Toaster } from "sonner";
-import { useQuery } from "@tanstack/react-query";
 import LangContext from "@/context/LangContext.tsx";
 import useSecurity from "@/hooks/useSecurity";
 import Focus from "@/pages/Fokus";
@@ -136,20 +13,50 @@ import Home from "@/pages/Home.tsx";
 import Profile from "@/pages/Profile.tsx";
 import Logout from "@/pages/Logout.tsx";
 import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
-import { getAgenda, getMapel } from "@/app/api/api-cbt.ts";
+import { useQuery } from "@tanstack/react-query";
+import { getAgenda } from "@/app/api/api-cbt.ts";
 import Lesson from "@/pages/Lesson.tsx";
 import SubjectPage from "@/components/lesson/SubjectPage";
 import MaterialPage from "@/components/lesson/MaterialPage";
-import { getAuthData } from "@/utils/storage.ts";
-import { isAuthenticated } from "@/utils/auth.ts";
+
 
 export default function App() {
-    const navigate = useNavigate();
-    const { disableRightClick, disableShortcut, isSecurityEnabled, showToast } = useSecurity();
-    const [authStatus, setAuthStatus] = useState<boolean | null>(null);
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
-    const userDataLocal = useMemo(() => getAuthData()?.userData, []);
+    const { disableRightClick, disableShortcut, isSecurityEnabled, showToast } = useSecurity();
+    const navigate = useNavigate();
+    const detectDevTools = useCallback(() => {
+        if (!isSecurityEnabled) return;
+        const threshold = 160;
+        const checkDevTools = () => {
+            if (
+              window.outerWidth - window.innerWidth > threshold ||
+              window.outerHeight - window.innerHeight > threshold
+            ) {
+                showToast("Mode pengembang terdeteksi! Mengalihkan halaman...");
+                setTimeout(() => {
+                    navigate("/focus");
+                }, 10000);
+            }
+        };
+        window.addEventListener("resize", checkDevTools);
+        checkDevTools();
+        return () => window.removeEventListener("resize", checkDevTools);
+    }, [navigate, isSecurityEnabled, showToast]);
 
+    useEffect(() => {
+        detectDevTools();
+    }, [detectDevTools]);
+
+    useEffect(() => {
+        if (isSecurityEnabled) {
+            document.addEventListener("contextmenu", disableRightClick);
+            document.addEventListener("keydown", disableShortcut);
+        }
+        return () => {
+            document.removeEventListener("contextmenu", disableRightClick);
+            document.removeEventListener("keydown", disableShortcut);
+        };
+    }, [disableRightClick, disableShortcut, isSecurityEnabled]);
 
     const toggleLocale = () => {
         setLanguage((prevLocale) => {
@@ -159,118 +66,40 @@ export default function App() {
         });
     };
 
-    const contextValue = useMemo(() => ({ locale, toggleLocale }), [locale]);
+    const contextValue = useMemo(() => {
+        return { locale, toggleLocale };
+    }, [locale]);
 
     useTokenRefresh();
-    useEffect(() => {
-        if (!isSecurityEnabled) return;
 
-        const threshold = 160;
-        const checkDevTools = () => {
-            if (
-              window.outerWidth - window.innerWidth > threshold ||
-              window.outerHeight - window.innerHeight > threshold
-            ) {
-                showToast("Mode pengembang terdeteksi! Mengalihkan halaman...");
-                setTimeout(() => navigate("/focus"), 10000);
-            }
-        };
-
-        window.addEventListener("resize", checkDevTools);
-        checkDevTools();
-
-        return () => window.removeEventListener("resize", checkDevTools);
-    }, [navigate, isSecurityEnabled, showToast]);
-    useEffect(() => {
-        if (isSecurityEnabled) {
-            document.addEventListener("contextmenu", disableRightClick);
-            document.addEventListener("keydown", disableShortcut);
-        }
-
-        return () => {
-            document.removeEventListener("contextmenu", disableRightClick);
-            document.removeEventListener("keydown", disableShortcut);
-        };
-    }, [disableRightClick, disableShortcut, isSecurityEnabled]);
-    useEffect(() => {
-        (async () => {
-            const result = await isAuthenticated();
-            setAuthStatus(result);
-
-
-        })();
-    },[]);
-
-    const {
-        data: agendaData,
-        error: agendaError,
-        isLoading: agendaIsLoading,
-    } = useQuery({
+    const { data: agendaData, error: agendaError, isLoading: agendaIsLoading } = useQuery({
         queryKey: ["agenda"],
         queryFn: getAgenda,
-        enabled: authStatus === true,
         staleTime: 10 * 60 * 1000,
         refetchOnWindowFocus: false,
     });
-
-    const {
-        data: mapelData,
-        error: mapelError,
-        isLoading: mapelIsLoading,
-        refetch: refetchMapel,
-    } = useQuery({
-        queryKey: ["mapel"],
-        queryFn: () =>
-          userDataLocal
-            ? getMapel(userDataLocal.id_kelas)
-            : Promise.reject("User data not found"),
-        staleTime: 10 * 60 * 1000,
-        refetchOnWindowFocus: false,
-    });
-
-// Gunakan useCallback agar fungsi tidak berubah di setiap render
-    const handleRefetchMapel = useCallback(async () => {
-        try {
-            const result = await refetchMapel();
-            console.log("Mapel data refreshed:", result);
-        } catch (error) {
-            console.error("Failed to refetch mapel data:", error);
-        }
-    }, [refetchMapel]); // Dependensi hanya `refetchMapel`
-
-// Efek saat `authStatus` berubah
-    useEffect(() => {
-        if (authStatus) {
-            handleRefetchMapel().then(r => {
-                console.log(r)
-            });
-        }
-    }, [authStatus, handleRefetchMapel]); // Masukkan `handleRefetchMapel` ke dalam dependensi
-
-
-
 
     return (
-      <LangContext.Provider value={contextValue}>
-          <Toaster position="top-right" richColors />
-          <Routes>
-              {[
-                  { path: "/", element: <Home /> },
-                  { path: "/focus", element: <Focus /> },
-                  { path: "/exam", element: <Exam /> },
-                  { path: "/agenda", element: <Agenda data={agendaData} error={agendaError} isLoading={agendaIsLoading} /> },
-                  { path: "/lesson", element: <Lesson data={mapelData} error={mapelError} isLoading={mapelIsLoading} /> },
-                  { path: "/profile", element: <Profile /> },
-                  { path: "/logout", element: <Logout /> },
-                  { path: "/subjects/:subject", element: <SubjectPage /> },
-                  { path: "/subjects/:subject/:material", element: <MaterialPage /> },
-              ].map(({ path, element }) => (
-                <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>} />
-              ))}
+          <LangContext.Provider value={contextValue}>
+              <Toaster position="top-right" richColors />
+              <Routes>
+                  {[
+                      { path: "/", element: <Home /> },
+                      { path: "/focus", element: <Focus /> },
+                      { path: "/exam", element: <Exam /> },
+                      { path: "/agenda", element: <Agenda data={agendaData} error={agendaError} isLoading={agendaIsLoading} /> },
+                      { path: "/lesson", element: <Lesson/> },
+                      { path: "/profile", element: <Profile /> },
+                      { path: "/logout", element: <Logout /> },
+                      { path: "/subjects/:subject", element: <SubjectPage /> },
+                      { path: "/subjects/:subject/:material", element: <MaterialPage /> },
+                  ].map(({ path, element }) => (
+                    <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>} />
+                  ))}
 
-              <Route path="/auth/:token" element={<Auth />} />
-              <Route path="/*" element={<NotFound />} />
-          </Routes>
-      </LangContext.Provider>
+                  <Route path="/auth/:token" element={<Auth />} />
+                  <Route path="/*" element={<NotFound />} />
+              </Routes>
+          </LangContext.Provider>
     );
 }

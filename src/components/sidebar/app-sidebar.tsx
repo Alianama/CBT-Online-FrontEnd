@@ -1,6 +1,6 @@
 "use client"
 import type * as React from "react"
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {
     AudioWaveform,
     BookMarked,
@@ -17,7 +17,6 @@ import {NavUser} from "./nav-user.tsx"
 import {TeamSwitcher} from "./team-switcher.tsx"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar.tsx"
 import LangContext from "@/context/LangContext.tsx";
-import {getAuthData} from "@/utils/storage.ts";
 
 const data = {
     teams: [
@@ -129,30 +128,6 @@ const data = {
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     const {locale} = useContext(LangContext);
-    const [name, setName] = useState("");
-    const [nis, setNis] = useState<string | undefined>();
-    const avatar = "/avatars/shadcn.jpg"
-    useEffect(() => {
-        const authData = getAuthData();
-        if (!authData || !authData.userData) {
-            console.error("User data not found");
-            return;
-        }
-        let userData;
-        try {
-            userData = typeof authData.userData === "object"
-                ? authData.userData
-                : JSON.parse(authData.userData);
-            if (!userData || typeof userData !== "object") {
-                console.error("Invalid User data");
-            }
-            const {nama_siswa, nis,} = userData;
-            setName(nama_siswa);
-            setNis(nis);
-        } catch (error) {
-            console.error("Failed to parse user data:", error);
-        }
-    }, []);
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
@@ -163,7 +138,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
                 {/*<NavSubmenu items={data.navMain}/>*/}
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={{name, nis, avatar}}/>
+                <NavUser />
             </SidebarFooter>
             <SidebarRail/>
         </Sidebar>
