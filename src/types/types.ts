@@ -47,7 +47,7 @@ export interface UserData {
   user_id: number;
   user_type: number;
   id_kelas: number;
-  nama_siswa: string;
+  nama: string;
   nis: string;
   ban: number;
   username: string;

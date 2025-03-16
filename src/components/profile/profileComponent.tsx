@@ -29,8 +29,8 @@ export default function ProfileComponent() {
             if (!userData || typeof userData !== "object") {
                 console.error("Invalid User data");
             }
-            const {user_type, id_kelas, nama_siswa, nis, ban, username} = userData;
-            setName(nama_siswa);
+            const {user_type, id_kelas, nama, nis, ban, username} = userData;
+            setName(nama);
             setKelas(id_kelas);
             setNis(nis);
             setUsername(username);

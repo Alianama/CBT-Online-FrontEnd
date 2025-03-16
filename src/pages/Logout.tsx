@@ -70,11 +70,11 @@ export default function LogoutAnimation() {
                                     <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
                                         <AvatarImage src="/placeholder.svg?height=128&width=128" alt="User"/>
                                         <AvatarFallback
-                                            className="text-3xl">{getInitials(userData.nama_siswa)}</AvatarFallback>
+                                            className="text-3xl">{getInitials(userData.nama)}</AvatarFallback>
                                     </Avatar>
                                 </motion.div>
                                 <div className="text-center">
-                                    <h3 className="text-xl font-medium">{userData.nama_siswa}</h3>
+                                    <h3 className="text-xl font-medium">{userData.nama}</h3>
                                 </div>
                             </motion.div>
                         )}
