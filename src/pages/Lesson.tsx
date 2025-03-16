@@ -67,7 +67,7 @@ export default function Lesson({ data, isLoading, error }: LessonProps) {
                       key={mapel.id_mapel}
                       title={mapel.nama_mapel}
                       mapel_code={mapel.kode_mapel}
-                      materials={5}
+                      total_materi={mapel.total_materi}
                       // materials={mapel.materials}
                       bgImage={mapel.icon}
                     />

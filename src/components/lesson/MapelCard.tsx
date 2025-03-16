@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import {SubjectCardProps} from "@/types/types.ts";
 const ASSET_DOMAIN = import.meta.env.VITE_ASSET_DOMAIN;
 
-export default function CardMapel({ title, materials, bgImage, mapel_code }: SubjectCardProps) {
+export default function CardMapel({title, bgImage, mapel_code, total_materi = 0}: SubjectCardProps) {
   const formattedBgImage = bgImage?.replace(/\{\{DOMAIN}}/g, ASSET_DOMAIN);
   return (
     <Link to={`/subjects/${title.toLowerCase().replace(/\s+/g, "-")}`}>
@@ -24,16 +24,16 @@ export default function CardMapel({ title, materials, bgImage, mapel_code }: Sub
           {title}
         </CardItem>
         <CardItem as="p" translateZ="60" className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300">
-          <p className="text-xs text-sidebar-primary/40">{mapel_code}</p>
+          <span className="text-xs text-sidebar-primary/40">{mapel_code}</span>
         </CardItem>
         <CardItem translateZ="100" className="w-full mt-4">
-          <p className={`text-sm ${
-            materials === 0 ? "text-red-600" :
-              materials > 0 && materials <= 5 ? "text-orange-500" :
+          <span className={`text-sm ${
+            total_materi === 0 ? "text-red-600" :
+              total_materi > 0 && total_materi <= 5 ? "text-orange-500" :
                 "text-green-600"
           }`}>
-            {materials} materi pembelajaran
-          </p>
+            {total_materi} materi pembelajaran
+          </span>
         </CardItem>
         <div className="flex pt-7 justify-between items-center mt-auto">
           <CardItem
