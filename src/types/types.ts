@@ -54,7 +54,7 @@ export interface UserData {
 }
 
 export interface Mapel {
-  total_materi: number | undefined;
+  total_materi: number ;
   materials: number;
   id_mapel: number;
   kode_mapel: string;
