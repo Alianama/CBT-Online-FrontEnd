@@ -195,6 +195,7 @@ import {getMateri} from "@/app/api/api-cbt.ts";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "../ui/card";
 import {Button} from "@/components/ui/button.tsx";
 import {Materi} from "@/types/types.ts";
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 const VITE_ASSET_DOMAIN = import.meta.env.VITE_ASSET_DOMAIN;
 export default function SubjectPage() {
@@ -258,7 +259,16 @@ export default function SubjectPage() {
                     </div>
                 </div>
 
-                {isLoading && <p>Loading...</p>}
+                {isLoading &&
+                   <div className="flex w-full h-screen gap-4 p-4 pt-0">
+                      <div className="w-full gap-4 flex-col flex">
+                         <Skeleton className="w-[100%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                         <Skeleton className="w-[100%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                         <Skeleton className="w-[100%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+
+                      </div>
+                   </div>
+                }
                 {error && <p className="text-red-500">Gagal mengambil data: {error.message}</p>}
 
                 <div className="grid gap-4">

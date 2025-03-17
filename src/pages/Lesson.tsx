@@ -56,12 +56,12 @@ export default function Lesson() {
 
                 {isLoading ? (
                     <div className="flex w-full h-screen gap-4 p-4 pt-0">
-                        <div className="w-full pt-20 gap-10 max-md:flex-col flex">
-                            <Skeleton className="w-[20%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
-                            <Skeleton className="w-[20%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
-                            <Skeleton className="w-[20%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
-                            <Skeleton className="w-[20%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
-                            <Skeleton className="w-[20%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                        <div className="w-full pt-20 gap-4 max-md:flex-col flex">
+                            <Skeleton className="w-[25%] h-[30%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                            <Skeleton className="w-[25%] h-[30%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                            <Skeleton className="w-[25%] h-[30%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                            <Skeleton className="w-[25%] h-[30%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
+                            <Skeleton className="w-[25%] h-[30%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
                         </div>
                     </div>
                 ) : error ? (
