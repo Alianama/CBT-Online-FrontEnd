@@ -196,6 +196,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "../ui/c
 import {Button} from "@/components/ui/button.tsx";
 import {Materi} from "@/types/types.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
+import {DocumentLink} from "@/components/lesson/viewer/document-link.tsx";
 
 const VITE_ASSET_DOMAIN = import.meta.env.VITE_ASSET_DOMAIN;
 export default function SubjectPage() {
@@ -316,7 +317,8 @@ function MateriCard({materi}: MateriCard) {
                     </div>
                     <div className="flex gap-2">
                         <Button asChild variant="outline" size="sm" className="flex-1 sm:flex-none">
-                            <Link to={`/materi/${materi.id_materi}`}>Lihat</Link>
+                            {/*<Link to={`/materi/${materi.id_materi}`}>Lihat</Link>*/}
+                            <DocumentLink fileUrl={atachment_URL} fileType={materi.tipe_materi}/>
                         </Button>
                         <Button
                             size="sm"
