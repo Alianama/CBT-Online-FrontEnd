@@ -15,7 +15,6 @@ import {useNavigate} from "react-router-dom";
 import LangContext from "@/context/LangContext.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
-
 export default function Layout({children, data}: {
     data: { name: string; url: string }[];
     children: React.ReactNode;
@@ -42,7 +41,12 @@ export default function Layout({children, data}: {
                                     <React.Fragment key={index}>
                                         <BreadcrumbSeparator className="hidden md:block"/>
                                         <BreadcrumbItem>
-                                            <BreadcrumbPage>{item.name}</BreadcrumbPage>
+                                            {index === data.length - 1 ? (
+                                                <BreadcrumbPage>{item.name}</BreadcrumbPage> // Item terakhir pakai BreadcrumbPage
+                                            ) : (
+                                                <BreadcrumbLink
+                                                    onClick={() => navigate(item.url)}>{item.name}</BreadcrumbLink> // Selain item terakhir pakai BreadcrumbLink
+                                            )}
                                         </BreadcrumbItem>
                                     </React.Fragment>
                                 ))}

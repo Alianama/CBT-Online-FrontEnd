@@ -4,7 +4,7 @@ import {AnimatePresence, motion} from "framer-motion"
 import {Avatar, AvatarImage} from "@/components/ui/avatar"
 import {Card, CardContent} from "@/components/ui/card"
 import {CheckCircle} from "lucide-react"
-import { clearAuthData} from "@/utils/storage.ts";
+import {clearAuthData} from "@/utils/storage.ts";
 import {useUser} from "@/context/UserContext.tsx";
 
 const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL
@@ -29,8 +29,7 @@ export default function LogoutAnimation() {
             clearTimeout(redirectTimer)
         }
     }, [])
-    const {user} = useUser()
-
+    const {generalUser} = useUser()
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
             <Card className="w-full max-w-md overflow-hidden bg-white shadow-xl rounded-xl">
@@ -62,11 +61,11 @@ export default function LogoutAnimation() {
                                     }}
                                 >
                                     <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
-                                        <AvatarImage src={user?.picture} alt="User"/>
+                                        <AvatarImage src={generalUser?.picture} alt="User"/>
                                     </Avatar>
                                 </motion.div>
                                 <div className="text-center">
-                                    <h3 className="text-xl font-medium">{user?.nama}</h3>
+                                    <h3 className="text-xl font-medium">{generalUser?.nama}</h3>
                                 </div>
                             </motion.div>
                         )}
