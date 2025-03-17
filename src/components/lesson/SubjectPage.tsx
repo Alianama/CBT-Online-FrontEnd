@@ -196,7 +196,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "../ui/c
 import {Button} from "@/components/ui/button.tsx";
 import {Materi} from "@/types/types.ts";
 
-const VITE_ATTACHMENT_DOMAIN = import.meta.env.VITE_ATTACHMENT_DOMAIN;
+const VITE_ASSET_DOMAIN = import.meta.env.VITE_ASSET_DOMAIN;
 export default function SubjectPage() {
     const {subject, idKelas, idMapel} = useParams<{ subject: string; idKelas: string; idMapel: string }>();
     const id_kelas = idKelas ? parseInt(idKelas, 10) : undefined;
@@ -226,6 +226,7 @@ export default function SubjectPage() {
         refetchOnWindowFocus: true,
         retry: 1,
     });
+    console.log(data)
     const {locale} = useContext(LangContext);
     const safeLocale = locale === "id" || locale === "en" ? locale : "en";
     const pageData: Record<"id" | "en", { name: string; url: string }[]> = {
@@ -277,6 +278,7 @@ interface MateriCard {
 }
 
 function MateriCard({materi}: MateriCard) {
+    const atachment_URL = materi.attachment?.replace(/\{\{DOMAIN}}/g, VITE_ASSET_DOMAIN);
     return (
         <Card>
             <CardHeader className="pb-2 px-3 pt-3 sm:px-6 sm:pt-6">
@@ -306,10 +308,23 @@ function MateriCard({materi}: MateriCard) {
                         <Button asChild variant="outline" size="sm" className="flex-1 sm:flex-none">
                             <Link to={`/materi/${materi.id_materi}`}>Lihat</Link>
                         </Button>
-                        <Button size="sm" className="flex-1 sm:flex-none">
+                        <Button
+                            size="sm"
+                            onClick={() => {
+                                const link = document.createElement("a");
+                                link.href = atachment_URL;
+                                link.target = "_blank";
+                                link.download = "";
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }}
+                            className="flex-1 sm:flex-none"
+                        >
                             <Download className="h-4 w-4 mr-2"/>
-                            <Link title="download" to={`${VITE_ATTACHMENT_DOMAIN}/${materi.attachment}`}/>
+                            Download
                         </Button>
+
                     </div>
                 </div>
             </CardContent>
