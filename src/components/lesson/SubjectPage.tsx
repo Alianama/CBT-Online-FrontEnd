@@ -296,7 +296,7 @@ function MateriCard({materi}: MateriCard) {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                     <div>
                         <CardTitle className="text-lg sm:text-xl">{materi.title}</CardTitle>
-                        <CardDescription>{materi.content}</CardDescription>
+                        <CardDescription> Size: {materi.size}</CardDescription>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">Dasar</span>
@@ -304,6 +304,7 @@ function MateriCard({materi}: MateriCard) {
                 </div>
             </CardHeader>
             <CardContent className="px-3 pb-3 sm:px-6 sm:pb-6">
+
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -317,8 +318,9 @@ function MateriCard({materi}: MateriCard) {
                     </div>
                     <div className="flex gap-2">
                         <Button asChild variant="outline" size="sm" className="flex-1 sm:flex-none">
-                            {/*<Link to={`/materi/${materi.id_materi}`}>Lihat</Link>*/}
-                            <DocumentLink fileUrl={atachment_URL} fileType={materi.tipe_materi}/>
+                            {/*<Link to={`/materi/${materi.id_materi}`}>Buka Materi</Link>*/}
+                            <DocumentLink fileUrl={materi.attachment} fileName={materi.title}
+                                          fileType={materi.tipe_materi}/>
                         </Button>
                         <Button
                             size="sm"

@@ -88,6 +88,7 @@ export interface SubjectCardProps {
 }
 
 export interface Materi {
+    size: string
     id_materi: number,
     title: string,
     content: string,

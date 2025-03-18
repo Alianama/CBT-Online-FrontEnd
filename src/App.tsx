@@ -15,7 +15,7 @@ import Logout from "@/pages/Logout.tsx";
 import useTokenRefresh from "@/hooks/useTokenRefresh.tsx";
 import Lesson from "@/pages/Lesson.tsx";
 import SubjectPage from "@/components/lesson/SubjectPage";
-import MaterialPage from "@/components/lesson/MaterialPage";
+import DocumentOpen from "@/components/lesson/viewer/document-open.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(localStorage.getItem("locale") || "id");
@@ -76,7 +76,7 @@ export default function App() {
                     {path: "/profile", element: <Profile/>},
                     {path: "/logout", element: <Logout/>},
                     {path: "/subjects/:subject/:idKelas/:idMapel", element: <SubjectPage/>},
-                    {path: "/subjects/:subject/:material", element: <MaterialPage/>},
+                    {path: "/subjects/:subject/:material", element: <DocumentOpen/>},
                 ].map(({path, element}) => (
                     <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>}/>
                 ))}
