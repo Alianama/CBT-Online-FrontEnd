@@ -13,10 +13,11 @@ import {
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar.tsx"
 import useSidebar from "@/hooks/useSIdebar.tsx";
 import {useNavigate} from "react-router-dom";
-import {useUser} from "@/context/UserContext.tsx";
+import {useGlobal} from "@/context/GlobalContext.tsx";
+
 export function NavUser() {
     const navigate = useNavigate();
-    const {generalUser} = useUser();
+    const {generalUser} = useGlobal();
     const {isMobile} = useSidebar()
     const onLogout = () => {
         navigate("/logout");

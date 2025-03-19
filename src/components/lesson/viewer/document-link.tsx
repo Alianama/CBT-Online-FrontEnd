@@ -1,7 +1,7 @@
 "use client"
 import {useContext, useState} from "react"
 import {Button} from "@/components/ui/button"
-import {FileText} from "lucide-react"
+import {Zap} from "lucide-react"
 import {DocumentPreviewModal} from "./document-preview"
 import LangContext from "@/context/LangContext.tsx";
 
@@ -26,7 +26,7 @@ export function DocumentLink({
                     onClick={() => setIsModalOpen(true)}
                     className="flex items-center gap-2"
                 >
-                    <FileText className="h-4 w-4"/>
+                    <Zap className="h-4 w-4"/>
                     {locale === "id" ? "Lihat Cepat" : "Quick Wiew"}
                 </Button>
             )}

@@ -75,8 +75,11 @@ export default function App() {
                     {path: "/lesson", element: <Lesson/>},
                     {path: "/profile", element: <Profile/>},
                     {path: "/logout", element: <Logout/>},
-                    {path: "/subjects/:subject/:idKelas/:idMapel", element: <SubjectPage/>},
-                    {path: "/subjects/:subject/:material", element: <DocumentOpen/>},
+                    {path: "/lesson/:subject/:idKelas/:idMapel", element: <SubjectPage/>},
+                    {
+                        path: "/lesson/:subject/:idKelas/:idMapel/materi/:tipe_materi/:attachment",
+                        element: <DocumentOpen/>
+                    },
                 ].map(({path, element}) => (
                     <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>}/>
                 ))}

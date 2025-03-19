@@ -5,7 +5,7 @@ import {Avatar, AvatarImage} from "@/components/ui/avatar"
 import {Card, CardContent} from "@/components/ui/card"
 import {CheckCircle} from "lucide-react"
 import {clearAuthData} from "@/utils/storage.ts";
-import {useUser} from "@/context/UserContext.tsx";
+import {useGlobal} from "@/context/GlobalContext.tsx";
 
 const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL
 export default function LogoutAnimation() {
@@ -29,7 +29,7 @@ export default function LogoutAnimation() {
             clearTimeout(redirectTimer)
         }
     }, [])
-    const {generalUser} = useUser()
+    const {generalUser} = useGlobal()
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
             <Card className="w-full max-w-md overflow-hidden bg-white shadow-xl rounded-xl">

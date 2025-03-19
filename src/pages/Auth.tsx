@@ -1,21 +1,19 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { userAuth } from '@/app/api/api-cbt.ts';
-import { toast, Toaster } from "sonner";
-import { setAccessToken, setRefreshToken, setUserData } from "@/utils/storage.ts";
+import {useNavigate, useParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {userAuth} from '@/app/api/api-cbt.ts';
+import {toast, Toaster} from "sonner";
+import {setAccessToken, setRefreshToken, setUserData} from "@/utils/storage.ts";
 import LoginLoadingAnimation from "@/components/ui/login-loading.tsx";
-import { isAuthenticated } from "@/utils/auth.ts";
-import {useUser} from "@/context/UserContext.tsx";
+import {isAuthenticated} from "@/utils/auth.ts";
+import {useGlobal} from "@/context/GlobalContext.tsx";
 
 const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
-
 export default function Auth() {
-    const { token } = useParams();
+    const {token} = useParams();
     const navigate = useNavigate();
     const [message, setMessage] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-    const {refreshUser} = useUser();
-
+    const {refreshUser} = useGlobal();
     useEffect(() => {
         (async () => {
             if (await isAuthenticated()) {
@@ -27,7 +25,7 @@ export default function Auth() {
                     setLoading(true);
                     const response = await userAuth(token);
                     if (response) {
-                        const { access_token, refresh_token, user_data } = response;
+                        const {access_token, refresh_token, user_data} = response;
                         setAccessToken(access_token);
                         setRefreshToken(refresh_token);
                         setUserData(user_data);
@@ -58,12 +56,11 @@ export default function Auth() {
                 }
             }
         })();
-    }, [token, navigate]);
-
+    }, [token, navigate, refreshUser]);
     return (
-      <div>
-          <Toaster position="top-right" richColors />
-          <LoginLoadingAnimation isLoading={loading} text={message} />
-      </div>
+        <div>
+            <Toaster position="top-right" richColors/>
+            <LoginLoadingAnimation isLoading={loading} text={message}/>
+        </div>
     );
 }

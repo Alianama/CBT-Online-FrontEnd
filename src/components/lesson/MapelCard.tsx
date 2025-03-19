@@ -14,7 +14,7 @@ export default function CardMapel({
                                   }: SubjectCardProps) {
     const formattedBgImage = bgImage?.replace(/\{\{DOMAIN}}/g, ASSET_DOMAIN);
     return (
-        <Link to={`/subjects/${title.toLowerCase().replace(/\s+/g, "-")}/${id_kelas}/${id_mapel}`}>
+        <Link to={`/lesson/${title.toLowerCase().replace(/\s+/g, "-")}/${id_kelas}/${id_mapel}`}>
             <CardContainer>
                 <CardBody
                     className="w-full  h-full bg-gradient-to-t from-zinc-50 to-slate-50 relative dark:hover:shadow-2xl shadow-xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] rounded-xl p-4 border flex flex-col">
@@ -28,7 +28,7 @@ export default function CardMapel({
                             }}>
                         </div>
                     </CardItem>
-                    <CardItem translateZ={50} className="text-xm font-bold text-neutral-600 dark:text-white">
+                    <CardItem translateZ={50} className="text-xm font-bold text-neutral-900 ">
                         {title}
                     </CardItem>
                     <CardItem as="p" translateZ="60"
@@ -47,14 +47,14 @@ export default function CardMapel({
                     <div className="flex pt-7 justify-between items-center mt-auto">
                         <CardItem
                             translateZ={20}
-                            className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
+                            className="px-4 py-2 rounded-xl text-xs font-normal text-neutral-900"
                         >
                             buka →
                         </CardItem>
                         <CardItem
                             translateZ={100}
                             as="button"
-                            className="px-4 py-2 rounded-xl bg-primary text-secondary text-xs font-bold"
+                            className="px-4 py-2 rounded-xl bg-primary dark:bg-neutral-200 text-secondary text-xs font-bold"
                         >
                             Lihat Materi
                         </CardItem>

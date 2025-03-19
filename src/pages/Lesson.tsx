@@ -8,13 +8,13 @@ import {Skeleton} from "@/components/ui/skeleton.tsx";
 import MapelCard from "@/components/lesson/MapelCard.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {getMapel} from "@/app/api/api-cbt.ts";
-import {useUser} from "@/context/UserContext.tsx";
+import {useGlobal} from "@/context/GlobalContext.tsx";
 import type {Mapel} from "@/types/types.ts"
 
 export default function Lesson() {
     const [searchTerm, setSearchTerm] = useState("");
     const {locale} = useContext(LangContext);
-    const {generalUser} = useUser();
+    const {generalUser} = useGlobal();
     const safeLocale = locale === "id" || locale === "en" ? locale : "en";
     const pageData = {
         id: {

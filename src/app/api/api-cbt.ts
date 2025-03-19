@@ -75,3 +75,21 @@ export const getMateri = async ({id_kelas, id_mapel}: { id_kelas: number; id_map
         }
     }
 }
+export const getMateriByID = async (id: number) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/materi`, {
+            params: {id},
+            headers: {
+                Accept: 'application/json',
+            }
+        })
+        return response.data.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to fetch materi data");
+        } else {
+            throw new Error("An unknown error occurred");
+        }
+    }
+}
+
