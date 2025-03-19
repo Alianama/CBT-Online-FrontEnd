@@ -1,6 +1,6 @@
 import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar.tsx";
 import * as React from "react";
-import {AppSidebar} from "@/components/sidebar/app-sidebar.tsx";
+import {AppSidebar} from "@/components/sidebar/AppSidebar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {
     Breadcrumb,
@@ -10,7 +10,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx";
-import {ModeToggle} from "@/components/Theme/mode-toggle.tsx";
+import {ModeToggle} from "@/components/Theme/ModeToggle.tsx";
 import {useNavigate} from "react-router-dom";
 import LangContext from "@/context/LangContext.tsx";
 import {Button} from "@/components/ui/button.tsx";

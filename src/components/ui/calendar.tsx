@@ -2,7 +2,7 @@
 import {useContext, useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
 import type {Agenda} from "@/types/types";
-import {EventIndicator} from "@/components/schedule/event-indicator";
+import {EventIndicator} from "@/components/schedule/EventIndicator.tsx";
 import LangContext from "@/context/LangContext.tsx";
 
 interface CalendarProps {

@@ -12,9 +12,9 @@ import {
     Map,
     Pencil,
 } from "lucide-react"
-import {NavPrimary} from "./nav-primary.tsx"
-import {NavUser} from "./nav-user.tsx"
-import {TeamSwitcher} from "./team-switcher.tsx"
+import {NavPrimary} from "./NavPrimary.tsx"
+import {NavUser} from "./NavUser.tsx"
+import {TeamSwitcher} from "./TeamSwitcher.tsx"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail} from "@/components/ui/sidebar.tsx"
 import LangContext from "@/context/LangContext.tsx";
 
@@ -138,7 +138,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
                 {/*<NavSubmenu items={data.navMain}/>*/}
             </SidebarContent>
             <SidebarFooter>
-                <NavUser />
+                <NavUser/>
             </SidebarFooter>
             <SidebarRail/>
         </Sidebar>

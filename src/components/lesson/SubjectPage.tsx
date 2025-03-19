@@ -9,7 +9,7 @@ import {useQuery} from "@tanstack/react-query";
 import {getMateri} from "@/app/api/api-cbt.ts";
 import {Materi} from "@/types/types.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-import MateriCard from "@/components/lesson/Materi-card.tsx";
+import MateriCard from "@/components/lesson/MateriCard.tsx";
 
 export default function SubjectPage() {
     const {subject, idKelas, idMapel} = useParams<{ subject: string; idKelas: string; idMapel: string }>();

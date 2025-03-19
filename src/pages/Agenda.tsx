@@ -1,8 +1,8 @@
 "use client";
 import {useContext, useState} from "react";
 import {Calendar} from "@/components/ui/calendar";
-import {EventList} from "@/components/schedule/event-list";
-import {CalendarHeader} from "@/components/schedule/calendar-header";
+import {EventList} from "@/components/schedule/EventList.tsx";
+import {CalendarHeader} from "@/components/schedule/CalendarHeader.tsx";
 import Layout from "@/components/sidebar/Layout.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
