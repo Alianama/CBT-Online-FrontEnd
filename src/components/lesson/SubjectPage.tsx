@@ -84,7 +84,7 @@ export default function SubjectPage() {
 
                 {error && <p className="text-red-500">Gagal mengambil data: {error.message}</p>}
 
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     {data && data.length > 0 ? (
                         data
                             .filter((materi: Materi) =>
