@@ -56,7 +56,8 @@ export default function MateriCard({materi, subject, idKelas, idMapel}: materiCa
                                 }
                             }}
                         >
-                            <Button disabled={materi.tipe_materi === "zip" || materi.tipe_materi === "text"}>
+                            <Button className="bg-primary"
+                                    disabled={materi.tipe_materi === "zip" || materi.tipe_materi === "text"}>
                                 <FileText/> Open
                             </Button>
                         </Link>

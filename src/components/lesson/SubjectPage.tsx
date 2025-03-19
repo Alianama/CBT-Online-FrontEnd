@@ -1,6 +1,6 @@
-"use client"
-import {Link, useParams} from "react-router-dom"
-import {ArrowLeft, BookOpen} from "lucide-react"
+"use client";
+import {Link, useParams, useSearchParams} from "react-router-dom";
+import {ArrowLeft, BookOpen} from "lucide-react";
 import Layout from "@/components/sidebar/Layout.tsx";
 import {useContext} from "react";
 import LangContext from "@/context/LangContext.tsx";
@@ -16,6 +16,8 @@ export default function SubjectPage() {
     const id_kelas = idKelas ? parseInt(idKelas, 10) : undefined;
     const id_mapel = idMapel ? parseInt(idMapel, 10) : undefined;
     const subjectMap: Record<string, { title: string; description: string; color: string }> = {};
+    const [searchParams, setSearchParams] = useSearchParams();
+    const keyword = searchParams.get("keyword") || ""; // Ambil keyword dari URL
     const currentSubject = subject
         ? subjectMap[subject] || {
         title: subject.charAt(0).toUpperCase() + subject.slice(1).replace("-", " "),
@@ -63,7 +65,10 @@ export default function SubjectPage() {
                                 <p className="text-muted-foreground">{currentSubject.description}</p>
                             </div>
                         </div>
-                        <Input placeholder={locale === "id" ? "Cari Materi Pembelajaran" : "Search Lesson Books"}/>
+                        <Input
+                            value={keyword}
+                            onChange={(e) => setSearchParams({keyword: e.target.value})}
+                            placeholder={locale === "id" ? "Cari Materi Pembelajaran" : "Search Lesson Books"}/>
                     </div>
                 </div>
 
@@ -73,16 +78,27 @@ export default function SubjectPage() {
                          <Skeleton className="w-[100%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
                          <Skeleton className="w-[100%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
                          <Skeleton className="w-[100%] h-[25%] max-md:w-[100%] max-md:h-[50%] rounded-20"/>
-
                       </div>
                    </div>
                 }
+
                 {error && <p className="text-red-500">Gagal mengambil data: {error.message}</p>}
 
                 <div className="grid gap-4">
                     {data && data.length > 0 ? (
-                        data.map((materi: Materi) => <MateriCard key={materi.id_materi} subject={subject}
-                                                                 idKelas={idKelas} idMapel={idMapel} materi={materi}/>)
+                        data
+                            .filter((materi: Materi) =>
+                                !keyword || materi.title.toLowerCase().includes(keyword.toLowerCase())
+                            )
+                            .map((materi: Materi) => (
+                                <MateriCard
+                                    key={materi.id_materi}
+                                    subject={subject}
+                                    idKelas={idKelas}
+                                    idMapel={idMapel}
+                                    materi={materi}
+                                />
+                            ))
                     ) : (
                         <p className="text-gray-500">Tidak ada materi tersedia</p>
                     )}
@@ -91,4 +107,3 @@ export default function SubjectPage() {
         </Layout>
     );
 }
-

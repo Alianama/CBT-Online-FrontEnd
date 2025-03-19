@@ -1,5 +1,5 @@
 "use client";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {Input} from "@/components/ui/input.tsx";
 import {Search} from "lucide-react";
 import Layout from "@/components/sidebar/Layout.tsx";
@@ -10,10 +10,12 @@ import {useQuery} from "@tanstack/react-query";
 import {getMapel} from "@/app/api/api-cbt.ts";
 import {useGlobal} from "@/context/GlobalContext.tsx";
 import type {Mapel} from "@/types/types.ts"
+import {useSearchParams} from "react-router-dom";
 
 export default function Lesson() {
-    const [searchTerm, setSearchTerm] = useState("");
     const {locale} = useContext(LangContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const keyword = searchParams.get("keyword") || "";
     const {generalUser} = useGlobal();
     const safeLocale = locale === "id" || locale === "en" ? locale : "en";
     const pageData = {
@@ -74,8 +76,8 @@ export default function Lesson() {
                                 type="search"
                                 placeholder={pageData[safeLocale].searchPlaceholder}
                                 className="w-full pl-8"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                value={keyword}
+                                onChange={(e) => setSearchParams({keyword: e.target.value})}
                             />
                         </div>
 
@@ -85,7 +87,7 @@ export default function Lesson() {
                             ) : (
                                 data?.data
                                     .filter((mapel: Mapel) => mapel.total_materi > 0 &&
-                                        mapel.nama_mapel.toLowerCase().includes(searchTerm.toLowerCase())
+                                        mapel.nama_mapel.toLowerCase().includes(keyword.toLowerCase())
                                     )
                                     .sort((a: { total_materi: number; }, b: {
                                         total_materi: number;
