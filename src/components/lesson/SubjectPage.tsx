@@ -317,9 +317,10 @@ function MateriCard({materi}: MateriCard) {
                         </div>
                     </div>
                     <div className="flex gap-2">
+                        
                         <Button asChild variant="outline" size="sm" className="flex-1 sm:flex-none">
                             {/*<Link to={`/materi/${materi.id_materi}`}>Buka Materi</Link>*/}
-                            <DocumentLink fileUrl={materi.attachment} fileName={materi.title}
+                            <DocumentLink fileUrl={atachment_URL} fileName={materi.title}
                                           fileType={materi.tipe_materi}/>
                         </Button>
                         <Button

@@ -20,7 +20,7 @@ export function DocumentLink({
     const {locale} = useContext(LangContext)
     return (
         <>
-            {(fileType === "pdf" || fileType === "doc" || fileType === "text") && (
+            {(fileType === "pdf" || fileType === "doc" || fileType === "text" || fileType === "excel" || fileType === "xlsx" || fileType === "ppt") && (
                 <Button
                     variant="outline"
                     onClick={() => setIsModalOpen(true)}

@@ -2,7 +2,6 @@
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {File} from "lucide-react";
 import {Viewer, Worker} from "@react-pdf-viewer/core";
-// Import the styles
 import "@react-pdf-viewer/core/lib/styles/index.css";
 
 interface DocumentPreviewModalProps {
@@ -24,8 +23,7 @@ export function DocumentPreviewModal({
                                      }: DocumentPreviewModalProps) {
     const determinedFileType = fileType || fileUrl.split(".").pop()?.toLowerCase();
     const isPdf = determinedFileType === "pdf";
-    const isDoc = ["doc", "docx", "xlsx", "ppt", "pptx",].includes(determinedFileType || "");
-    const file_URL = fileUrl?.replace(/\{\{DOMAIN}}/g, "/api");
+    const isDoc = ["doc", "docx", "xlsx", "excel", "ppt", "pptx",].includes(determinedFileType || "");
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="max-w-4xl w-[90vw] max-h-[90vh] overflow-hidden flex flex-col">
@@ -42,15 +40,14 @@ export function DocumentPreviewModal({
                     {isPdf ? (
                         <div className="flex flex-col items-center h-full">
                             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                                {/*<Worker workerUrl="public/pdf.worker.min.js">*/}
                                 <div className="w-full h-full">
-                                    <Viewer fileUrl={file_URL}/>
+                                    <Viewer fileUrl={fileUrl}/>
                                 </div>
                             </Worker>
                         </div>
                     ) : isDoc ? (
                         <iframe
-                            src={`https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`}
+                            src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(fileUrl)}`}
                             className="w-full h-[80vh]"
                             frameBorder="0"
                         ></iframe>
