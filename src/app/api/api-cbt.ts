@@ -92,4 +92,20 @@ export const getMateriByID = async (id: number) => {
         }
     }
 }
-
+export const getProfil = async (id: number | undefined) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/profil`, {
+            params: {user_id: id},
+            headers: {
+                Accept: 'application/json',
+            }
+        })
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to fetch profil data");
+        } else {
+            throw new Error("An unknown error occurred");
+        }
+    }
+}

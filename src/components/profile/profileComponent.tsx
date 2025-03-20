@@ -66,7 +66,7 @@ export default function ProfileComponent() {
                                 }}>
                             </div>
                             <div className="mt-6 w-full text-center">
-                                <CardTitle className="text-2xl font-bold tracking-tight">{user.nama_siswa}</CardTitle>
+                                <CardTitle className="text-2xl font-bold tracking-tight">{user.nama}</CardTitle>
                                 <p className="text-muted-foreground mt-1">@{user.username}</p>
 
                                 <div className="mt-4 flex gap-3 flex-col items-center justify-center">
@@ -133,12 +133,12 @@ export default function ProfileComponent() {
                                         {
                                             icon: <User className="h-4 w-4 text-primary"/>,
                                             label: t.fullName,
-                                            value: user.nama_siswa,
+                                            value: user.nama,
                                         },
                                         {
                                             icon: <Book className="h-4 w-4 text-primary"/>,
                                             label: t.class,
-                                            value: `Kelas ${user.nama_kelas}`,
+                                            value: `Kelas ${user.id_kelas}`,
                                         },
                                         {
                                             icon: <School className="h-4 w-4 text-primary"/>,

@@ -53,6 +53,18 @@ export interface UserData {
     username: string;
 }
 
+export interface Profil {
+    user_id: number;
+    id_kelas: number;
+    nis: string;
+    name: string;
+    ban: number;
+    username: string;
+    id_biodata: number;
+    picture: string;
+    user_type: string;
+}
+
 export interface Mapel {
     total_materi: number;
     materials: number;
