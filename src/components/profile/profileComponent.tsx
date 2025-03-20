@@ -27,6 +27,17 @@ export default function ProfileComponent() {
             username: "Username",
             userType: "Tipe User",
             angkatan: "Angkatan",
+            tempatLahir: "Tempat Lahir",
+            tanggalLahir: "Tanggal Lahir",
+            province: "Provinsi",
+            city: "Kota",
+            district: "Kecamatan",
+            village: "Kelurahan",
+            address: "Alamat",
+            phoneNumber: "Nomor HP",
+            hobby: "Hobi",
+            ambition: "Cita-cita",
+            motto: "Motto",
         },
         en: {
             userNotFound: "User data not found.",
@@ -43,6 +54,17 @@ export default function ProfileComponent() {
             username: "Username",
             userType: "User Type",
             angkatan: "Generation",
+            tempatLahir: "Place of Birth",
+            tanggalLahir: "Date of Birth",
+            province: "Province",
+            city: "City",
+            district: "District",
+            village: "Village",
+            address: "Address",
+            phoneNumber: "Phone Number",
+            hobby: "Hobby",
+            ambition: "Ambition",
+            motto: "Motto",
         },
     };
     const t = translations[locale as keyof typeof translations];
@@ -54,7 +76,7 @@ export default function ProfileComponent() {
     }
     return (
         <div className="bg-secondary p-20 max-md:p-9">
-            <div className="max-w-5xl mx-auto">
+            <div className="mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <Card className="lg:col-span-1 border-none shadow-lg overflow-visible">
                         <CardHeader className="relative pt-16 pb-5 flex flex-col items-center">
@@ -158,7 +180,7 @@ export default function ProfileComponent() {
                                     ]}
                                 />
                                 <InfoPanel
-                                    title={t.studentData}
+                                    title="Biodata"
                                     items={[
                                         {
                                             icon: <User className="h-4 w-4 text-primary"/>,

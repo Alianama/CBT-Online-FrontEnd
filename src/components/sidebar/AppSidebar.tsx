@@ -131,14 +131,13 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
-                <TeamSwitcher teams={data.teams}/>
+                <NavUser/>
             </SidebarHeader>
             <SidebarContent>
                 <NavPrimary utils={locale === "id" ? data.utils.id : data.utils.en}/>
-                {/*<NavSubmenu items={data.navMain}/>*/}
             </SidebarContent>
             <SidebarFooter>
-                <NavUser/>
+                <TeamSwitcher teams={data.teams}/>
             </SidebarFooter>
             <SidebarRail/>
         </Sidebar>

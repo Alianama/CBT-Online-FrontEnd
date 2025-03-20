@@ -14,16 +14,6 @@ import {ModeToggle} from "@/components/Theme/ModeToggle.tsx";
 import {useNavigate} from "react-router-dom";
 import LangContext from "@/context/LangContext.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {LogOut} from "lucide-react";
-import {
-    Dialog,
-    DialogDescription,
-    DialogHeader,
-    DialogContent,
-    DialogTrigger,
-    DialogClose, DialogTitle, DialogFooter
-} from "@/components/ui/dialog.tsx";
-
 export default function Layout({children, data}: {
     data: { name: string; url: string }[];
     children: React.ReactNode;
@@ -70,32 +60,7 @@ export default function Layout({children, data}: {
                             {locale === "en" ? "id" : "en"}
                         </Button>
                         <ModeToggle/>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button className=" px-2">
-                                    <LogOut className="h-[1.2rem] w-[1.2rem]"/>
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogTitle>Logout</DialogTitle>
-                                <DialogHeader>
-                                    {locale === "id" ? "Konfirmasi" : "Confirmation"}
-                                    <DialogDescription>
-                                        {locale === "id" ? "Apakah anda ingin Logout?" : "Do you want to logout?"}
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <DialogFooter className=" justify-center flex-row gap-10 flex">
-                                    <DialogClose
-                                        className="bg-primary text-sm text-secondary px-10 rounded-md w-min ">{locale === "id" ? "Tidak" : "No"}
-                                    </DialogClose>
-                                    <Button aria-label="Close" onClick={() => navigate("/logout")}
-                                            className="bg-red-600 text-sm text-secondary px-10  rounded-md w-min">
-                                        {locale === "id" ? "Ya" : "Yes"}
-                                    </Button>
-                                </DialogFooter>
 
-                            </DialogContent>
-                        </Dialog>
                     </div>
                 </header>
                 <div className="px-5 pt-0">{children}</div>
