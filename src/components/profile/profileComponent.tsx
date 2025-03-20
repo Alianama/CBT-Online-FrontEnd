@@ -138,7 +138,7 @@ export default function ProfileComponent() {
                                         {
                                             icon: <Book className="h-4 w-4 text-primary"/>,
                                             label: t.class,
-                                            value: `Kelas ${user.id_kelas}`,
+                                            value: ` ${t.class} ${user.nama_kelas}`,
                                         },
                                         {
                                             icon: <School className="h-4 w-4 text-primary"/>,

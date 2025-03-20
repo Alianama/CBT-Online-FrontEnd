@@ -126,3 +126,66 @@ export const updatePassword = async ({password, confirm_password}: { password: s
         }
     }
 };
+export const updateProfil = async ({
+                                       id,
+                                       tempat_lahir,
+                                       tanggal_lahir,
+                                       jenis_kelamin,
+                                       provinsi,
+                                       kota,
+                                       kecamatan,
+                                       kelurahan,
+                                       alamat,
+                                       no_hp,
+                                       hobi,
+                                       cita,
+                                       motto
+                                   }: {
+    id: string;
+    tempat_lahir: string;
+    tanggal_lahir: string;
+    jenis_kelamin: string;
+    provinsi: string;
+    kota: string;
+    kecamatan: string;
+    kelurahan: string;
+    alamat: string;
+    no_hp: string;
+    hobi: string;
+    cita: string;
+    motto: string;
+}) => {
+    try {
+        const response = await axiosInstance.put(
+            `${BASE_URL}/profil/${id}`,
+            {
+                tempat_lahir,
+                tanggal_lahir,
+                jenis_kelamin,
+                provinsi,
+                kota,
+                kecamatan,
+                kelurahan,
+                alamat,
+                no_hp,
+                hobi,
+                cita,
+                motto
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const statusCode = error.response?.status;
+            const errorMessage = error.response?.data?.message || "Failed to update profile";
+            throw {status: statusCode, message: errorMessage};
+        } else {
+            throw {status: 500, message: "An unknown error occurred"};
+        }
+    }
+};

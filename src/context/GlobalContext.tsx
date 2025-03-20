@@ -16,6 +16,7 @@ const GlobalContext = createContext<UserContextType | undefined>(undefined);
 export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<UserData | null>(null);
     const [generalUser, setGeneralUser] = useState<UserData | null>(null);
+    const [biodata, setBiodata] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
     const refreshUser = useCallback(async () => {
         setLoading(true);
@@ -27,6 +28,7 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
                 try {
                     const profilResponse = await getProfil(storedUser.user_id);
                     setUser(profilResponse.user);
+                    setBiodata(profilResponse.biodata);
                 } catch (error) {
                     console.error("Failed to fetch user data:", error);
                     setUser(storedUser);
@@ -41,9 +43,10 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
         setLoading(false);
     }, []);
     useEffect(() => {
-        refreshUser();
+        (async () => {
+            await refreshUser();
+        })()
     }, [refreshUser]);
-    console.log(user)
     return (
         <GlobalContext.Provider value={{user, generalUser, setUser, refreshUser, loading}}>
             {children}
