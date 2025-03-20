@@ -7,31 +7,11 @@ export interface Agenda {
     color: string
 }
 
-export interface AgendaResponse {
-    total: number;
-    data: Agenda[];
-}
-
-export interface User {
-    username: string
-    password: string
-}
-
 export interface Question {
     id: number
     text: string
     options: { id: string; text: string }[]
     correctAnswer: string
-}
-
-export interface BookCardProps {
-    id: number;
-    category: string;
-    title: string
-    imageUrl?: string
-    description: string
-    openUrl?: string
-    downloadUrl?: string
 }
 
 export interface Token {
@@ -77,17 +57,6 @@ export interface Mapel {
     nama_kelas: string;
     id_angkatan: number;
     angkatan: string;
-}
-
-export interface MapelResponse {
-    total: number;
-    data: Mapel[];
-}
-
-export interface LessonProps {
-    data: MapelResponse | undefined;
-    error?: Error | null;
-    isLoading: boolean;
 }
 
 export interface SubjectCardProps {

@@ -153,28 +153,6 @@ export default function ProfileComponent() {
                                     ]}
                                 />
 
-                                {/*<div */}
-                                {/*     className="bg-white rounded-xl p-5 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-200">*/}
-                                {/*    <h3 className="text-lg font-semibold text-gray-700 mb-2 flex items-center gap-2">*/}
-                                {/*        <Key className="h-5 w-5 text-primary"/> Ubah Password*/}
-                                {/*    </h3>*/}
-                                {/*    <p className="text-sm text-gray-500 mb-3">Masukkan password baru untuk memperbarui*/}
-                                {/*        akun Anda.</p>*/}
-                                {/*    <Input*/}
-                                {/*        placeholder="Masukkan password baru"*/}
-                                {/*        type="password"*/}
-                                {/*        className="w-full max-md:text-xs mb-5 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none transition"*/}
-                                {/*    /><Input*/}
-                                {/*    placeholder="Konfirmasi password baru"*/}
-                                {/*    type="password"*/}
-                                {/*    className="w-full max-md:text-xs px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none transition"*/}
-                                {/*/>*/}
-                                {/*    <button*/}
-                                {/*        className="mt-4 w-full max-md:text-xm bg-primary text-white font-medium py-2 rounded-lg hover:bg-indigo-600 transition">*/}
-                                {/*        Simpan Password*/}
-                                {/*    </button>*/}
-                                {/*</div>*/}
-
                             </div>
                         </CardContent>
                     </Card>

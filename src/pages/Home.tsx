@@ -22,7 +22,8 @@ export default function Home() {
     const translations: Record<"id" | "en", { [key: string]: string }> = {
         id: {
             welcome: `Selamat Datang, ${userData?.nama}!`,
-            examMessage: "Selamat mengerjakan ujian! Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
+            examMessage: "Selamat mengerjakan ujian!",
+            examMessage2: "Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
             instructions: "Petunjuk Penggunaan",
             instructionsDesc: "Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal.",
             videoTutorial: "Video Tutorial",
@@ -32,7 +33,8 @@ export default function Home() {
         },
         en: {
             welcome: `Welcome, ${userData?.nama}!`,
-            examMessage: "Good luck with your exam! Stay focused and do your best.",
+            examMessage: "Good luck with your exam!",
+            examMessage2: "Stay focused and do your best.",
             instructions: "Instructions",
             instructionsDesc: "Follow these steps to take the exam optimally.",
             videoTutorial: "Video Tutorial",
@@ -47,11 +49,14 @@ export default function Home() {
             <main className="min-h-screen bg-gradient-to-b from-background to-background/80">
                 <section className="container mx-auto px-4 pt-0 pb-12">
                     <div className="max-w-3xl mx-auto text-center">
-                        <h1 className="text-3xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+                        <h1 className="text-2xl font-bold tracking-tight my-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                             {translations[safeLocale].welcome}
                         </h1>
-                        <p className="text-xl text-muted-foreground mb-8">
+                        <p className="text-xm text-muted-foreground ">
                             {translations[safeLocale].examMessage}
+                        </p>
+                        <p className="text-xm text-muted-foreground mb-8">
+                            {translations[safeLocale].examMessage2}
                         </p>
                         <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
                     </div>
@@ -61,7 +66,7 @@ export default function Home() {
 
                     <section className="space-y-8">
                         <div>
-                            <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
+                            <h2 className="text-xl font-bold mb-6 inline-flex items-center">
                                 {translations[safeLocale].instructions}
                                 <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
                             </h2>
@@ -80,7 +85,7 @@ export default function Home() {
 
                     <section className="space-y-6">
                         <div>
-                            <h2 className="text-3xl font-bold mb-6 inline-flex items-center">
+                            <h2 className="text-xl font-bold mb-6 inline-flex items-center">
                                 {translations[safeLocale].videoTutorial}
                                 <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
                             </h2>

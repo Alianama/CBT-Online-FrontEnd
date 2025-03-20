@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {userAuth} from '@/app/api/api-cbt.ts';
-import {toast, Toaster} from "sonner";
+import {toast} from "sonner";
 import {setAccessToken, setRefreshToken, setUserData} from "@/utils/storage.ts";
 import LoginLoadingAnimation from "@/components/ui/login-loading.tsx";
 import {isAuthenticated} from "@/utils/auth.ts";
@@ -59,7 +59,6 @@ export default function Auth() {
     }, [token, navigate, refreshUser]);
     return (
         <div>
-            <Toaster position="top-right" richColors/>
             <LoginLoadingAnimation isLoading={loading} text={message}/>
         </div>
     );

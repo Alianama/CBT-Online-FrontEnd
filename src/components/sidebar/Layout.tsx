@@ -88,7 +88,7 @@ export default function Layout({children, data}: {
                                     <DialogClose
                                         className="bg-primary text-sm text-secondary px-10 rounded-md w-min ">{locale === "id" ? "Tidak" : "No"}
                                     </DialogClose>
-                                    <Button onClick={() => navigate("/logout")}
+                                    <Button aria-label="Close" onClick={() => navigate("/logout")}
                                             className="bg-red-600 text-sm text-secondary px-10  rounded-md w-min">
                                         {locale === "id" ? "Ya" : "Yes"}
                                     </Button>

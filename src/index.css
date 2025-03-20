@@ -90,7 +90,10 @@
     }
 
     body {
-        @apply bg-background text-foreground font-poppins;
+        @apply bg-background text-foreground font-poppins ;
+        @font-face {
+            font-display: swap;
+        }
     }
 }
 
