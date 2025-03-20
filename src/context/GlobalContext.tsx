@@ -1,7 +1,7 @@
 import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {getAuthData} from "@/utils/storage.ts";
 import {isAuthenticated} from "@/utils/auth.ts";
-import {UserData} from "@/types/types.ts";
+import {Profil, UserData} from "@/types/types.ts";
 import {getProfil,} from "@/app/api/api-cbt.ts";
 
 interface UserContextType {
@@ -10,13 +10,14 @@ interface UserContextType {
     setUser: (user: UserData | null) => void;
     refreshUser: () => Promise<void>;
     loading: boolean;
+    biodata: Profil | null;
 }
 
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
 export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<UserData | null>(null);
     const [generalUser, setGeneralUser] = useState<UserData | null>(null);
-    const [biodata, setBiodata] = useState<UserData | null>(null);
+    const [biodata, setBiodata] = useState<Profil | null>(null);
     const [loading, setLoading] = useState(true);
     const refreshUser = useCallback(async () => {
         setLoading(true);
@@ -48,7 +49,7 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
         })()
     }, [refreshUser]);
     return (
-        <GlobalContext.Provider value={{user, generalUser, setUser, refreshUser, loading}}>
+        <GlobalContext.Provider value={{user, generalUser, biodata, setUser, refreshUser, loading}}>
             {children}
         </GlobalContext.Provider>
     );

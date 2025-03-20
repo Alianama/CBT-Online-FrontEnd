@@ -34,15 +34,19 @@ export interface UserData {
 }
 
 export interface Profil {
-    user_id: number;
-    id_kelas: number;
-    nis: string;
-    name: string;
-    ban: number;
-    username: string;
-    id_biodata: number;
-    picture: string;
-    user_type: string;
+    id: number;
+    tempat_lahir: string
+    tanggal_lahir: string
+    jenis_kelamin: string
+    provinsi: string
+    kota: string
+    kecamatan: string
+    kelurahan: string
+    alamat: string
+    no_hp: string | undefined
+    hobi: string
+    cita: string
+    motto: string
 }
 
 export interface Mapel {

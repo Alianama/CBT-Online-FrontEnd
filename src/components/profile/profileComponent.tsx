@@ -6,9 +6,10 @@ import {useGlobal} from "@/context/GlobalContext.tsx";
 import LangContext from "@/context/LangContext.tsx";
 import {useContext} from "react";
 import ChangePassword from "@/components/profile/change-password.tsx";
+import UpdateBiodata from "@/components/profile/update-biodata.tsx";
 
 export default function ProfileComponent() {
-    const {user, generalUser, loading} = useGlobal();
+    const {user, biodata, generalUser, loading} = useGlobal();
     const {locale} = useContext(LangContext);
     const translations = {
         id: {
@@ -81,7 +82,11 @@ export default function ProfileComponent() {
                                             <ShieldAlert className="h-3.5 w-3.5 mr-1"/> {t.blocked}
                                         </Badge>
                                     )}
-                                    <ChangePassword/>
+                                    <div className="flex flex-col gap-3">
+
+                                        <ChangePassword/>
+                                        <UpdateBiodata/>
+                                    </div>
                                 </div>
                             </div>
                         </CardHeader>
@@ -152,8 +157,74 @@ export default function ProfileComponent() {
                                         },
                                     ]}
                                 />
+                                <InfoPanel
+                                    title={t.studentData}
+                                    items={[
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.tempatLahir,
+                                            value: biodata?.tempat_lahir ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.tanggalLahir,
+                                            value: biodata?.tanggal_lahir ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.nis,
+                                            value: biodata?.jenis_kelamin ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.province,
+                                            value: biodata?.provinsi ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.city,
+                                            value: biodata?.kota ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.district,
+                                            value: biodata?.kecamatan ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.village,
+                                            value: biodata?.kelurahan ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.address,
+                                            value: biodata?.alamat ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.phoneNumber,
+                                            value: biodata?.no_hp ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.hobby,
+                                            value: biodata?.hobi ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.ambition,
+                                            value: biodata?.cita ?? "",
+                                        },
+                                        {
+                                            icon: <User className="h-4 w-4 text-primary"/>,
+                                            label: t.motto,
+                                            value: biodata?.motto ?? "",
+                                        },
+                                    ]}
+                                />
 
                             </div>
+
                         </CardContent>
                     </Card>
 
