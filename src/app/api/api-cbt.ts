@@ -109,3 +109,20 @@ export const getProfil = async (id: number | undefined) => {
         }
     }
 }
+export const updatePassword = async ({password, confirm_password}: { password: string; confirm_password: string }) => {
+    try {
+        const response = await axiosInstance.put(`${BASE_URL}/auth/update-password`,
+            {password, confirm_password},
+            {headers: {"Content-Type": "application/json"}}
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const statusCode = error.response?.status;
+            const errorMessage = error.response?.data?.message || "Failed to update password";
+            throw {status: statusCode, message: errorMessage};
+        } else {
+            throw {status: 500, message: "An unknown error occurred"};
+        }
+    }
+};
