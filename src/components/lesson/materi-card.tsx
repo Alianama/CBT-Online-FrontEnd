@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import {materiCard} from "@/types/types.ts";
 import {Link} from "react-router-dom";
-import {DocumentLink} from "@/components/lesson/viewer/document-link.tsx";
 import {Badge} from "@/components/ui/badge.tsx";
 
 const VITE_ASSET_DOMAIN = import.meta.env.VITE_ASSET_DOMAIN;
@@ -24,8 +23,8 @@ export default function MateriCard({
         VITE_ASSET_DOMAIN,
     );
     return (
-        <Card className="w-full max-w-[300px] shadow-sm h-[250px] flex flex-col">
-            <CardContent className="p-3 flex-grow flex flex-col justify-between">
+        <Card className="w-full max-w-[300px] shadow-sm min-h-[200px] flex flex-col">
+            <CardContent className="p-3 flex flex-col justify-between">
                 <div className="flex justify-between items-start mb-2">
                     <div className="flex items-start gap-2">
                         <FileSpreadsheet className="w-5 h-5 text-muted-foreground mt-0.5"/>
@@ -55,7 +54,10 @@ export default function MateriCard({
                 <p
                     className="text-xs leading-relaxed"
                     dangerouslySetInnerHTML={{
-                        __html: materi.content || "No content available.",
+                        __html:
+                            (materi.content?.length > 100
+                                ? materi.content.substring(0, 100) + "..."
+                                : materi.content) || "No content available.",
                     }}
                 ></p>
             </CardContent>
@@ -87,34 +89,23 @@ export default function MateriCard({
                         </Button>
                     </Link>
                     <Button
-                        asChild
-                        variant="outline"
+                        onClick={() => {
+                            const link = document.createElement("a");
+                            link.href = atachment_URL;
+                            link.target = "_blank";
+                            link.download = "";
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }}
                         size="sm"
                         className="w-full text-xs h-8 px-2"
                     >
-                        <DocumentLink
-                            fileUrl={atachment_URL}
-                            fileName={materi.title}
-                            fileType={materi.tipe_materi}
-                        />
+                        <Download className="h-4 w-4 mr-2"/>
+                        Download
                     </Button>
                 </div>
-                <Button
-                    onClick={() => {
-                        const link = document.createElement("a");
-                        link.href = atachment_URL;
-                        link.target = "_blank";
-                        link.download = "";
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }}
-                    size="sm"
-                    className="w-full text-xs h-8 px-2"
-                >
-                    <Download className="h-4 w-4 mr-2"/>
-                    Download
-                </Button>
+
             </CardFooter>
         </Card>
     );
