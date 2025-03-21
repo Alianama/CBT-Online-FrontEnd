@@ -55,6 +55,7 @@ export default function ProfilPage() {
             hobby: "Hobi",
             ambition: "Cita-cita",
             motto: "Motto",
+            alert: "Kamu belum melengkapi biodata. Silakan lengkapi biodata terlebih dahulu.",
         },
         en: {
             userNotFound: "User data not found.",
@@ -82,6 +83,7 @@ export default function ProfilPage() {
             hobby: "Hobby",
             ambition: "Ambition",
             motto: "Motto",
+            alert: "You haven't completed your profile. Please complete your biodata first."
         },
     };
     useEffect(() => {
@@ -98,9 +100,9 @@ export default function ProfilPage() {
             {biodata === null ? (
                 <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4"/>
-                    <AlertTitle>Warning</AlertTitle>
+                    <AlertTitle>Warning!!</AlertTitle>
                     <AlertDescription>
-                        Kamu belum melengkapi biodata, Silahkan lengkapi biodata terlebih dahulu
+                        {t.alert}
                     </AlertDescription>
                 </Alert>
             ) : null}
