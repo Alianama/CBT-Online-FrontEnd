@@ -83,3 +83,10 @@ export interface Materi {
     tipe_materi: string,
     attachment: string,
 }
+
+export interface materiCard {
+    materi: Materi;
+    subject?: string | undefined;
+    idKelas?: string;
+    idMapel?: string;
+}
