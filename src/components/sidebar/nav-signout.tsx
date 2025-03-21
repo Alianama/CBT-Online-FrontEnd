@@ -30,10 +30,10 @@ export function NavSignout() {
           <DialogTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-neutral-900 data-[state=open]:text-sidebar-accent-foreground "
+              className="data-[state=open]:bg-neutral-900 flex item-center data-[state=open]:text-sidebar-accent-foreground "
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-neutral-900 text-sidebar-primary-foreground">
-                <Power className="size-4" />
+              <div className="flex aspect-square m-1 size-6 items-center justify-center text-sm rounded-lg bg-neutral-900 text-sidebar-primary-foreground">
+                <Power className="size-3" />
               </div>
               Sign Out
             </SidebarMenuButton>
