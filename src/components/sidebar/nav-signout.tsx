@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { useNavigate } from "react-router-dom";
 
-export function TeamSwitcher() {
+export function NavSignout() {
   const { locale } = useContext(LangContext);
   const navigate = useNavigate();
   return (

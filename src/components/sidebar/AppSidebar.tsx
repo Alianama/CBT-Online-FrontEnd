@@ -12,9 +12,9 @@ import {
   Map,
   Pencil,
 } from "lucide-react";
-import { NavPrimary } from "./NavPrimary.tsx";
-import { NavUser } from "./NavUser.tsx";
-import { TeamSwitcher } from "./TeamSwitcher.tsx";
+import { NavPrimary } from "./nav-primary.tsx";
+import { NavUser } from "./nav-user.tsx";
+import { NavSignout } from "./nav-signout.tsx";
 import {
   Sidebar,
   SidebarContent,
@@ -143,7 +143,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavPrimary utils={locale === "id" ? data.utils.id : data.utils.en} />
       </SidebarContent>
       <SidebarFooter>
-        <TeamSwitcher />
+        <NavSignout />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
