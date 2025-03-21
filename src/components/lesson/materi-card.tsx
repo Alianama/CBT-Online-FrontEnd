@@ -82,7 +82,7 @@ export default function MateriCard({
                             className="w-full text-xs h-8 px-2 bg-primary"
                             size="sm"
                             disabled={
-                                materi.tipe_materi === "zip" || materi.tipe_materi === "text"
+                                materi.tipe_materi === "zip"
                             }
                         >
                             <ExternalLink/> Open
@@ -100,6 +100,9 @@ export default function MateriCard({
                         }}
                         size="sm"
                         className="w-full text-xs h-8 px-2"
+                        disabled={
+                            materi.tipe_materi === "text"
+                        }
                     >
                         <Download className="h-4 w-4 mr-2"/>
                         Download
