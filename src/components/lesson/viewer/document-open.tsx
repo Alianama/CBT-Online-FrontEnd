@@ -7,13 +7,15 @@ import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 
 export default function DocumentOpen() {
-  const { tipe_materi, attachment, subject, idKelas, idMapel } = useParams<{
-    tipe_materi?: string;
-    attachment?: string;
-    subject?: string;
-    idKelas?: string;
-    idMapel?: string;
-  }>();
+  const { tipe_materi, attachment, title, subject, idKelas, idMapel } =
+    useParams<{
+      tipe_materi?: string;
+      attachment?: string;
+      subject?: string;
+      idKelas?: string;
+      idMapel?: string;
+      title?: string;
+    }>();
   const { locale } = useContext(LanguageContext);
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   const [file_url, setFileUrl] = useState("");
@@ -40,6 +42,7 @@ export default function DocumentOpen() {
   );
   return (
     <Layout data={pageData[safeLocale]}>
+      <title>{`Materi - ${title}`}</title>
       <div className="container mx-auto py-6 px-4 md:px-6">
         <div className="mb-6">
           <Link

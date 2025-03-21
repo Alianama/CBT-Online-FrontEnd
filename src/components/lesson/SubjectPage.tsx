@@ -60,7 +60,8 @@ export default function SubjectPage() {
   };
   return (
     <Layout data={pageData[safeLocale]}>
-      <div className="container mx-auto py-6 px-4 md:px-6">
+      <title>{`Materi - ${currentSubject.title}`}</title>
+      <div className="container flex flex-col mx-auto py-6 px-4 md:px-6">
         <div className="mb-6">
           <Link
             to="/lesson"
@@ -112,7 +113,8 @@ export default function SubjectPage() {
           <p className="text-red-500">Gagal mengambil data: {error.message}</p>
         )}
 
-        <div className="grid grid-cols-1 gap-4">
+        {/*<div className="grid grid-cols-1 gap-4">*/}
+        <div className="container mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {data && data.length > 0 ? (
             data
               .filter(
