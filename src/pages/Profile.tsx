@@ -206,6 +206,11 @@ export default function ProfilPage() {
                     items={[
                       {
                         icon: <User className="h-4 w-4 text-primary" />,
+                        label: t.motto,
+                        value: biodata?.motto ?? "",
+                      },
+                      {
+                        icon: <User className="h-4 w-4 text-primary" />,
                         label: t.tempatLahir,
                         value: biodata?.tempat_lahir ?? "",
                       },
@@ -253,11 +258,6 @@ export default function ProfilPage() {
                         icon: <User className="h-4 w-4 text-primary" />,
                         label: t.ambition,
                         value: biodata?.cita ?? "",
-                      },
-                      {
-                        icon: <User className="h-4 w-4 text-primary" />,
-                        label: t.motto,
-                        value: biodata?.motto ?? "",
                       },
                     ]}
                   />
