@@ -127,7 +127,7 @@ export default function ProfilPage() {
                         <ShieldAlert className="h-3.5 w-3.5 mr-1" /> {t.blocked}
                       </Badge>
                     )}
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col max-md:flex-row gap-3">
                       <ChangePassword />
                       <UpdateBiodata />
                     </div>
