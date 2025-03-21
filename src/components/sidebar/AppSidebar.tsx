@@ -22,7 +22,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar.tsx";
-import LangContext from "@/context/LangContext.tsx";
+import LanguageContext from "@/context/LanguageContext.tsx";
 
 const data = {
   teams: [
@@ -133,7 +133,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { locale } = useContext(LangContext);
+  const { locale } = useContext(LanguageContext);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

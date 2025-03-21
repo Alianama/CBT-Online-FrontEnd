@@ -1,6 +1,6 @@
 "use client";
 import { Power } from "lucide-react";
-import LangContext from "@/context/LangContext.tsx";
+import LanguageContext from "@/context/LanguageContext.tsx";
 import { useContext } from "react";
 import {
   SidebarMenu,
@@ -21,7 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export function NavSignout() {
-  const { locale } = useContext(LangContext);
+  const { locale } = useContext(LanguageContext);
   const navigate = useNavigate();
   return (
     <SidebarMenu>

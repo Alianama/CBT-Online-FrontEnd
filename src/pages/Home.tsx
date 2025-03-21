@@ -1,6 +1,6 @@
 import Layout from "@/components/sidebar/Layout.tsx";
 import { useContext, useEffect, useState } from "react";
-import LangContext from "@/context/LangContext.tsx";
+import LanguageContext from "@/context/LanguageContext.tsx";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { getAuthData } from "@/utils/storage.ts";
 import { UserData } from "@/types/types.ts";
@@ -13,7 +13,7 @@ export default function Home() {
       setUserData(authData?.userData ?? undefined);
     })();
   }, []);
-  const { locale } = useContext(LangContext);
+  const { locale } = useContext(LanguageContext);
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   const pageData: Record<"id" | "en", { name: string; url: string }> = {
     id: { name: "Beranda", url: "/" },

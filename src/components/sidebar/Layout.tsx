@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/breadcrumb.tsx";
 import { ModeToggle } from "@/components/Theme/ModeToggle.tsx";
 import { useNavigate } from "react-router-dom";
-import LangContext from "@/context/LangContext.tsx";
+import LanguageContext from "@/context/LanguageContext.tsx";
 import { Button } from "@/components/ui/button.tsx";
 
 export default function Layout({
@@ -27,7 +27,7 @@ export default function Layout({
   children: React.ReactNode;
 }) {
   const navigate = useNavigate();
-  const { locale, toggleLocale } = React.useContext(LangContext);
+  const { locale, toggleLocale } = React.useContext(LanguageContext);
   return (
     <SidebarProvider>
       <AppSidebar />

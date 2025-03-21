@@ -8,5 +8,5 @@ const defaultValue: LocaleContextType = {
   locale: "id",
   toggleLocale: () => {},
 };
-const LangContext = createContext<LocaleContextType>(defaultValue);
-export default LangContext;
+const LanguageContext = createContext<LocaleContextType>(defaultValue);
+export default LanguageContext;

@@ -3,9 +3,9 @@ import { useContext } from "react";
 import { Input } from "@/components/ui/input.tsx";
 import { Search } from "lucide-react";
 import Layout from "@/components/sidebar/Layout.tsx";
-import LangContext from "@/context/LangContext.tsx";
+import LanguageContext from "@/context/LanguageContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import MapelCard from "@/components/lesson/MapelCard.tsx";
+import MapelCard from "@/components/lesson/mapel-card.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { getMapel } from "@/app/api/api-cbt.ts";
 import { useGlobal } from "@/context/GlobalContext.tsx";
@@ -13,7 +13,7 @@ import type { Mapel } from "@/types/types.ts";
 import { useSearchParams } from "react-router-dom";
 
 export default function Lesson() {
-  const { locale } = useContext(LangContext);
+  const { locale } = useContext(LanguageContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
   const { generalUser } = useGlobal();
