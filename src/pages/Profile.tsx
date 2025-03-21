@@ -93,7 +93,7 @@ export default function ProfilPage() {
   }
   return (
     <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
-      <div className="">
+      <div className="p-10 bg-neutral-100 dark:bg-neutral-800 ">
         <div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-1 border-none shadow-lg ">
@@ -138,7 +138,7 @@ export default function ProfilPage() {
               <CardContent>
                 <div className="space-y-3 mt-2">
                   <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
-                    <Hash className="h-4 w-4 text-primary mr-3" />
+                    <Hash className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
                     <div>
                       <p className="text-sm text-muted-foreground">{t.nis}</p>
                       <p className="font-medium text-black ">{user?.nis}</p>
@@ -146,7 +146,7 @@ export default function ProfilPage() {
                   </div>
 
                   <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
-                    <Mail className="h-4 w-4 text-primary mr-3" />
+                    <Mail className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
                     <div>
                       <p className="text-sm text-muted-foreground">
                         {t.username}
@@ -157,13 +157,33 @@ export default function ProfilPage() {
                     </div>
                   </div>
                   <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
-                    <Type className="h-4 w-4 text-primary mr-3" />
+                    <Type className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
                     <div>
                       <p className="text-sm text-muted-foreground">
                         {t.userType}
                       </p>
                       <p className="font-medium text-black ">
                         {generalUser?.user_type}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
+                    <School className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        {t.angkatan}
+                      </p>
+                      <p className="font-medium text-black ">
+                        {user?.angkatan}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
+                    <Book className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t.class}</p>
+                      <p className="font-medium text-black ">
+                        {` ${t.class} ${user?.nama_kelas}`}
                       </p>
                     </div>
                   </div>
@@ -180,32 +200,7 @@ export default function ProfilPage() {
               </CardHeader>
 
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <InfoPanel
-                    title={t.studentData}
-                    items={[
-                      {
-                        icon: <User className="h-4 w-4 text-primary" />,
-                        label: t.fullName,
-                        value: user?.nama ?? "",
-                      },
-                      {
-                        icon: <Book className="h-4 w-4 text-primary" />,
-                        label: t.class,
-                        value: ` ${t.class} ${user?.nama_kelas}`,
-                      },
-                      {
-                        icon: <School className="h-4 w-4 text-primary" />,
-                        label: t.nis,
-                        value: user?.nis ?? "",
-                      },
-                      {
-                        icon: <School className="h-4 w-4 text-primary" />,
-                        label: t.angkatan,
-                        value: `${user?.angkatan}`,
-                      },
-                    ]}
-                  />
+                <div className="">
                   <InfoPanel
                     title="Biodata"
                     items={[
