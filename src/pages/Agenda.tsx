@@ -1,10 +1,10 @@
 "use client";
 import { useContext, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { EventList } from "@/components/schedule/EventList.tsx";
-import { CalendarHeader } from "@/components/schedule/CalendarHeader.tsx";
+import { EventList } from "@/components/schedule/calendar-listevent.tsx";
+import { CalendarHeader } from "@/components/schedule/calendar-header.tsx";
 import Layout from "@/components/sidebar/Layout.tsx";
-import LangContext from "@/context/LangContext.tsx";
+import LanguageContext from "@/context/LanguageContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { getAgenda } from "@/app/api/api-cbt.ts";
@@ -20,7 +20,7 @@ export default function SchedulePage() {
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
     );
   const handleToday = () => setCurrentDate(new Date());
-  const { locale } = useContext(LangContext);
+  const { locale } = useContext(LanguageContext);
   const pageData = {
     id: { name: "Agenda", url: "/agenda" },
     en: { name: "Agenda", url: "/agenda" },
