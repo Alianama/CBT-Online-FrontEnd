@@ -216,11 +216,6 @@ export default function ProfilPage() {
                       },
                       {
                         icon: <User className="h-4 w-4 text-primary" />,
-                        label: t.nis,
-                        value: biodata?.jenis_kelamin ?? "",
-                      },
-                      {
-                        icon: <User className="h-4 w-4 text-primary" />,
                         label: t.province,
                         value: biodata?.provinsi ?? "",
                       },
