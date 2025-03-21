@@ -6,6 +6,7 @@ import {
   setAccessToken,
   setRefreshToken,
   setUserData,
+  setSchoolName,
 } from "@/utils/storage.ts";
 import LoginLoadingAnimation from "@/components/ui/login-loading.tsx";
 import { isAuthenticated } from "@/utils/auth.ts";
@@ -29,10 +30,12 @@ export default function Auth() {
           setLoading(true);
           const response = await userAuth(token);
           if (response) {
-            const { access_token, refresh_token, user_data } = response;
+            const { access_token, refresh_token, user_data, nama_sekolah } =
+              response;
             setAccessToken(access_token);
             setRefreshToken(refresh_token);
             setUserData(user_data);
+            setSchoolName(nama_sekolah);
             console.log("✅ User authenticated:", response);
             setMessage("Authentication successful! 🎉");
             toast.success("Login success!");

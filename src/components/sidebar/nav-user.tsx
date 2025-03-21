@@ -1,10 +1,6 @@
 "use client";
 import { BadgeCheck, ChevronsUpDown } from "lucide-react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar.tsx";
+import { Avatar, AvatarImage } from "@/components/ui/avatar.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +23,8 @@ export function NavUser() {
   const navigate = useNavigate();
   const { generalUser } = useGlobal();
   const { isMobile } = useSidebar();
-  // const onLogout = () => {
-  //   navigate("/logout");
-  // };
   const handleClickProfile = () => {
+    document.body.style.pointerEvents = "auto";
     navigate(`/profile`);
   };
   return (
@@ -47,7 +41,6 @@ export function NavUser() {
                   src={generalUser?.picture}
                   alt={generalUser?.nama}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
@@ -94,10 +87,6 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            {/*<DropdownMenuItem onClick={onLogout}>*/}
-            {/*  <LogOut />*/}
-            {/*  Log out*/}
-            {/*</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

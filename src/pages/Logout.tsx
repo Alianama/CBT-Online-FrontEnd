@@ -14,15 +14,15 @@ export default function LogoutAnimation() {
   );
   useEffect(() => {
     setStage("profile");
-    const loadingTimer = setTimeout(() => {
+    const loadingTimer = setTimeout(function () {
       clearAuthData();
       console.log();
       setStage("loading");
     }, 1000);
-    const successTimer = setTimeout(() => {
+    const successTimer = setTimeout(function () {
       setStage("success");
     }, 2000);
-    const redirectTimer = setTimeout(() => {
+    const redirectTimer = setTimeout(function () {
       window.location.href = LOGOUT_URL;
     }, 4000);
     return () => {

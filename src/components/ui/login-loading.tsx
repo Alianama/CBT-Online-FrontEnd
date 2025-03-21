@@ -1,36 +1,44 @@
-"use client"
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { Loader2 } from "lucide-react"
+"use client";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
+
 interface LoginLoadingAnimationProps {
-  isLoading?: boolean
-  text?: string
-  onComplete?: () => void
-  duration?: number
-  fullScreen?: boolean
+  isLoading?: boolean;
+  text?: string;
+  onComplete?: () => void;
+  duration?: number;
+  fullScreen?: boolean;
 }
-export default function LoginLoadingAnimation({isLoading = true, text = "Logging in", onComplete, duration = 3000, fullScreen = true,}: LoginLoadingAnimationProps) {
-  const [dots, setDots] = useState("")
+
+export default function LoginLoadingAnimation({
+  isLoading = true,
+  text = "Logging in",
+  onComplete,
+  duration = 3000,
+  fullScreen = true,
+}: LoginLoadingAnimationProps) {
+  const [dots, setDots] = useState("");
   useEffect(() => {
-    if (!isLoading) return
-    const dotInterval = setInterval(() => {
+    if (!isLoading) return;
+    const dotInterval = setInterval(function () {
       setDots((prev) => {
-        if (prev.length >= 3) return ""
-        return prev + "."
-      })
-    }, 400)
-    const completeTimer = setTimeout(() => {
-      if (onComplete) onComplete()
-    }, duration)
+        if (prev.length >= 3) return "";
+        return prev + ".";
+      });
+    }, 400);
+    const completeTimer = setTimeout(function () {
+      if (onComplete) onComplete();
+    }, duration);
     return () => {
-      clearInterval(dotInterval)
-      clearTimeout(completeTimer)
-    }
-  }, [isLoading, duration, onComplete])
-  if (!isLoading) return null
+      clearInterval(dotInterval);
+      clearTimeout(completeTimer);
+    };
+  }, [isLoading, duration, onComplete]);
+  if (!isLoading) return null;
   const containerClasses = fullScreen
     ? "fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
-    : "flex items-center justify-center"
+    : "flex items-center justify-center";
   return (
     <div className={containerClasses}>
       <div className="bg-card rounded-lg shadow-lg p-8 max-w-md w-full mx-4">
@@ -73,7 +81,9 @@ export default function LoginLoadingAnimation({isLoading = true, text = "Logging
               {text}
               {dots}
             </h3>
-            <p className="text-muted-foreground text-sm">Please wait while we verify your credentials</p>
+            <p className="text-muted-foreground text-sm">
+              Please wait while we verify your credentials
+            </p>
           </motion.div>
 
           <motion.div
@@ -85,6 +95,5 @@ export default function LoginLoadingAnimation({isLoading = true, text = "Logging
         </div>
       </div>
     </div>
-  )
+  );
 }
-

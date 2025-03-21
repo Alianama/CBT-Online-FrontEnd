@@ -17,11 +17,14 @@ interface UserContextType {
   refreshUser: () => Promise<void>;
   loading: boolean;
   biodata: Profil | null;
+  school: string | null;
+  setSchool: (school: string | null) => void;
 }
 
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
 export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
+  const [school, setSchool] = useState<string | null>(null);
   const [generalUser, setGeneralUser] = useState<UserData | null>(null);
   const [biodata, setBiodata] = useState<Profil | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +34,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     if (auth) {
       const storedUser = getAuthData()?.userData;
       setGeneralUser(storedUser);
+      const schoolNameUser = getAuthData()?.schoolName;
+      setSchool(schoolNameUser);
       if (storedUser?.user_id) {
         try {
           const profilResponse = await getProfil(storedUser.user_id);
@@ -56,7 +61,16 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   }, [refreshUser]);
   return (
     <GlobalContext.Provider
-      value={{ user, generalUser, biodata, setUser, refreshUser, loading }}
+      value={{
+        user,
+        generalUser,
+        biodata,
+        school,
+        setSchool,
+        setUser,
+        refreshUser,
+        loading,
+      }}
     >
       {children}
     </GlobalContext.Provider>

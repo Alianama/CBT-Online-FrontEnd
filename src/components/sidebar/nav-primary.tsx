@@ -8,6 +8,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useGlobal } from "@/context/GlobalContext.tsx";
 
 export function NavPrimary({
   utils,
@@ -20,9 +21,10 @@ export function NavPrimary({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { school } = useGlobal();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>CBT</SidebarGroupLabel>
+      <SidebarGroupLabel>{school}</SidebarGroupLabel>
       <SidebarMenu>
         {utils.map((item) => (
           <SidebarMenuItem key={item.name}>

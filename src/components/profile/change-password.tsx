@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { updatePassword } from "@/app/api/api-cbt.ts";
 import { toast } from "sonner";
 import LanguageContext from "@/context/LanguageContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword() {
   const { locale } = useContext(LanguageContext);
@@ -34,6 +35,8 @@ export default function ChangePassword() {
       passwordMismatch: "Password tidak cocok",
       passwordUpdated: "Password berhasil diperbarui",
       errorOccurred: "Terjadi kesalahan",
+      successChnagePassword: "Ubah Password Berhasil",
+      successChnagePassword2: "Silahkan login kembali dengan password baru!",
     },
     en: {
       changePassword: "Change Password",
@@ -49,9 +52,12 @@ export default function ChangePassword() {
       passwordMismatch: "Passwords do not match",
       passwordUpdated: "Password updated successfully",
       errorOccurred: "An error occurred",
+      successChnagePassword: "Change Password successfully",
+      successChnagePassword2: "Please re login with new password!",
     },
   };
   const t = translations[locale as keyof typeof translations];
+  const [isThridDialogOpen, setIsThridDialogOpen] = useState(false);
   const [isFirstDialogOpen, setFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setSecondDialogOpen] = useState(false);
   const [password, setPassword] = useState("");
@@ -80,6 +86,7 @@ export default function ChangePassword() {
       await updatePassword({ password, confirm_password: confirmPassword });
       toast.success(t.passwordUpdated);
       resetState();
+      setIsThridDialogOpen(true);
       setSecondDialogOpen(false);
     } catch (error) {
       const err = error as { status?: number; message?: string };
@@ -90,6 +97,7 @@ export default function ChangePassword() {
       setLoading(false);
     }
   };
+  const navigate = useNavigate();
   return (
     <>
       <Dialog
@@ -157,6 +165,7 @@ export default function ChangePassword() {
                   setPassword(e.target.value);
                   setErrorMessage(null);
                 }}
+                name="password"
                 value={password}
                 placeholder={t.newPassword}
                 type={showPassword ? "text" : "password"}
@@ -187,6 +196,7 @@ export default function ChangePassword() {
                   setConfirmPassword(e.target.value);
                   setErrorMessage(null);
                 }}
+                name="confirmPassword"
                 value={confirmPassword}
                 placeholder={t.confirmNewPassword}
                 type={showConfirmPassword ? "text" : "password"}
@@ -225,6 +235,22 @@ export default function ChangePassword() {
               {loading ? "Loading..." : t.savePassword}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isThridDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ubah password Berhasil</DialogTitle>
+            <DialogDescription>
+              Silahkan Login kembali dengan password baru
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button onClick={() => navigate("/logout")}>Ok</Button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
