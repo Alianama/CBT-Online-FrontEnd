@@ -90,9 +90,9 @@ export default function ProfilPage() {
         },
     }
     const {data: biodata, isLoading} = useQuery({
-        queryKey: ["profil", generalUser?.user_id, generalUser?.user_type],
+        queryKey: ["profil"],
         queryFn: async () => {
-            const response = await getProfil(generalUser?.user_id, generalUser?.user_type);
+            const response = await getProfil();
             setBiodata(response?.biodata)
             return response?.biodata;
         },

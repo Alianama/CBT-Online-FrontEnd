@@ -92,17 +92,9 @@ export const getMateriByID = async (id: number) => {
         }
     }
 }
-export const getProfil = async (user_id: number | undefined, user_type: string | undefined) => {
+export const getProfil = async () => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL}/profil`, {
-            params: {
-                user_id: user_id,
-                user_type: user_type
-            },
-            headers: {
-                Accept: 'application/json',
-            }
-        })
+        const response = await axiosInstance.get(`${BASE_URL}/profil`, {})
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -298,6 +290,50 @@ export const verifyOTP = async (no_hp: string, otp: string) => {
             const statusCode = error.response?.status;
             const errorMessage = error.response?.data?.message || "Failed to verify OTP";
             throw {status: statusCode, message: errorMessage};
+        }
+    }
+}
+
+export const getProvinces = async ()=> {
+    try {
+        const response = await axios.get(`/indonesia-api/provinces.json`, {});
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to get provinces.");
+        }
+    }
+}
+
+export const getKabKota = async (id:string | undefined)=> {
+    try {
+        const response = await axios.get(`/indonesia-api/regencies/${id}.json`, {});
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to get Kab / Kota.");
+        }
+    }
+}
+
+export const getKecamatan = async (id:string | undefined)=> {
+    try {
+        const response = await axios.get(`/indonesia-api/districts/${id}.json`, {});
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to get Kecamatan");
+        }
+    }
+}
+
+export const getKelurahan = async (id:string | undefined)=> {
+    try {
+        const response = await axios.get(`/indonesia-api/villages/${id}.json`, {});
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to get Kelurahan");
         }
     }
 }
