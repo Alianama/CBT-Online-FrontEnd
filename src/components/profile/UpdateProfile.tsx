@@ -106,6 +106,8 @@ export default function UpdateProfile() {
   });
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     (async () => {
       if (user_id) {

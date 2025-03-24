@@ -3,7 +3,7 @@ import axiosInstance from "@/utils/axiosInstance.ts";
 
 const ALAMAT_API =
   import.meta.env.MODE === "development"
-    ? "/indonesia-api"
+    ? "https://www.emsifa.com/api-wilayah-indonesia/api"
     : "https://www.emsifa.com/api-wilayah-indonesia/api";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const userAuth = async (token: string) => {
