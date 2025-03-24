@@ -1,6 +1,10 @@
 import axios from 'axios';
 import axiosInstance from "@/utils/axiosInstance.ts";
 
+const ALAMAT_API =
+  import.meta.env.MODE === "development"
+    ? "/indonesia-api"
+    : "https://www.emsifa.com/api-wilayah-indonesia/api";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const userAuth = async (token: string) => {
     try {
@@ -296,7 +300,7 @@ export const verifyOTP = async (no_hp: string, otp: string) => {
 
 export const getProvinces = async ()=> {
     try {
-        const response = await axios.get(`/indonesia-api/provinces.json`, {});
+        const response = await axios.get(`${ALAMAT_API}/provinces.json`, {});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -307,7 +311,7 @@ export const getProvinces = async ()=> {
 
 export const getKabKota = async (id:string | undefined)=> {
     try {
-        const response = await axios.get(`/indonesia-api/regencies/${id}.json`, {});
+        const response = await axios.get(`${ALAMAT_API}/regencies/${id}.json`, {});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -318,7 +322,7 @@ export const getKabKota = async (id:string | undefined)=> {
 
 export const getKecamatan = async (id:string | undefined)=> {
     try {
-        const response = await axios.get(`/indonesia-api/districts/${id}.json`, {});
+        const response = await axios.get(`${ALAMAT_API}/districts/${id}.json`, {});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -329,7 +333,7 @@ export const getKecamatan = async (id:string | undefined)=> {
 
 export const getKelurahan = async (id:string | undefined)=> {
     try {
-        const response = await axios.get(`/indonesia-api/villages/${id}.json`, {});
+        const response = await axios.get(`${ALAMAT_API}/villages/${id}.json`, {});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
