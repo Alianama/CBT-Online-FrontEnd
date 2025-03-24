@@ -11,18 +11,21 @@ import {
     Type,
     User,
     UserCheck,
+    UserRoundPen
 } from "lucide-react";
 import InfoPanel from "@/components/profile/info-panel.tsx";
 import {useGlobal} from "@/context/GlobalContext.tsx";
 import LanguageContext from "@/context/LanguageContext.tsx";
-import {useContext, useEffect, useState} from "react";
+import {useContext,} from "react";
 import ChangePassword from "@/components/profile/change-password.tsx";
-import UpdateBiodata from "@/components/profile/update-biodata.tsx";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
+import {useNavigate} from "react-router-dom";
+import {getProfil} from "@/app/api/api-cbt.ts";
+import {useQuery} from "@tanstack/react-query";
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 export default function ProfilPage() {
-    const {user, biodata, generalUser} = useGlobal();
-    const [isReady, setIsReady] = useState(false);
+    const {user, generalUser, setBiodata} = useGlobal();
     const {locale} = useContext(LanguageContext);
     const pagedata = {
         id: {name: "Profil", url: "/profile"},
@@ -85,27 +88,41 @@ export default function ProfilPage() {
             motto: "Motto",
             alert: "You haven't completed your profile. Please complete your biodata first."
         },
-    };
-    useEffect(() => {
-        if (user && generalUser) {
-            setIsReady(true);
-        }
-    }, [user, biodata, generalUser]);
+    }
+    const {data: biodata, isLoading} = useQuery({
+        queryKey: ["profil", generalUser?.user_id, generalUser?.user_type],
+        queryFn: async () => {
+            const response = await getProfil(generalUser?.user_id, generalUser?.user_type);
+            setBiodata(response?.biodata)
+            return response?.biodata;
+        },
+        enabled: !!generalUser?.user_id && !!generalUser.user_type,
+    });
+    const navigate = useNavigate();
     const t = translations[locale as keyof typeof translations];
-    if (!isReady) {
-        return <p></p>;
+    if (isLoading) {
+        return <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
+            <div className="flex w-full gap-10 max-md:flex-col h-screen">
+                <Skeleton className="h-1/2 w-1/2 max-md:w-full rounded-xl"/>
+                <Skeleton className="h-1/2 w-1/2 max-md:w-full rounded-xl"/>
+            </div>
+        </Layout>;
     }
     return (
         <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
-            {biodata === null ? (
-                <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4"/>
-                    <AlertTitle>Warning!!</AlertTitle>
-                    <AlertDescription>
-                        {t.alert}
-                    </AlertDescription>
-                </Alert>
-            ) : null}
+
+
+            {
+                biodata === null ? (
+                    <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4"/>
+                        <AlertTitle>Warning!!</AlertTitle>
+                        <AlertDescription>
+                            {t.alert}
+                        </AlertDescription>
+                    </Alert>
+                ) : null}
+
             <div className="p-10 bg-neutral-100 dark:bg-neutral-800 ">
                 <div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -143,7 +160,12 @@ export default function ProfilPage() {
                                         )}
                                         <div className="flex flex-col max-md:flex-row gap-3">
                                             <ChangePassword/>
-                                            <UpdateBiodata/>
+                                            <Badge
+                                                onClick={() => navigate(`/update-profile`)}
+                                                className="bg-blue-50 text-green-600 cursor-pointer border-blue-200 hover:bg-emerald-100 transition-colors duration-300 px-3 py-1"
+                                            >
+                                                <UserRoundPen className="h-3.5 w-3.5 mr-1"/> Update Biodata
+                                            </Badge>
                                         </div>
                                     </div>
                                 </div>

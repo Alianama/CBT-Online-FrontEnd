@@ -25,7 +25,7 @@ export interface UserData {
     nama_siswa: string;
     picture: string;
     user_id: number;
-    user_type: number;
+    user_type: string;
     id_kelas: number;
     nama: string;
     nis: string;
@@ -34,7 +34,9 @@ export interface UserData {
 }
 
 export interface Profil {
-    id: number;
+    id_biodata: number;
+    user_id: number;
+    user_type: string;
     tempat_lahir: string
     tanggal_lahir: string
     jenis_kelamin: string
@@ -43,7 +45,7 @@ export interface Profil {
     kecamatan: string
     kelurahan: string
     alamat: string
-    no_hp: string | undefined
+    no_hp: string
     hobi: string
     cita: string
     motto: string
