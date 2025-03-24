@@ -96,7 +96,7 @@ export default function ProfilPage() {
             setBiodata(response?.biodata)
             return response?.biodata;
         },
-        enabled: !!generalUser?.user_id && !!generalUser.user_type,
+        refetchOnWindowFocus: true,
     });
     const navigate = useNavigate();
     const t = translations[locale as keyof typeof translations];
@@ -252,8 +252,8 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.tempatLahir,
-                                                value: biodata?.tempat_lahir ?? "",
+                                                label: t.province,
+                                                value: biodata?.provinsi ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
@@ -262,13 +262,13 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.province,
-                                                value: biodata?.provinsi ?? "",
+                                                label: t.city,
+                                                value: biodata?.kota ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.city,
-                                                value: biodata?.kota ?? "",
+                                                label: t.tempatLahir,
+                                                value: biodata?.tempat_lahir ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
@@ -277,8 +277,8 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.village,
-                                                value: biodata?.kelurahan ?? "",
+                                                label: t.hobby,
+                                                value: biodata?.hobi ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
@@ -292,8 +292,8 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.hobby,
-                                                value: biodata?.hobi ?? "",
+                                                label: t.village,
+                                                value: biodata?.kelurahan ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
