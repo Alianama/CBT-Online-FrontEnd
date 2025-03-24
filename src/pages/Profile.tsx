@@ -25,7 +25,7 @@ import {useQuery} from "@tanstack/react-query";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 export default function ProfilPage() {
-    const {user, generalUser, setBiodata} = useGlobal();
+    const {user, generalUser} = useGlobal();
     const {locale} = useContext(LanguageContext);
     const pagedata = {
         id: {name: "Profil", url: "/profile"},
@@ -89,14 +89,14 @@ export default function ProfilPage() {
             alert: "You haven't completed your profile. Please complete your biodata first."
         },
     }
-    const {data: biodata, isLoading} = useQuery({
-        queryKey: ["profil"],
+    const { data: biodata, isLoading } = useQuery({
+        queryKey: ["biodata"],
         queryFn: async () => {
             const response = await getProfil();
-            setBiodata(response?.biodata)
             return response?.biodata;
         },
         refetchOnWindowFocus: true,
+        refetchOnMount: true,
     });
     const navigate = useNavigate();
     const t = translations[locale as keyof typeof translations];
