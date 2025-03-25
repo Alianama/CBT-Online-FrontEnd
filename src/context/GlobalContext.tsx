@@ -39,7 +39,7 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
             setSchool(schoolNameUser);
             if (storedUser?.user_id) {
                 try {
-                    const profilResponse = await getProfil(storedUser.user_id, storedUser.user_type);
+                    const profilResponse = await getProfil();
                     setUser(profilResponse.user);
                 } catch (error) {
                     console.error("Failed to fetch user data:", error);
