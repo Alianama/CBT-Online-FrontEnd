@@ -2,9 +2,9 @@ import axios from 'axios';
 import axiosInstance from "@/utils/axiosInstance.ts";
 
 const ALAMAT_API =
-  import.meta.env.MODE === "development"
-    ? "https://www.emsifa.com/api-wilayah-indonesia/api"
-    : "https://www.emsifa.com/api-wilayah-indonesia/api";
+    import.meta.env.MODE === "development"
+        ? "https://www.emsifa.com/api-wilayah-indonesia/api"
+        : "https://www.emsifa.com/api-wilayah-indonesia/api";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const userAuth = async (token: string) => {
     try {
@@ -110,7 +110,7 @@ export const getProfil = async () => {
 }
 export const updatePassword = async ({password, confirm_password}: { password: string; confirm_password: string }) => {
     try {
-        const response = await axiosInstance.put(`${BASE_URL}/auth/update-password`,
+        const response = await axiosInstance.post(`${BASE_URL}/auth/update-password`,
             {password, confirm_password},
             {headers: {"Content-Type": "application/json"}}
         );
@@ -296,9 +296,8 @@ export const verifyOTP = async (no_hp: string, otp: string) => {
             throw {status: statusCode, message: errorMessage};
         }
     }
-}
-
-export const getProvinces = async ()=> {
+};
+export const getProvinces = async () => {
     try {
         const response = await axios.get(`${ALAMAT_API}/provinces.json`, {});
         return response.data;
@@ -307,9 +306,8 @@ export const getProvinces = async ()=> {
             throw new Error(error.response?.data?.message || "Failed to get provinces.");
         }
     }
-}
-
-export const getKabKota = async (id:string | undefined)=> {
+};
+export const getKabKota = async (id: string | undefined) => {
     try {
         const response = await axios.get(`${ALAMAT_API}/regencies/${id}.json`, {});
         return response.data;
@@ -319,8 +317,7 @@ export const getKabKota = async (id:string | undefined)=> {
         }
     }
 }
-
-export const getKecamatan = async (id:string | undefined)=> {
+export const getKecamatan = async (id: string | undefined) => {
     try {
         const response = await axios.get(`${ALAMAT_API}/districts/${id}.json`, {});
         return response.data;
@@ -329,15 +326,15 @@ export const getKecamatan = async (id:string | undefined)=> {
             throw new Error(error.response?.data?.message || "Failed to get Kecamatan");
         }
     }
-}
-
-export const getKelurahan = async (id:string | undefined)=> {
+};
+export const getKelurahan = async (id: string | undefined) => {
     try {
         const response = await axios.get(`${ALAMAT_API}/villages/${id}.json`, {});
+        console.log(response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             throw new Error(error.response?.data?.message || "Failed to get Kelurahan");
         }
     }
-}
+};

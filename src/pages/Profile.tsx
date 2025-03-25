@@ -89,7 +89,7 @@ export default function ProfilPage() {
             alert: "You haven't completed your profile. Please complete your biodata first."
         },
     }
-    const { data: biodata, isLoading } = useQuery({
+    const {data: biodata, isLoading} = useQuery({
         queryKey: ["biodata"],
         queryFn: async () => {
             const response = await getProfil();
@@ -241,19 +241,14 @@ export default function ProfilPage() {
                             </CardHeader>
 
                             <CardContent>
-                                <div className="">
+                                <div className="flex max-md:flex-col gap-10">
                                     <InfoPanel
                                         title="Biodata"
                                         items={[
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.motto,
-                                                value: biodata?.motto ?? "",
-                                            },
-                                            {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.province,
-                                                value: biodata?.provinsi ?? "",
+                                                label: t.phoneNumber,
+                                                value: biodata?.no_hp ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
@@ -262,18 +257,8 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.city,
-                                                value: biodata?.kota ?? "",
-                                            },
-                                            {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
                                                 label: t.tempatLahir,
                                                 value: biodata?.tempat_lahir ?? "",
-                                            },
-                                            {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.district,
-                                                value: biodata?.kecamatan ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
@@ -282,13 +267,33 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.address,
-                                                value: biodata?.alamat ?? "",
+                                                label: t.ambition,
+                                                value: biodata?.cita ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.phoneNumber,
-                                                value: biodata?.no_hp ?? "",
+                                                label: t.motto,
+                                                value: biodata?.motto ?? "",
+                                            },
+                                        ]}
+                                    />
+                                    <InfoPanel
+                                        title="Alamat"
+                                        items={[
+                                            {
+                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                label: t.province,
+                                                value: biodata?.provinsi ?? "",
+                                            },
+                                            {
+                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                label: t.city,
+                                                value: biodata?.kota ?? "",
+                                            },
+                                            {
+                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                label: t.district,
+                                                value: biodata?.kecamatan ?? "",
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
@@ -297,8 +302,8 @@ export default function ProfilPage() {
                                             },
                                             {
                                                 icon: <User className="h-4 w-4 text-primary"/>,
-                                                label: t.ambition,
-                                                value: biodata?.cita ?? "",
+                                                label: t.address,
+                                                value: biodata?.alamat ?? "",
                                             },
                                         ]}
                                     />
