@@ -19,11 +19,13 @@ export default function InfoPanel({
                         className="flex items-center space-x-3 p-2 rounded-md hover:bg-slate-100 transition-colors duration-200"
                     >
                         <div className="bg-indigo-50 p-2 rounded-md">{item.icon}</div>
-                        <div>
+                        <div className="flex flex-col w-full">
                             <p className="text-xs font-medium text-muted-foreground">
                                 {item.label}
                             </p>
-                            <p className="font-medium text-black">{item.value}</p>
+                            <p className="font-medium text-sm text-black break-all overflow-hidden text-ellipsis whitespace-normal">
+                                {item.value}
+                            </p>
                         </div>
                     </div>
                 ))}

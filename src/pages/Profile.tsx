@@ -3,15 +3,16 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {
     AlertCircle,
-    Book,
+    Book, CalendarDays, GraduationCap,
     Hash,
-    Mail,
+    House,
+    Mail, MapPinHouse, PhoneCall,
     School,
-    ShieldAlert,
+    ShieldAlert, Smile,
     Type,
     User,
     UserCheck,
-    UserRoundPen
+    UserRoundPen, Volleyball
 } from "lucide-react";
 import InfoPanel from "@/components/profile/info-panel.tsx";
 import {useGlobal} from "@/context/GlobalContext.tsx";
@@ -113,7 +114,7 @@ export default function ProfilPage() {
 
 
             {
-                biodata === null ? (
+                biodata.tempat_lahir === null ? (
                     <Alert variant="destructive">
                         <AlertCircle className="h-4 w-4"/>
                         <AlertTitle>Warning!!</AlertTitle>
@@ -137,7 +138,7 @@ export default function ProfilPage() {
                                     }}
                                 ></div>
                                 <div className="mt-6 w-full text-center">
-                                    <CardTitle className="text-2xl font-bold tracking-tight">
+                                    <CardTitle className="text-lg font-bold tracking-tight">
                                         {user?.nama}
                                     </CardTitle>
                                     <p className="text-muted-foreground mt-1">
@@ -177,8 +178,8 @@ export default function ProfilPage() {
                                         className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
                                         <Hash className="h-4 w-4 dark:text-neutral-800 text-primary mr-3"/>
                                         <div>
-                                            <p className="text-sm text-muted-foreground">{t.nis}</p>
-                                            <p className="font-medium text-black ">{user?.nis}</p>
+                                            <p className="text-xs text-muted-foreground">{t.nis}</p>
+                                            <p className="font-medium text-sm text-black ">{user?.nis}</p>
                                         </div>
                                     </div>
 
@@ -186,10 +187,10 @@ export default function ProfilPage() {
                                         className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
                                         <Mail className="h-4 w-4 dark:text-neutral-800 text-primary mr-3"/>
                                         <div>
-                                            <p className="text-sm text-muted-foreground">
+                                            <p className="text-xs text-muted-foreground">
                                                 {t.username}
                                             </p>
-                                            <p className="font-medium text-black ">
+                                            <p className="font-medium text-sm text-black ">
                                                 {user?.username}
                                             </p>
                                         </div>
@@ -198,10 +199,10 @@ export default function ProfilPage() {
                                         className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
                                         <Type className="h-4 w-4 dark:text-neutral-800 text-primary mr-3"/>
                                         <div>
-                                            <p className="text-sm text-muted-foreground">
+                                            <p className="text-xs text-muted-foreground">
                                                 {t.userType}
                                             </p>
-                                            <p className="font-medium text-black ">
+                                            <p className="font-medium text-sm text-black ">
                                                 {generalUser?.user_type}
                                             </p>
                                         </div>
@@ -210,10 +211,10 @@ export default function ProfilPage() {
                                         className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
                                         <School className="h-4 w-4 dark:text-neutral-800 text-primary mr-3"/>
                                         <div>
-                                            <p className="text-sm text-muted-foreground">
+                                            <p className="text-xs text-muted-foreground">
                                                 {t.angkatan}
                                             </p>
-                                            <p className="font-medium text-black ">
+                                            <p className="font-medium text-sm text-black ">
                                                 {user?.angkatan}
                                             </p>
                                         </div>
@@ -222,8 +223,8 @@ export default function ProfilPage() {
                                         className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
                                         <Book className="h-4 w-4 dark:text-neutral-800 text-primary mr-3"/>
                                         <div>
-                                            <p className="text-sm text-muted-foreground">{t.class}</p>
-                                            <p className="font-medium text-black ">
+                                            <p className="text-xs text-muted-foreground">{t.class}</p>
+                                            <p className="font-medium text-sm text-black ">
                                                 {` ${t.class} ${user?.nama_kelas}`}
                                             </p>
                                         </div>
@@ -234,7 +235,7 @@ export default function ProfilPage() {
 
                         <Card className="lg:col-span-2 border-none shadow-lg">
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-xl font-semibold flex items-center">
+                                <CardTitle className="text-lg font-semibold flex items-center">
                                     <User className="h-5 w-5 text-primary mr-2"/>
                                     {t.studentInfo}
                                 </CardTitle>
@@ -246,32 +247,32 @@ export default function ProfilPage() {
                                         title="Biodata"
                                         items={[
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <PhoneCall className="h-4 w-4 text-primary"/>,
                                                 label: t.phoneNumber,
                                                 value: biodata?.no_hp ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <CalendarDays className="h-4 w-4 text-primary"/>,
                                                 label: t.tanggalLahir,
                                                 value: biodata?.tanggal_lahir ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <MapPinHouse className="h-4 w-4 text-primary"/>,
                                                 label: t.tempatLahir,
                                                 value: biodata?.tempat_lahir ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <Volleyball className="h-4 w-4 text-primary"/>,
                                                 label: t.hobby,
                                                 value: biodata?.hobi ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <GraduationCap className="h-4 w-4 text-primary"/>,
                                                 label: t.ambition,
                                                 value: biodata?.cita ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <Smile className="h-4 w-4 text-primary"/>,
                                                 label: t.motto,
                                                 value: biodata?.motto ?? "",
                                             },
@@ -281,27 +282,27 @@ export default function ProfilPage() {
                                         title="Alamat"
                                         items={[
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <House className="h-4 w-4 text-primary"/>,
                                                 label: t.province,
                                                 value: biodata?.provinsi ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <House className="h-4 w-4 text-primary"/>,
                                                 label: t.city,
                                                 value: biodata?.kota ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <House className="h-4 w-4 text-primary"/>,
                                                 label: t.district,
                                                 value: biodata?.kecamatan ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <House className="h-4 w-4 text-primary"/>,
                                                 label: t.village,
                                                 value: biodata?.kelurahan ?? "",
                                             },
                                             {
-                                                icon: <User className="h-4 w-4 text-primary"/>,
+                                                icon: <House className="h-4 w-4 text-primary"/>,
                                                 label: t.address,
                                                 value: biodata?.alamat ?? "",
                                             },
