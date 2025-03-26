@@ -17,7 +17,6 @@ import {
     addProfil,
     updateProfil,
     verifyOTP,
-    getProfil,
     getProvinces,
     getKabKota,
     getKecamatan, getKelurahan
@@ -40,6 +39,7 @@ import {z} from "zod"
 import Layout from "@/components/sidebar/Layout.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {useQuery} from "@tanstack/react-query";
+import {Profil} from "@/types/types.ts";
 
 interface Province {
     name: string;
@@ -76,9 +76,9 @@ export default function UpdateProfile() {
     const [kota, setKota] = useState<{ id: string; name: string }[]>([]);
     const [kecamatan, setKecamatan] = useState<{ id: string; name: string; regency_id: string }[]>([]);
     const [kelurahan, setKelurahan] = useState<{ id: string; name: string; district_id: string }[]>([]);
-    const {generalUser, biodata, setBiodata} = useGlobal()
+    const {generalUser, biodata, setBiodata, refreshUser} = useGlobal();
     const user_id = generalUser?.user_id
-    const user_type = String(generalUser?.user_type)
+    const user_type = String(generalUser?.user_type);
     const {locale} = useContext(LanguageContext);
     const t = translations[locale as keyof typeof translations];
     const [verifyOTPMessage, setVerifyOTPMessage] = useState<string | null>(null);
@@ -107,27 +107,10 @@ export default function UpdateProfile() {
     const navigate = useNavigate();
     useEffect(() => {
         (async () => {
-            if (user_id) {
-                try {
-                    setLoading(true);
-                    const response = await getProfil();
-                    if (response) {
-                        setBiodata(response.biodata);
-                    }
-                } catch (error) {
-                    console.error("Error fetching biodata:", error);
-                } finally {
-                    setLoading(false);
-                }
-            }
-        })()
-    }, [user_id, user_type, setBiodata]);
-    useEffect(() => {
-        if (biodata) {
-            setbiodataNew((prev) => ({
-                ...prev,
-                user_id: biodata?.user_id || prev.user_id,
-                user_type: biodata?.user_type || prev.user_type,
+            await refreshUser()
+            setbiodataNew({
+                user_id: biodata?.user_id,
+                user_type: biodata?.user_type || "",
                 tempat_lahir: biodata?.tempat_lahir || "",
                 tanggal_lahir: biodata?.tanggal_lahir || "",
                 jenis_kelamin: biodata?.jenis_kelamin || "",
@@ -140,12 +123,12 @@ export default function UpdateProfile() {
                 hobi: biodata?.hobi || "",
                 cita: biodata?.cita || "",
                 motto: biodata?.motto || "",
-            }));
+            });
             if (biodata?.no_hp) {
                 setTelponVerif(true);
             }
-        }
-    }, [biodata]);
+        })()
+    }, [refreshUser]);
     const handleVerifyPhone = async (phone: string) => {
         if (!phone) {
             toast.error("Nomor HP tidak boleh kosong");
@@ -179,9 +162,10 @@ export default function UpdateProfile() {
     };
     const handleSubmitProfile = async () => {
         setLoading(true);
-        if (!biodata?.id_biodata) {
-            try {
-                const response = await addProfil({
+        try {
+            let response;
+            if (!biodata?.id_biodata) {
+                response = await addProfil({
                     user_id,
                     user_type,
                     tempat_lahir: biodataNew.tempat_lahir,
@@ -197,24 +181,8 @@ export default function UpdateProfile() {
                     cita: biodataNew.cita,
                     motto: biodataNew.motto,
                 });
-                console.log("Profil berhasil diperbarui!", response);
-                if (response && response.data) {
-                    setBiodata(response.data);
-                    localStorage.setItem('userBiodata', JSON.stringify(response.data));
-                }
-                setConfirmDialogOpen(false);
-                toast.success("Profil berhasil diperbarui!");
-                navigate("/profile");
-                return response;
-            } catch (error) {
-                console.error(error);
-                toast.error(t.errorOccurred);
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            try {
-                const response = await updateProfil({
+            } else {
+                response = await updateProfil({
                     id_biodata: biodata.id_biodata,
                     tempat_lahir: biodataNew.tempat_lahir,
                     tanggal_lahir: biodataNew.tanggal_lahir,
@@ -229,21 +197,23 @@ export default function UpdateProfile() {
                     cita: biodataNew.cita,
                     motto: biodataNew.motto,
                 });
-                if (response && response.data) {
-                    setBiodata(response.data);
-                    localStorage.setItem('userBiodata', JSON.stringify(response.data));
-                }
-                console.log(response);
-                setConfirmDialogOpen(false);
-                toast.success("Profil berhasil diperbarui!");
-                navigate("/profile");
-                return response;
-            } catch (error) {
-                console.error(error);
-                toast.error(t.errorOccurred);
-            } finally {
-                setLoading(false);
             }
+            console.log("Response dari API:", response);
+            setBiodata((prev: Profil | null) => ({
+                ...((prev as Profil | null)),
+                ...biodataNew,
+                id_biodata: prev?.id_biodata || response?.id_biodata,
+            }));
+            // localStorage.setItem("userBiodata", JSON.stringify({...biodata, ...biodataNew}));
+            setConfirmDialogOpen(false);
+            toast.success("Profil berhasil diperbarui!");
+            navigate("/profile");
+            return response;
+        } catch (error) {
+            console.error("Gagal memperbarui profil:", error);
+            toast.error("Terjadi kesalahan, coba lagi nanti.");
+        } finally {
+            setLoading(false);
         }
     };
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
