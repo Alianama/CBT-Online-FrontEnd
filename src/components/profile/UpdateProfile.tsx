@@ -235,12 +235,12 @@ export default function UpdateProfile() {
     const safeLocale = locale === "id" || locale === "en" ? locale : "en";
     const pageData: Record<"id" | "en", { name: string; url: string }[]> = {
         id: [
-            {name: "Materi", url: "/lesson"},
-            {name: "Buku Materi", url: "#"},
+            {name: "Profil", url: "/profile"},
+            {name: "Update Profil", url: "#"},
         ],
         en: [
-            {name: "Lesson", url: "/lesson"},
-            {name: "Lesson Book", url: "#"},
+            {name: "Profile", url: "/profile"},
+            {name: "Profile Update", url: "#"},
         ],
     };
     const onOTPSubmit = async (data: z.infer<typeof FormSchema>) => {
