@@ -17,16 +17,14 @@ import {
 import InfoPanel from "@/components/profile/info-panel.tsx";
 import {useGlobal} from "@/context/GlobalContext.tsx";
 import LanguageContext from "@/context/LanguageContext.tsx";
-import {useContext,} from "react";
+import {useContext} from "react";
 import ChangePassword from "@/components/profile/change-password.tsx";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
 import {useNavigate} from "react-router-dom";
-import {getProfil} from "@/app/api/api-cbt.ts";
-import {useQuery} from "@tanstack/react-query";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 export default function ProfilPage() {
-    const {user, generalUser} = useGlobal();
+    const {user, generalUser, biodata, loading} = useGlobal();
     const {locale} = useContext(LanguageContext);
     const pagedata = {
         id: {name: "Profil", url: "/profile"},
@@ -90,18 +88,9 @@ export default function ProfilPage() {
             alert: "You haven't completed your profile. Please complete your biodata first."
         },
     }
-    const {data: biodata, isLoading} = useQuery({
-        queryKey: ["biodata"],
-        queryFn: async () => {
-            const response = await getProfil();
-            return response?.biodata;
-        },
-        refetchOnWindowFocus: true,
-        refetchOnMount: true,
-    });
     const navigate = useNavigate();
     const t = translations[locale as keyof typeof translations];
-    if (isLoading) {
+    if (loading) {
         return <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
             <div className="flex w-full gap-10 max-md:flex-col h-screen">
                 <Skeleton className="h-1/2 w-1/2 max-md:w-full rounded-xl"/>
@@ -114,7 +103,7 @@ export default function ProfilPage() {
 
 
             {
-                biodata.tempat_lahir === null ? (
+                biodata?.tempat_lahir === null ? (
                     <Alert variant="destructive">
                         <AlertCircle className="h-4 w-4"/>
                         <AlertTitle>Warning!!</AlertTitle>

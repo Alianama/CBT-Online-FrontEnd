@@ -35,7 +35,7 @@ export interface UserData {
 
 export interface Profil {
     id_biodata: number;
-    user_id: number;
+    user_id: number | undefined;
     user_type: string;
     tempat_lahir: string
     tanggal_lahir: string

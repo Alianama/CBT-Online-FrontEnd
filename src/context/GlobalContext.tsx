@@ -19,7 +19,23 @@ interface UserContextType {
     school: string | null;
     setSchool: (school: string | null) => void;
     biodata: Profil | null;
-    setBiodata: (biodata: Profil) => void;
+    setBiodata: (biodata: (prev: Profil | null) => {
+        id_biodata: any;
+        user_id: number | undefined;
+        user_type: string;
+        tempat_lahir: string;
+        tanggal_lahir: string;
+        jenis_kelamin: string;
+        provinsi: string;
+        kota: string;
+        kecamatan: string;
+        kelurahan: string;
+        alamat: string;
+        no_hp: string;
+        hobi: string;
+        cita: string;
+        motto: string
+    }) => void;
 }
 
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
@@ -41,6 +57,7 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
                 try {
                     const profilResponse = await getProfil();
                     setUser(profilResponse.user);
+                    setBiodata(profilResponse.biodata);
                 } catch (error) {
                     console.error("Failed to fetch user data:", error);
                     setUser(storedUser);
