@@ -236,7 +236,6 @@ export const updateProfil = async ({
                 },
             }
         );
-        console.log(id_biodata)
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

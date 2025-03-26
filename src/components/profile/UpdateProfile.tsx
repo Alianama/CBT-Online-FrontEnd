@@ -198,15 +198,13 @@ export default function UpdateProfile() {
                     motto: biodataNew.motto,
                 });
             }
-            console.log("Response dari API:", response);
+            toast.success(response.message);
             setBiodata((prev: Profil | null) => ({
                 ...((prev as Profil | null)),
                 ...biodataNew,
                 id_biodata: prev?.id_biodata || response?.id_biodata,
             }));
-            // localStorage.setItem("userBiodata", JSON.stringify({...biodata, ...biodataNew}));
             setConfirmDialogOpen(false);
-            toast.success("Profil berhasil diperbarui!");
             navigate("/profile");
             return response;
         } catch (error) {
