@@ -2,7 +2,6 @@ import Layout from "@/components/sidebar/Layout.tsx";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {
-    AlertCircle,
     Book, CalendarDays, GraduationCap,
     Hash,
     House,
@@ -19,9 +18,9 @@ import {useGlobal} from "@/context/GlobalContext.tsx";
 import LanguageContext from "@/context/LanguageContext.tsx";
 import {useContext} from "react";
 import ChangePassword from "@/components/profile/change-password.tsx";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
 import {useNavigate} from "react-router-dom";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
+import ProfileAlert from "@/components/profile/profile-alert.tsx"
 
 export default function ProfilPage() {
     const {user, generalUser, biodata, loading} = useGlobal();
@@ -101,18 +100,7 @@ export default function ProfilPage() {
     return (
         <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
 
-
-            {
-                biodata?.tempat_lahir === null ? (
-                    <Alert variant="destructive">
-                        <AlertCircle className="h-4 w-4"/>
-                        <AlertTitle>Warning!!</AlertTitle>
-                        <AlertDescription>
-                            {t.alert}
-                        </AlertDescription>
-                    </Alert>
-                ) : null}
-
+            <ProfileAlert biodata={biodata}/>
             <div className="p-10 bg-neutral-100 dark:bg-neutral-800 ">
                 <div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
