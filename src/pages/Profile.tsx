@@ -16,14 +16,16 @@ import {
 import InfoPanel from "@/components/profile/info-panel.tsx";
 import {useGlobal} from "@/context/GlobalContext.tsx";
 import LanguageContext from "@/context/LanguageContext.tsx";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import ChangePassword from "@/components/profile/change-password.tsx";
 import {useNavigate} from "react-router-dom";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 import ProfileAlert from "@/components/profile/profile-alert.tsx"
+import ChangeProfileImage from "@/components/profile/ChangeProfileImage.tsx";
 
 export default function ProfilPage() {
     const {user, generalUser, biodata, loading} = useGlobal();
+    const [isChangeProfile, setIsChangeProfile] = useState(false);
     const {locale} = useContext(LanguageContext);
     const pagedata = {
         id: {name: "Profil", url: "/profile"},
@@ -57,6 +59,7 @@ export default function ProfilPage() {
             ambition: "Cita-cita",
             motto: "Motto",
             alert: "Kamu belum melengkapi biodata. Silakan lengkapi biodata terlebih dahulu.",
+            changeProfile: "Ubah"
         },
         en: {
             userNotFound: "User data not found.",
@@ -84,7 +87,8 @@ export default function ProfilPage() {
             hobby: "Hobby",
             ambition: "Ambition",
             motto: "Motto",
-            alert: "You haven't completed your profile. Please complete your biodata first."
+            alert: "You haven't completed your profile. Please complete your biodata first.",
+            changeProfile: "Change"
         },
     }
     const navigate = useNavigate();
@@ -106,13 +110,13 @@ export default function ProfilPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <Card className="lg:col-span-1 border-none shadow-lg ">
                             <CardHeader className="relative pt-16 pb-5 flex flex-col items-center">
-                                <div
-                                    className="absolute -top-7 w-24 h-24 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-primary to-indigo-600 text-white text-4xl font-bold select-none transition-transform hover:scale-105 duration-300"
-                                    style={{
-                                        backgroundImage: `url(${generalUser?.picture})`,
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center",
-                                    }}
+                                <div onClick={() => setIsChangeProfile(true)}
+                                     className="absolute -top-7 w-24 h-24 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-primary to-indigo-600 text-white text-4xl font-bold select-none transition-transform hover:scale-105 duration-300"
+                                     style={{
+                                         backgroundImage: `url(${generalUser?.picture})`,
+                                         backgroundSize: "cover",
+                                         backgroundPosition: "center",
+                                     }}
                                 ></div>
                                 <div className="mt-6 w-full text-center">
                                     <CardTitle className="text-lg font-bold tracking-tight">
@@ -290,6 +294,9 @@ export default function ProfilPage() {
                         </Card>
                     </div>
                 </div>
+                <ChangeProfileImage picture={user?.picture} isChangeProfile={isChangeProfile}
+                                    setIsChangeProfile={setIsChangeProfile}/>
+
             </div>
         </Layout>
     );

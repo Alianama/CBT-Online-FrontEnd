@@ -329,11 +329,36 @@ export const getKecamatan = async (id: string | undefined) => {
 export const getKelurahan = async (id: string | undefined) => {
     try {
         const response = await axios.get(`${ALAMAT_API}/villages/${id}.json`, {});
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             throw new Error(error.response?.data?.message || "Failed to get Kelurahan");
         }
+    }
+};
+export const getBankList = async () => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/bank/list`, {});
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to get Bank List");
+        }
+    }
+}
+export const putProfileImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append('profile_img', file);
+    try {
+        const response = await axiosInstance.patch(`${BASE_URL}/profil/upload-img`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error('Upload gagal:', error);
+        throw new Error(error?.response?.data?.message || 'Gagal upload foto profil');
     }
 };
