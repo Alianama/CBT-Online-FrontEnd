@@ -92,3 +92,19 @@ export interface materiCard {
     idKelas?: string;
     idMapel?: string;
 }
+
+export interface ExamData {
+    id_peserta: number;
+    id_bank: number;
+    kode_bank: string;
+    nama_bank: string;
+    tanggal_ujian: string;
+    jam_ujian: string;
+    durasi_ujian: number;
+    jenis_ujian: string;
+    status_ujian: number;
+}
+
+export interface ScheduleCardProps {
+    examData: ExamData;
+}

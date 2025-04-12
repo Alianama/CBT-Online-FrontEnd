@@ -336,14 +336,14 @@ export const getKelurahan = async (id: string | undefined) => {
         }
     }
 };
-export const getBankList = async () => {
+export const getJadwalList = async () => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL}/bank/list`, {});
+        const response = await axiosInstance.get(`${BASE_URL}/jadwal/ujian`, {});
         console.log(response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data?.message || "Failed to get Bank List");
+            throw new Error(error.response?.data?.message || "Failed to get Jadwal List");
         }
     }
 }

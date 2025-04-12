@@ -44,6 +44,7 @@
         --forty: 351 91.3% 58%;
         --green: 121 90% 46%
     }
+    
 
     .dark {
         --background: 0 0% 3.9%;
@@ -113,8 +114,12 @@
 }
 
 @keyframes caret-blink {
-    0%, 70%, 100% { opacity: 1; }
-    20%, 50% { opacity: 0; }
+    0%, 70%, 100% {
+        opacity: 1;
+    }
+    20%, 50% {
+        opacity: 0;
+    }
 }
 
 @layer components {
