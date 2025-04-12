@@ -103,6 +103,7 @@ export interface ExamData {
     durasi_ujian: number;
     jenis_ujian: string;
     status_ujian: number;
+    token: number;
 }
 
 export interface ScheduleCardProps {

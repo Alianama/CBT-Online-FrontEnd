@@ -362,3 +362,24 @@ export const putProfileImage = async (file: File) => {
         throw new Error(error?.response?.data?.message || 'Gagal upload foto profil');
     }
 };
+export const postTokenUjian = async (token?: string, id_peserta?: number) => {
+    try {
+        const response = await axiosInstance.post(`${BASE_URL}/ujian/start`,
+            {
+                token,
+                id_peserta,
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || "Failed to post Token Ujian");
+        }
+    }
+}
