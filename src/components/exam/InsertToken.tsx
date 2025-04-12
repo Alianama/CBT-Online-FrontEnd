@@ -121,11 +121,10 @@ export default function InsertToken({id_peserta, isInsertToken, setIsInsertToken
         setSuccessData(null)
         try {
             const response = await postTokenUjian(inputToken, id_peserta)
-            if (response.success && response.data) {
+            console.log(response)
+            if (response.status === "success") {
                 setSuccessData(response.data)
-                toast.success("Token berhasil diverifikasi!")
-                // In a real app, you might redirect to the exam page after a delay
-                // For demo purposes, we'll just close the dialog after 3 seconds
+                toast.success(response.message)
                 setTimeout(() => {
                     setIsInsertToken(false)
                     setSuccessData(null)
