@@ -17,6 +17,7 @@ import Lesson from "@/pages/Lesson.tsx";
 import SubjectPage from "@/components/lesson/SubjectPage";
 import DocumentOpen from "@/components/lesson/viewer/document-open.tsx";
 import UpdateProfile from "@/components/profile/UpdateProfile.tsx";
+import QuestionPage from "@/pages/Question.tsx";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(
@@ -87,6 +88,10 @@ export default function App() {
                     {
                         path: "/lesson/:subject/:idKelas/:idMapel/materi/:tipe_materi/:attachment/:title",
                         element: <DocumentOpen/>,
+                    },
+                    {
+                        path: "/exam/question/:token",
+                        element: <QuestionPage/>,
                     },
                 ].map(({path, element}) => (
                     <Route

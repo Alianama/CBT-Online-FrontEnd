@@ -96,6 +96,7 @@ import {toast} from "sonner"
 import {useState} from "react"
 import {CheckCircle2, KeyRound, Loader2, ShieldAlert} from "lucide-react"
 import {cn} from "@/lib/utils"
+import {useNavigate} from "react-router-dom"
 
 interface InsertTokenProps {
     id_peserta?: number
@@ -104,6 +105,7 @@ interface InsertTokenProps {
 }
 
 export default function InsertToken({id_peserta, isInsertToken, setIsInsertToken}: InsertTokenProps) {
+    const navigate = useNavigate();
     const [inputToken, setInputToken] = useState("")
     const [loading, setLoading] = useState(false)
     const [hasError, setHasError] = useState(false)
@@ -122,9 +124,11 @@ export default function InsertToken({id_peserta, isInsertToken, setIsInsertToken
         try {
             const response = await postTokenUjian(inputToken, id_peserta)
             console.log(response)
+            const websocket = response.websocket;
             if (response.status === "success") {
                 setSuccessData(response.data)
-                toast.success(response.message)
+                toast.success(response.status)
+                navigate(`/exam/question/${websocket.token}`)
                 setTimeout(() => {
                     setIsInsertToken(false)
                     setSuccessData(null)
