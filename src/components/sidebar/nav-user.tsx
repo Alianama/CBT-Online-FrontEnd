@@ -21,7 +21,7 @@ import { useGlobal } from "@/context/GlobalContext.tsx";
 
 export function NavUser() {
   const navigate = useNavigate();
-  const { generalUser } = useGlobal();
+  const { generalUser, userPicture } = useGlobal();
   const { isMobile } = useSidebar();
   const handleClickProfile = () => {
     document.body.style.pointerEvents = "auto";
@@ -38,7 +38,7 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={generalUser?.picture}
+                  src={userPicture}
                   alt={generalUser?.nama}
                 />
               </Avatar>
@@ -63,7 +63,7 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={generalUser?.picture}
+                    src={userPicture}
                     alt={generalUser?.nama}
                   />
                 </Avatar>

@@ -18,6 +18,8 @@ interface UserContextType {
     loading: boolean;
     school: string | null;
     setSchool: (school: string | null) => void;
+    userPicture: string | undefined ;
+    setUserPicture: (userPicture: string ) => void;
     biodata: Profil | null;
     setBiodata: (biodata: (prev: Profil | null) => {
         id_biodata: any;
@@ -41,6 +43,7 @@ interface UserContextType {
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
 export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<UserData | null>(null);
+    const [userPicture, setUserPicture] = useState<string>();
     const [school, setSchool] = useState<string | null>(null);
     const [generalUser, setGeneralUser] = useState<UserData | null>(null);
     const [biodata, setBiodata] = useState<Profil | null>(null);
@@ -70,7 +73,8 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
             setGeneralUser(null);
         }
         setLoading(false);
-    }, []);
+        setUserPicture(user?.picture);
+    }, [user?.picture]);
     useEffect(() => {
         (async () => {
             await refreshUser();
@@ -87,8 +91,10 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
                 refreshUser,
                 loading,
                 biodata,
-                setBiodata
-            }}
+                setBiodata,
+                userPicture,
+                setUserPicture,
+                }}
         >
             {children}
         </GlobalContext.Provider>

@@ -31,7 +31,7 @@ export default function LogoutAnimation() {
       clearTimeout(redirectTimer);
     };
   }, []);
-  const { generalUser } = useGlobal();
+  const { generalUser, userPicture } = useGlobal();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
       <Card className="w-full max-w-md overflow-hidden bg-white shadow-xl rounded-xl">
@@ -63,7 +63,7 @@ export default function LogoutAnimation() {
                   }}
                 >
                   <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
-                    <AvatarImage src={generalUser?.picture} alt="User" />
+                    <AvatarImage src={userPicture} alt="User" />
                   </Avatar>
                 </motion.div>
                 <div className="text-center">

@@ -24,7 +24,7 @@ import ProfileAlert from "@/components/profile/profile-alert.tsx"
 import ChangeProfileImage from "@/components/profile/ChangeProfileImage.tsx";
 
 export default function ProfilPage() {
-    const {user, generalUser, biodata, loading} = useGlobal();
+    const {user, biodata, userPicture, loading} = useGlobal();
     const [isChangeProfile, setIsChangeProfile] = useState(false);
     const {locale} = useContext(LanguageContext);
     const pagedata = {
@@ -113,7 +113,7 @@ export default function ProfilPage() {
                                 <div onClick={() => setIsChangeProfile(true)}
                                      className="absolute -top-7 w-24 h-24 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-primary to-indigo-600 text-white text-4xl font-bold select-none transition-transform hover:scale-105 duration-300"
                                      style={{
-                                         backgroundImage: `url(${generalUser?.picture})`,
+                                         backgroundImage: `url(${userPicture})`,
                                          backgroundSize: "cover",
                                          backgroundPosition: "center",
                                      }}
@@ -184,7 +184,7 @@ export default function ProfilPage() {
                                                 {t.userType}
                                             </p>
                                             <p className="font-medium text-sm text-black ">
-                                                {generalUser?.user_type}
+                                                {user?.user_type}
                                             </p>
                                         </div>
                                     </div>
@@ -294,7 +294,7 @@ export default function ProfilPage() {
                         </Card>
                     </div>
                 </div>
-                <ChangeProfileImage picture={user?.picture} isChangeProfile={isChangeProfile}
+                <ChangeProfileImage picture={userPicture} isChangeProfile={isChangeProfile}
                                     setIsChangeProfile={setIsChangeProfile}/>
 
             </div>

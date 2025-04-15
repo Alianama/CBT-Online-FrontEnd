@@ -368,12 +368,12 @@ export const postTokenUjian = async (token?: string, id_peserta?: number) => {
                 token,
                 id_peserta,
             },
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-            }
+            // {
+            //     headers: {
+            //         Accept: "application/json",
+            //         "Content-Type": "application/json",
+            //     },
+            // }
         );
         return response.data;
     } catch (error) {
