@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import useExamSocket from "@/hooks/useExamSocket.tsx";
 import { useParams } from "react-router-dom";
 
@@ -10,12 +10,21 @@ const Question: React.FC = () => {
     dataUjian,
     soal,
     // historyJawaban,
+    isAuthenticated,
+    requestSoal,
     kirimJawaban,
     errors,
     connectionStatus,
   } = useExamSocket(token ?? "");
 
   const status = ["Connecting", "Open", "Closing", "Closed"];
+
+  useEffect(() => {
+    if (isAuthenticated && !soal) {
+      requestSoal();
+    }
+    console.log(soal)
+  }, [isAuthenticated, soal, requestSoal]);
 
   return (
     <div className="p-4">

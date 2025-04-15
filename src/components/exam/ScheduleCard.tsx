@@ -38,6 +38,7 @@ const translations: Record<Locale, {
     },
 };
 export default function ScheduleCard({examData}: ScheduleCardProps) {
+    console.log(examData)
     const {locale} = useContext(LanguageContext);
     const [isInsertToken, setIsInsertToken] = useState<boolean>(false);
     const t = translations[(locale as Locale) || "id"];
@@ -116,7 +117,7 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
                                 alert("Token ujian belum tersedia.");
                             }
                         }}
-                        className="px-4 py-2 rounded-xl bg-primary dark:bg-neutral-200 text-secondary text-xs font-bold flex items-center gap-1"
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700  dark:bg-neutral-200 text-secondary text-xs font-bold flex items-center gap-1"
                     >
                         <Play className="w-4 h-4"/> Mulai Ujian
                     </Button>
