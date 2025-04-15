@@ -10,6 +10,36 @@
      "aboutVideo": "About This Video",
      "aboutVideoDesc":
        "This video explains how to use the main features of our website. You can play this video directly on the page without visiting YouTube."
+  },
+  "profilPage": {
+    "userNotFound": "User data not found.",
+    "loading": "Loading...",
+    "active": "Active",
+    "blocked": "Blocked",
+    "changePassword": "Change Password",
+    "studentInfo": "Student Information",
+    "studentData": "Student Data",
+    "accountData": "Account Data",
+    "fullName": "Full Name",
+    "class": "Class",
+    "nis": "Student ID",
+    "username": "Username",
+    "userType": "User Type",
+    "angkatan": "Generation",
+    "tempatLahir": "Place of Birth",
+    "tanggalLahir": "Date of Birth",
+    "province": "Province",
+    "city": "City",
+    "district": "District",
+    "village": "Village",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
+    "hobby": "Hobby",
+    "ambition": "Ambition",
+    "motto": "Motto",
+    "alert": "You haven't completed your profile. Please complete your biodata first.",
+    "changeProfile": "Change"
   }
+
 }
 

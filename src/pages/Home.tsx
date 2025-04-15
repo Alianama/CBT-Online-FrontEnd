@@ -8,15 +8,15 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData>();
+  const { locale } = useContext(LanguageContext);
   const t = useTranslation();
+  const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   useEffect(() => {
     (async () => {
       const authData = getAuthData();
       setUserData(authData?.userData ?? undefined);
     })();
   }, []);
-  const { locale } = useContext(LanguageContext);
-  const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   const pageData: Record<"id" | "en", { name: string; url: string }> = {
     id: { name: "Beranda", url: "/" },
     en: { name: "Home", url: "/" },
