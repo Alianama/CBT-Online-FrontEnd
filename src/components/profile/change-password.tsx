@@ -18,8 +18,10 @@ import {toast} from "sonner";
 import LanguageContext from "@/context/LanguageContext.tsx";
 import {useNavigate} from "react-router-dom";
 
+
 export default function ChangePassword() {
     const {locale} = useContext(LanguageContext);
+
     const translations = {
         id: {
             changePassword: "Ganti Password",
@@ -76,6 +78,12 @@ export default function ChangePassword() {
     };
     const handleConfirmPassword = async () => {
         setLoading(true);
+        if (!isPasswordValid(password)) {
+            setErrorMessage("Password harus minimal 8 karakter, mengandung huruf dan angka");
+            toast.error("Password harus minimal 8 karakter, mengandung huruf dan angka");
+            setLoading(false);
+            return;
+        }
         if (password !== confirmPassword) {
             setErrorMessage(t.passwordMismatch);
             toast.error(t.passwordMismatch);
@@ -98,6 +106,18 @@ export default function ChangePassword() {
         }
     };
     const navigate = useNavigate();
+    const isPasswordValid = (pwd: string) => {
+        const hasLetter = /[a-zA-Z]/.test(pwd);
+        const hasNumber = /[0-9]/.test(pwd);
+        return pwd.length >= 8 && hasLetter && hasNumber;
+    };
+    const getValidationMessage = (pwd: string) => {
+        const validations = [];
+        if (pwd.length < 8) validations.push("Minimal 8 karakter");
+        if (!/[a-zA-Z]/.test(pwd)) validations.push("Harus mengandung huruf");
+        if (!/[0-9]/.test(pwd)) validations.push("Harus mengandung angka");
+        return validations;
+    };
     return (
         <>
             <Dialog
@@ -172,11 +192,6 @@ export default function ChangePassword() {
                                 type={showPassword ? "text" : "password"}
                                 className="w-full px-4 py-2 rounded-lg border transition focus:ring-2 focus:outline-none border-gray-300 focus:ring-primary"
                                 tabIndex={1}
-                                onKeyDown={async (e) => {
-                                    if (e.key === "Enter") {
-                                        await handleConfirmPassword();
-                                    }
-                                }}
                             />
                             <button
                                 type="button"
@@ -184,12 +199,15 @@ export default function ChangePassword() {
                                 className="absolute right-3 top-2 text-gray-500 hover:text-gray-700 transition"
                                 tabIndex={0}
                             >
-                                {showPassword ? (
-                                    <EyeOff className="h-5 w-5"/>
-                                ) : (
-                                    <Eye className="h-5 w-5"/>
-                                )}
+                                {showPassword ? <EyeOff className="h-5 w-5"/> : <Eye className="h-5 w-5"/>}
                             </button>
+                            <ul className="text-sm mt-1 ml-1 text-gray-600 list-disc pl-5">
+                                {getValidationMessage(password).map((msg, idx) => (
+                                    <li key={idx} className={password.includes(msg) ? "text-green-600" : ""}>
+                                          {msg}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                         <div className="relative mb-2">
                             <Input
