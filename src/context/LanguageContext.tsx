@@ -4,8 +4,9 @@ type LocaleContextType = {
   locale: string;
   toggleLocale: () => void;
 };
+const defaultLang = navigator.language.startsWith("id") ? "id" : "en";
 const defaultValue: LocaleContextType = {
-  locale: "id",
+  locale: defaultLang,
   toggleLocale: () => {},
 };
 const LanguageContext = createContext<LocaleContextType>(defaultValue);

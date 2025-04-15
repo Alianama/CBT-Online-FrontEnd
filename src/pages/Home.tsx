@@ -4,9 +4,11 @@ import LanguageContext from "@/context/LanguageContext.tsx";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { getAuthData } from "@/utils/storage.ts";
 import { UserData } from "@/types/types.ts";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData>();
+  const t = useTranslation();
   useEffect(() => {
     (async () => {
       const authData = getAuthData();
@@ -19,35 +21,7 @@ export default function Home() {
     id: { name: "Beranda", url: "/" },
     en: { name: "Home", url: "/" },
   };
-  const translations: Record<"id" | "en", { [key: string]: string }> = {
-    id: {
-      welcome: `Selamat Datang, ${userData?.nama}!`,
-      examMessage: "Selamat mengerjakan ujian!",
-      examMessage2:
-        "Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
-      instructions: "Petunjuk Penggunaan",
-      instructionsDesc:
-        "Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal.",
-      videoTutorial: "Video Tutorial",
-      videoDesc:
-        "Tonton video ini untuk memahami lebih lanjut tentang fitur-fitur website.",
-      aboutVideo: "Tentang Video Ini",
-      aboutVideoDesc:
-        "Video ini menjelaskan cara menggunakan fitur-fitur utama website kami. Anda dapat memutar video ini langsung di halaman tanpa perlu mengunjungi YouTube.",
-    },
-    en: {
-      welcome: `Welcome, ${userData?.nama}!`,
-      examMessage: "Good luck with your exam!",
-      examMessage2: "Stay focused and do your best.",
-      instructions: "Instructions",
-      instructionsDesc: "Follow these steps to take the exam optimally.",
-      videoTutorial: "Video Tutorial",
-      videoDesc: "Watch this video to learn more about the website features.",
-      aboutVideo: "About This Video",
-      aboutVideoDesc:
-        "This video explains how to use the main features of our website. You can play this video directly on the page without visiting YouTube.",
-    },
-  };
+ 
   return (
     <Layout data={[pageData[safeLocale]]}>
       <title>{pageData[safeLocale].name}</title>
@@ -55,13 +29,13 @@ export default function Home() {
         <section className="container mx-auto px-4 pt-0 pb-12">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-2xl font-bold tracking-tight my-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              {translations[safeLocale].welcome}
+              {`${t.home.welcome} ${userData?.nama}`}
             </h1>
             <p className="text-xm text-muted-foreground ">
-              {translations[safeLocale].examMessage}
+              {t.home.examMessage}
             </p>
             <p className="text-xm text-muted-foreground mb-8">
-              {translations[safeLocale].examMessage2}
+              {t.home.examMessage2}
             </p>
             <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
           </div>
@@ -71,11 +45,11 @@ export default function Home() {
           <section className="space-y-8">
             <div>
               <h2 className="text-xl font-bold mb-6 inline-flex items-center">
-                {translations[safeLocale].instructions}
+                {t.home.instructions}
                 <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
               </h2>
               <p className="text-muted-foreground mb-8">
-                {translations[safeLocale].instructionsDesc}
+                {t.home.instructionsDesc}
               </p>
             </div>
 
@@ -94,11 +68,11 @@ export default function Home() {
           <section className="space-y-6">
             <div>
               <h2 className="text-xl font-bold mb-6 inline-flex items-center">
-                {translations[safeLocale].videoTutorial}
+                {t.home.videoTutorial}
                 <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
               </h2>
               <p className="text-muted-foreground mb-8">
-                {translations[safeLocale].videoDesc}
+                {t.home.videoDesc}
               </p>
             </div>
 
@@ -116,10 +90,10 @@ export default function Home() {
             <div className="bg-muted/50 p-4 rounded-lg border border-border/50">
               <h3 className="font-medium mb-2 flex items-center">
                 <CheckCircle2 className="h-5 w-5 text-primary mr-2" />
-                {translations[safeLocale].aboutVideo}
+                {t.home.aboutVideo}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {translations[safeLocale].aboutVideoDesc}
+                {t.home.aboutVideoDesc}
               </p>
             </div>
           </section>

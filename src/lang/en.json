@@ -1,0 +1,15 @@
+{
+  "home": {
+    "welcome": "Welcome",
+     "examMessage": "Good luck with your exam!",
+     "examMessage2": "Stay focused and do your best.",
+     "instructions": "Instructions",
+     "instructionsDesc": "Follow these steps to take the exam optimally.",
+     "videoTutorial": "Video Tutorial",
+     "videoDesc": "Watch this video to learn more about the website features.",
+     "aboutVideo": "About This Video",
+     "aboutVideoDesc":
+       "This video explains how to use the main features of our website. You can play this video directly on the page without visiting YouTube."
+  }
+}
+

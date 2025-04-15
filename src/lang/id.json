@@ -1,0 +1,13 @@
+{
+  "home": {
+    "welcome": "Selamat Datang",
+    "examMessage": "Selamat mengerjakan ujian!",
+    "examMessage2": "Semoga sukses dan diberikan kemudahan dalam menjawab setiap soal.",
+    "instructions": "Petunjuk Penggunaan",
+    "instructionsDesc": "Ikuti langkah-langkah berikut untuk mengikuti ujian ini dengan optimal.",
+    "videoTutorial": "Video Tutorial",
+    "videoDesc": "Tonton video ini untuk memahami lebih lanjut tentang fitur-fitur website.",
+    "aboutVideo": "Tentang Video Ini",
+    "aboutVideoDesc": "Video ini menjelaskan cara menggunakan fitur-fitur utama website kami. Anda dapat memutar video ini langsung di halaman tanpa perlu mengunjungi YouTube."
+  }
+}
