@@ -19,8 +19,8 @@ const translations: Record<Locale, {
     type: string;
 }> = {
     id: {
-        active: "Aktif",
-        inactive: "Tidak Aktif",
+        active: "Belum Ujian",
+        inactive: "Sedang Ujian",
         examination: "Ujian",
         date: "Tanggal",
         time: "Waktu",
@@ -28,8 +28,8 @@ const translations: Record<Locale, {
         type: "Jenis",
     },
     en: {
-        active: "Active",
-        inactive: "Inactive",
+        active: "Not Tested Yet",
+        inactive: "Under Tested",
         examination: "Examination",
         date: "Date",
         time: "Time",
@@ -38,7 +38,6 @@ const translations: Record<Locale, {
     },
 };
 export default function ScheduleCard({examData}: ScheduleCardProps) {
-    console.log(examData)
     const {locale} = useContext(LanguageContext);
     const [isInsertToken, setIsInsertToken] = useState<boolean>(false);
     const t = translations[(locale as Locale) || "id"];

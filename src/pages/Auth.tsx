@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { userAuth } from "@/app/api/api-cbt.ts";
 import { toast } from "sonner";
 import {
@@ -13,13 +13,19 @@ import { isAuthenticated } from "@/utils/auth.ts";
 import { useGlobal } from "@/context/GlobalContext.tsx";
 
 const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
+
 export default function Auth() {
   const { token } = useParams();
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { refreshUser } = useGlobal();
+  const hasRun = useRef(false);
+
   useEffect(() => {
+    if (hasRun.current) return; 
+    hasRun.current = true;
+
     (async () => {
       if (await isAuthenticated()) {
         navigate("/");
@@ -30,13 +36,12 @@ export default function Auth() {
           setLoading(true);
           const response = await userAuth(token);
           if (response) {
-            const { access_token, refresh_token, user_data, nama_sekolah } =
-              response;
+            const { access_token, refresh_token, user_data, nama_sekolah } = response;
             setAccessToken(access_token);
             setRefreshToken(refresh_token);
             setUserData(user_data);
             setSchoolName(nama_sekolah);
-            console.log("✅ User authenticated:", response);
+            console.log("✅ User authenticated:");
             setMessage("Authentication successful! 🎉");
             toast.success("Login success!");
             await refreshUser();
@@ -64,9 +69,10 @@ export default function Auth() {
       }
     })();
   }, [token, navigate, refreshUser]);
+
   return (
-    <div>
-      <LoginLoadingAnimation isLoading={loading} text={message} />
-    </div>
+      <div>
+        <LoginLoadingAnimation isLoading={loading} text={message} />
+      </div>
   );
 }
