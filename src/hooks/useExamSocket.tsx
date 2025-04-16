@@ -211,9 +211,6 @@ export const useExamSocket = (token: string) => {
     const message = lastJsonMessage as ServerMessage;
 
     switch (message.type) {
-      case "auth-success":
-        break;
-
       case "auth-failed":
         setErrors((prev) => [...prev, message.error || "Autentikasi gagal"]);
         break;
@@ -238,6 +235,8 @@ export const useExamSocket = (token: string) => {
   }, [lastJsonMessage]);
 
   return {
+    errors,
+    dataUjian,
     soal,
     sendJsonMessage,
     lastJsonMessage,
