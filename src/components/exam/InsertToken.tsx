@@ -128,7 +128,7 @@ export default function InsertToken({id_peserta, isInsertToken, setIsInsertToken
             if (response.status === "success") {
                 setSuccessData(response.data)
                 toast.success(response.status)
-                navigate(`/exam/question/${websocket.token}`)
+                navigate(`/exam/${websocket.token}`)
                 setTimeout(() => {
                     setIsInsertToken(false)
                     setSuccessData(null)
