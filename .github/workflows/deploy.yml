@@ -1,0 +1,65 @@
+name: Build and Push to Release Branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup latest stable Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'node'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Verify build exists
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "❌ Build failed: dist/ folder not found"
+            exit 1
+          fi
+
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Create or update 'release' branch and push build
+        run: |
+          git config user.name "alianama"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+          # Simpan dist di direktori aman sementara
+          TEMP_DIR="${RUNNER_TEMP}/dist"
+          cp -r dist "$TEMP_DIR"
+
+          # Coba checkout release branch, atau buat kalau belum ada
+          if git rev-parse --verify origin/release >/dev/null 2>&1; then
+            git fetch origin release
+            git checkout release
+          else
+            git checkout --orphan release
+          fi
+
+          git reset --hard
+          git clean -fdx
+
+          # Salin hasil build
+          cp -r "$TEMP_DIR"/* .
+
+          # Commit dan push
+          git add .
+          git commit -m "Release build - ${{ env.DATE }}"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push --force origin release
