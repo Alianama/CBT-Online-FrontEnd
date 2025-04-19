@@ -90,7 +90,7 @@ export default function App() {
                         element: <DocumentOpen/>,
                     },
                     {
-                        path: "/exam/:token",
+                        path: "/exam/start",
                         element: <QuestionPage/>,
                     },
                 ].map(({path, element}) => (

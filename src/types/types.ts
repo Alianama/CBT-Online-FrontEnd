@@ -7,12 +7,12 @@ export interface Agenda {
     color: string
 }
 
-export interface Question {
-    id: number
-    text: string
-    options: { id: string; text: string }[]
-    correctAnswer: string
-}
+// export interface Question {
+//     id: number
+//     text: string
+//     options: { id: string; text: string }[]
+//     correctAnswer: string
+// }
 
 export interface Token {
     token: string;
@@ -108,4 +108,15 @@ export interface ExamData {
 
 export interface ScheduleCardProps {
     examData: ExamData;
+}
+
+export interface Question {
+    id_soal_ujian: number
+    pertanyaan: string
+    tipe: string
+    a?: string
+    b?: string
+    c?: string
+    d?: string
+    e?: string
 }

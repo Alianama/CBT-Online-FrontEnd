@@ -5,10 +5,10 @@ import {
     useEffect,
     useState,
 } from "react";
-import {getAuthData} from "@/utils/storage.ts";
-import {isAuthenticated} from "@/utils/auth.ts";
-import {Profil, UserData} from "@/types/types.ts";
-import {getProfil} from "@/app/api/api-cbt.ts";
+import { getAuthData } from "@/utils/storage.ts";
+import { isAuthenticated } from "@/utils/auth.ts";
+import { Profil, UserData } from "@/types/types.ts";
+import { getProfil } from "@/app/api/api-cbt.ts";
 
 interface UserContextType {
     user: UserData | null;
@@ -18,36 +18,27 @@ interface UserContextType {
     loading: boolean;
     school: string | null;
     setSchool: (school: string | null) => void;
-    userPicture: string | undefined ;
-    setUserPicture: (userPicture: string ) => void;
+    userPicture: string | undefined;
+    setUserPicture: (userPicture: string) => void;
+    wsToken: string | null;
+    setWsToken: (wsToken: string | null) => void;
     biodata: Profil | null;
-    setBiodata: (biodata: (prev: Profil | null) => {
-        id_biodata: any;
-        user_id: number | undefined;
-        user_type: string;
-        tempat_lahir: string;
-        tanggal_lahir: string;
-        jenis_kelamin: string;
-        provinsi: string;
-        kota: string;
-        kecamatan: string;
-        kelurahan: string;
-        alamat: string;
-        no_hp: string;
-        hobi: string;
-        cita: string;
-        motto: string
-    }) => void;
+    setBiodata: (
+      biodata: (prev: Profil | null) => Profil
+    ) => void;
 }
 
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
-export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
+
+export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
+    const [wsToken, setWsToken] = useState<string | null>(null);
     const [user, setUser] = useState<UserData | null>(null);
     const [userPicture, setUserPicture] = useState<string>();
     const [school, setSchool] = useState<string | null>(null);
     const [generalUser, setGeneralUser] = useState<UserData | null>(null);
     const [biodata, setBiodata] = useState<Profil | null>(null);
     const [loading, setLoading] = useState(true);
+
     const refreshUser = useCallback(async () => {
         setLoading(true);
         const auth = await isAuthenticated();
@@ -75,31 +66,70 @@ export const GlobalProvider = ({children}: { children: React.ReactNode }) => {
         setLoading(false);
         setUserPicture(user?.picture);
     }, [user?.picture]);
+
+    useEffect(() => {
+        if (wsToken) {
+            localStorage.setItem("wsToken", wsToken);
+        }
+    }, [wsToken]);
+
+    useEffect(() => {
+        const lastUnload = localStorage.getItem("lastUnload");
+        if (lastUnload) {
+            const lastTime = parseInt(lastUnload, 10);
+            const now = Date.now();
+            const elapsed = now - lastTime;
+
+            if (elapsed > 180000) {
+                localStorage.removeItem("wsToken");
+                setWsToken(null);
+            } else {
+                const savedToken = localStorage.getItem("wsToken");
+                if (savedToken) {
+                    setWsToken(savedToken);
+                }
+            }
+        }
+
+        const handleBeforeUnload = () => {
+            localStorage.setItem("lastUnload", Date.now().toString());
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
+
     useEffect(() => {
         (async () => {
             await refreshUser();
         })();
     }, [refreshUser]);
+
     return (
-        <GlobalContext.Provider
-            value={{
-                user,
-                generalUser,
-                school,
-                setSchool,
-                setUser,
-                refreshUser,
-                loading,
-                biodata,
-                setBiodata,
-                userPicture,
-                setUserPicture,
-                }}
-        >
-            {children}
-        </GlobalContext.Provider>
+      <GlobalContext.Provider
+        value={{
+            user,
+            generalUser,
+            school,
+            setSchool,
+            setUser,
+            refreshUser,
+            loading,
+            biodata,
+            setBiodata,
+            userPicture,
+            setUserPicture,
+            wsToken,
+            setWsToken,
+        }}
+      >
+          {children}
+      </GlobalContext.Provider>
     );
 };
+
 export const useGlobal = () => {
     const context = useContext(GlobalContext);
     if (!context) {
