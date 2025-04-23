@@ -1,8 +1,8 @@
 import Layout from "@/components/sidebar/Layout.tsx";
 import { useContext } from "react";
 import LanguageContext from "@/context/LanguageContext.tsx";
-import Question from "@/components/exam/ExamCard.tsx";
-
+// import Question from "@/components/exam/ExamCard.tsx";
+import Question from "@/components/exam/QuestionPage.tsx"
 type Locale = "id" | "en";
 
 type PageInfo = {

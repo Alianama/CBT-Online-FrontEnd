@@ -246,7 +246,6 @@ export default function UpdateProfile() {
         setLoading(true)
         try {
             const response = await verifyOTP(biodataNew.no_hp, otp);
-            console.log(otp)
             if (response.status === true) {
                 setTelponVerif(true)
                 setIsOtpSend(false);
