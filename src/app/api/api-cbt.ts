@@ -50,9 +50,9 @@ export const getAgenda = async () => {
         }
     }
 }
-export const getMapel = async (id: number | undefined) => {
+export const getMapel = async () => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL}/mapel?id_kelas=${id}`, {})
+        const response = await axiosInstance.get(`${BASE_URL}/mapel/siswa`, {})
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

@@ -110,13 +110,21 @@ export interface ScheduleCardProps {
     examData: ExamData;
 }
 
-export interface Question {
+export interface QuestionType {
     id_soal_ujian: number
     pertanyaan: string
     tipe: string
-    a?: string
-    b?: string
-    c?: string
-    d?: string
-    e?: string
+    a: string
+    b: string
+    c: string
+    d: string
+    e: string
+    kunci_jawaban: string
+    jawaban: string | null
+    [key: string]: string | number | null
+}
+
+export interface ExamDataType {
+    type: string
+    payload: QuestionType[]
 }

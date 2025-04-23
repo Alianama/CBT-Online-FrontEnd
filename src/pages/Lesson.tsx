@@ -38,7 +38,7 @@ export default function Lesson() {
   };
   const { data, error, isLoading } = useQuery({
     queryKey: ["mapel"],
-    queryFn: () => getMapel(generalUser?.id_kelas),
+    queryFn: () => getMapel(),
     staleTime: 10 * 60 * 1000,
     refetchOnWindowFocus: true,
   });
