@@ -17,10 +17,9 @@ export default function ExamPage() {
     const [examFinished, setExamFinished] = useState(false)
     const [timeLeft, setTimeLeft] = useState(60 * 60) // 60 minutes
     const isMobile = useIsMobile()
-    const {soal, readyState, sendJawaban} = useExamSocket();
+    const {soal, readyState, sendJawaban, sendTimer} = useExamSocket();
     const statusList = ['Connecting', 'Online', 'Closing', 'Offline']
-
-    // Initialize answers with null values
+    
     useEffect(() => {
         if (!soal) return;
 
@@ -31,6 +30,9 @@ export default function ExamPage() {
 
         setAnswers(initialAnswers);
     }, [soal]);
+    useEffect(() => {
+        sendTimer(timeLeft)
+    }, [ timeLeft]);
 
 
     const handleAnswerChange = (questionId: number, answer: string) => {
@@ -44,7 +46,7 @@ export default function ExamPage() {
     }
 
     const handleFinishExam = () => {
-        // Check if all questions are answered
+
         const unansweredQuestions = Object.values(answers).filter((a) => a === null).length
 
         if (unansweredQuestions > 0) {

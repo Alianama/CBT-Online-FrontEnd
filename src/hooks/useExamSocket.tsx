@@ -272,7 +272,7 @@ const WSS_URL = import.meta.env.VITE_WSS_URL;
 export const useExamSocket = () => {
   const authSentRef = useRef(false);
   const soalRequestedRef = useRef(false);
-  const jawabanSentRef = useRef<Record<string, string>>({});
+  const jawabanSentRef = useRef<Record<number, string>>({});
   const [dataUjian, setDataUjian] = useState<InfoUjianPayload | null>(null);
   const [soal, setSoal] = useState<QuestionType[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
@@ -335,7 +335,7 @@ export const useExamSocket = () => {
     }
   }, [lastJsonMessage, navigate, readyState, sendJsonMessage]);
 
-  // ✅ Kirim jawaban dengan validasi
+
   const sendJawaban = (id_soal: number, jawaban: string) => {
     if (readyState !== WebSocket.OPEN) {
       console.warn("⚠️ WebSocket not connected. Cannot send jawaban.");
@@ -346,18 +346,18 @@ export const useExamSocket = () => {
       console.log("📭 Jawaban sudah dikirim, tidak mengirim ulang.");
       return;
     }
+    // console.log(id_soal, jawaban);
 
     sendJsonMessage({
       type: "jawab",
-      id_soal,
+      id_soal_ujian: id_soal,
       jawaban,
     });
 
     jawabanSentRef.current[id_soal] = jawaban;
     console.log(`✅ Jawaban dikirim untuk soal ${id_soal}: ${jawaban}`);
   };
-
-  // ⏱️ Kirim sisa waktu
+  
   const sendTimer = (sisa_timer: number) => {
     if (readyState !== WebSocket.OPEN) {
       console.warn("⚠️ WebSocket not connected. Cannot send timer.");
@@ -366,7 +366,7 @@ export const useExamSocket = () => {
 
     sendJsonMessage({
       type: "timer",
-      sisa_timer,
+      sisa: sisa_timer,
     });
 
     console.log(`⏱️ Timer dikirim: ${sisa_timer} detik`);
