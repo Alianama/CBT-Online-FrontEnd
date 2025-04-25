@@ -28,4 +28,5 @@ export const clearAuthData = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
   localStorage.removeItem("user_data");
+  localStorage.removeItem("wsToken");
 };

@@ -119,7 +119,6 @@ export interface QuestionType {
     c: string
     d: string
     e: string
-    kunci_jawaban: string
     jawaban: string | null
     [key: string]: string | number | null
 }

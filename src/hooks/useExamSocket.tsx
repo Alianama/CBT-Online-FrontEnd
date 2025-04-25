@@ -119,7 +119,6 @@
 //     connectionStatus: readyState,
 //   };
 // }
-
 // import useWebSocket from "react-use-websocket";
 // import { useEffect, useRef, useState } from "react";
 // import { useGlobal } from "@/context/GlobalContext.tsx";
@@ -232,181 +231,185 @@
 //     getWebSocket,
 //   };
 // };
-
-
 import useWebSocket from "react-use-websocket";
-import { useEffect, useRef, useState } from "react";
-import { useGlobal } from "@/context/GlobalContext.tsx";
-import { QuestionType } from "@/types/types.ts";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
+import {useGlobal} from "@/context/GlobalContext.tsx";
+import {QuestionType} from "@/types/types.ts";
+import {useNavigate} from "react-router-dom";
+import useTimerStore from "@/stores/useTimerStore.ts";
+import useResultSubmitUjian from "@/stores/useResultSubmitUjian.ts";
 
 type AuthMessage = {
-  token: string;
-  type: "auth";
+    token: string;
+    type: "auth";
 };
-
 type InfoUjianPayload = {
-  id_peserta: string;
-  id_bank: number;
-  status_ujian: number;
-  kode_bank: string;
-  nama_bank: string;
-  nama_siswa: string;
-  mulai: string | null;
-  durasi_ujian: number;
-  sisa_timer: number;
+    id_peserta: string;
+    id_bank: number;
+    status_ujian: number;
+    kode_bank: string;
+    nama_bank: string;
+    nama_siswa: string;
+    mulai: string | null;
+    durasi_ujian: number;
+    sisa_timer: number;
 };
-
-// type JawabanPayload = {
-//   [id_soal: string]: string;
-// };
-
 type ServerMessage =
     | { type: "info-ujian"; payload: InfoUjianPayload }
     | { type: "soal-ujian"; payload: QuestionType[] }
     | { type: "error"; error: string; code?: number }
     | { type: string; payload?: any; error?: any };
-
 const WSS_URL = import.meta.env.VITE_WSS_URL;
-
 export const useExamSocket = () => {
-  const authSentRef = useRef(false);
-  const soalRequestedRef = useRef(false);
-  const jawabanSentRef = useRef<Record<number, string>>({});
-  const [dataUjian, setDataUjian] = useState<InfoUjianPayload | null>(null);
-  const [soal, setSoal] = useState<QuestionType[]>([]);
-  const [errors, setErrors] = useState<string[]>([]);
-  const { wsToken } = useGlobal();
-  const navigate = useNavigate();
-
-  const {
-    sendJsonMessage,
-    lastJsonMessage,
-    readyState,
-    getWebSocket,
-  } = useWebSocket(WSS_URL, {
-    onOpen: () => {
-      console.log("✅ WebSocket connected");
-      if (!authSentRef.current) {
-        sendJsonMessage({ token: wsToken, type: "auth" } as AuthMessage);
-        console.log("📨 Auth message sent");
-        authSentRef.current = true;
-      }
-    },
-    onClose: () => {
-      console.log("❌ WebSocket disconnected");
-      authSentRef.current = false;
-    },
-    onError: (err) => {
-      console.error("🔥 WebSocket error", err);
-    },
-    shouldReconnect: () => {
-      console.log("🔁 Attempting to reconnect...");
-      return true;
-    },
-    reconnectAttempts: 10,
-    reconnectInterval: 3000,
-  });
-
-  useEffect(() => {
-    if (!lastJsonMessage) return;
-    const message = lastJsonMessage as ServerMessage;
-
-    if ("error" in message && message.error) {
-      console.error("⚠️ Server error:", message.error);
-      if (message.error === "No token provided") {
-        navigate("/exam");
-      }
-      setErrors((prev) => [...prev, message.error]);
-      return;
-    }
-
-    if (message.type === "info-ujian") {
-      setDataUjian(message.payload);
-      if (!soalRequestedRef.current && readyState === WebSocket.OPEN) {
-        sendJsonMessage({ type: "soal" });
-        soalRequestedRef.current = true;
-        console.log("📨 Requesting soal for the first time...");
-      }
-    } else if (message.type === "soal-ujian") {
-      setSoal(message.payload);
-    } else {
-      console.warn("⚠️ Unknown message type:", message);
-    }
-  }, [lastJsonMessage, navigate, readyState, sendJsonMessage]);
-
-
-  const sendJawaban = (id_soal: number, jawaban: string) => {
-    if (readyState !== WebSocket.OPEN) {
-      console.warn("⚠️ WebSocket not connected. Cannot send jawaban.");
-      return;
-    }
-
-    if (jawabanSentRef.current[id_soal] === jawaban) {
-      console.log("📭 Jawaban sudah dikirim, tidak mengirim ulang.");
-      return;
-    }
-    // console.log(id_soal, jawaban);
-
-    sendJsonMessage({
-      type: "jawab",
-      id_soal_ujian: id_soal,
-      jawaban,
+    const authSentRef = useRef(false);
+    const soalRequestedRef = useRef(false);
+    const jawabanSentRef = useRef<Record<number, string>>({});
+    const [dataUjian, setDataUjian] = useState<InfoUjianPayload | null>(null);
+    const [soal, setSoal] = useState<QuestionType[]>([]);
+    const [soalReady, setSoalReady] = useState<boolean>(false);
+    const [errors, setErrors] = useState<string[]>([]);
+    const {wsToken} = useGlobal();
+    const navigate = useNavigate();
+    const {setTimer, resetTimer} = useTimerStore();
+    const resultStore = useResultSubmitUjian();
+    const {
+        sendJsonMessage,
+        lastJsonMessage,
+        readyState,
+        getWebSocket,
+    } = useWebSocket(WSS_URL, {
+        onOpen: () => {
+            console.log("✅ WebSocket connected");
+            if (!authSentRef.current) {
+                sendJsonMessage({token: wsToken, type: "auth"} as AuthMessage);
+                console.log("📨 Auth message sent");
+                authSentRef.current = true;
+            }
+        },
+        onClose: () => {
+            console.log("❌ WebSocket disconnected");
+            // resetTimer();
+            authSentRef.current = false;
+        },
+        onError: (err) => {
+            console.error("🔥 WebSocket error", err);
+        },
+        shouldReconnect: () => {
+            console.log("🔁 Attempting to reconnect...");
+            return true;
+        },
+        reconnectAttempts: 10,
+        reconnectInterval: 3000,
     });
-
-    jawabanSentRef.current[id_soal] = jawaban;
-    console.log(`✅ Jawaban dikirim untuk soal ${id_soal}: ${jawaban}`);
-  };
-  
-  const sendTimer = (sisa_timer: number) => {
-    if (readyState !== WebSocket.OPEN) {
-      console.warn("⚠️ WebSocket not connected. Cannot send timer.");
-      return;
-    }
-
-    sendJsonMessage({
-      type: "timer",
-      sisa: sisa_timer,
-    });
-
-    console.log(`⏱️ Timer dikirim: ${sisa_timer} detik`);
-  };
-
-  // 📤 Submit ujian
-  const submitUjian = () => {
-    if (readyState !== WebSocket.OPEN) {
-      console.warn("⚠️ WebSocket not connected. Cannot submit ujian.");
-      return;
-    }
-
-    sendJsonMessage({
-      type: "submit",
-    });
-
-    console.log("📤 Submit ujian dikirim");
-  };
-
-  // Optional: kirim waktu sisa setiap 30 detik
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (dataUjian?.sisa_timer != null) {
-        sendTimer(dataUjian.sisa_timer);
-      }
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [dataUjian?.sisa_timer, sendTimer]);
-
-  return {
-    errors,
-    dataUjian,
-    soal,
-    sendJsonMessage,
-    lastJsonMessage,
-    readyState,
-    getWebSocket,
-    sendJawaban,
-    sendTimer,
-    submitUjian,
-  };
+    useEffect(() => {
+        if (!lastJsonMessage) return;
+        const message = lastJsonMessage as ServerMessage;
+        if ("error" in message && message.error) {
+            console.error("⚠️ Server error:", message.error);
+            if (message.error === "No token provided") {
+                navigate("/exam");
+            } else if (message.error === "Param timer lebih dari durasi") {
+                console.log(message.error);
+                window.location.reload();
+                setSoalReady((prev) => !prev);
+            } else if(message.error === "Token ws not found or expired") {
+                navigate("/exam");
+                resetTimer()
+            }
+            setErrors((prev) => [...prev, message.error]);
+            return;
+        }
+        if (message.type === "info-ujian") {
+            setDataUjian(message.payload);
+            if (!soalRequestedRef.current && readyState === WebSocket.OPEN) {
+                const {sisa_timer} = message.payload;
+                console.log(sisa_timer);
+                setTimer(sisa_timer);
+                sendJsonMessage({type: "soal"});
+                soalRequestedRef.current = true;
+                console.log("📨 Requesting soal for the first time...");
+            }
+        } else if (message.type === "soal-ujian") {
+            setSoal(message.payload);
+        } else if (message.type === "timer-ujian") {
+            console.log(message.payload);
+        } else if (message.type === "Jawaban") {
+            console.log(message.payload);
+        } else if (message.type === "reset-ujian") {
+            resetTimer();
+            localStorage.removeItem("wsToken");
+        } else if (message.type === "submit-ujian") {
+            const result = message.payload;
+            resultStore.setResult({
+                benar: result.benar,
+                salah: result.salah,
+                kosong: result.kosong,
+                total: result.total,
+                nilai: result.nilai
+            });
+        } else {
+            console.warn("⚠️ Unknown message type:", message);
+        }
+    }, [lastJsonMessage, navigate, readyState, resetTimer, sendJsonMessage, setTimer]);
+    const sendJawaban = (id_soal: number, jawaban: string) => {
+        if (readyState !== WebSocket.OPEN) {
+            console.warn("⚠️ WebSocket not connected. Cannot send jawaban.");
+            return;
+        }
+        if (jawabanSentRef.current[id_soal] === jawaban) {
+            console.log("📭 Jawaban sudah dikirim, tidak mengirim ulang.");
+            return;
+        }
+        sendJsonMessage({
+            type: "jawab",
+            id_soal_ujian: id_soal,
+            jawaban,
+        });
+        jawabanSentRef.current[id_soal] = jawaban;
+        console.log(`✅ Jawaban dikirim untuk soal ${id_soal}: ${jawaban}`);
+    };
+    const sendTimer = (sisa_timer: number) => {
+        if (readyState !== WebSocket.OPEN) {
+            console.warn("⚠️ WebSocket not connected. Cannot send timer.");
+            return;
+        }
+        sendJsonMessage({
+            type: "timer",
+            sisa: sisa_timer,
+        });
+        console.log(`⏱️ Timer dikirim: ${sisa_timer} detik`);
+    };
+    // 📤 Submit ujian
+    const submitUjian = () => {
+        if (readyState !== WebSocket.OPEN) {
+            console.warn("⚠️ WebSocket not connected. Cannot submit ujian.");
+            return;
+        }
+        sendJsonMessage({
+            type: "submit",
+        });
+        console.log("📤 Submit ujian dikirim");
+    };
+    // Optional: kirim waktu sisa setiap 30 detik
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (dataUjian?.sisa_timer != null) {
+                sendTimer(dataUjian.sisa_timer);
+            }
+        }, 30000);
+        return () => clearInterval(interval);
+    }, [dataUjian?.sisa_timer, sendTimer]);
+    return {
+        errors,
+        dataUjian,
+        soal,
+        sendJsonMessage,
+        lastJsonMessage,
+        readyState,
+        getWebSocket,
+        sendJawaban,
+        sendTimer,
+        submitUjian,
+        soalReady, setSoalReady,
+    };
 };

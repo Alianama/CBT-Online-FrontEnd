@@ -17,7 +17,6 @@ interface ExamQuestionsProps {
 
 export default function ExamQuestions({ questions, currentQuestion, onAnswerChange, answers }: ExamQuestionsProps) {
     const question = questions[currentQuestion]
-    console.log(question)
 
     if (!question) return <div>No question found</div>
 
@@ -47,13 +46,13 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
 
                 {question.tipe === "1" && (
                     <div className="space-y-4">
-                        <RadioGroup value={answers[question.id_soal_ujian] || ""} onValueChange={handleMultipleChoiceChange}>
+                        <RadioGroup value={answers[question.id_soal_ujian] || question.jawaban || ""} onValueChange={handleMultipleChoiceChange}>
                             {["a", "b", "c", "d", "e"].map((option) => {
                                 if (!question[option as keyof QuestionType]) return null
 
                                 return (
                                     <div key={option} className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted">
-                                        <RadioGroupItem value={option.toUpperCase()} id={`option-${option}`} className="mt-1" />
+                                        <RadioGroupItem value={option} id={`option-${option}`} className="mt-1" />
                                         <Label htmlFor={`option-${option}`} className="flex-1 cursor-pointer">
                                             <MathJax>
                                                 <div
@@ -75,7 +74,7 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
                         <Label htmlFor="short-answer">Your Answer:</Label>
                         <Input
                             id="short-answer"
-                            value={answers[question.id_soal_ujian] || ""}
+                            value={answers[question.id_soal_ujian] || question.jawaban || ""}
                             onChange={handleTextAnswerChange}
                             placeholder="Type your answer here..."
                             className="w-full"
@@ -88,10 +87,10 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
                         <Label htmlFor="essay-answer">Your Answer:</Label>
                         <Textarea
                             id="essay-answer"
-                            value={answers[question.id_soal_ujian] || ""}
+                            value={answers[question.id_soal_ujian] || question.jawaban || ""}
                             onChange={handleTextAnswerChange}
                             placeholder="Type your essay answer here..."
-                            className="w-full min-h-[200px]"
+                            className="w-full min-h-[300px]"
                         />
                     </div>
                 )}
