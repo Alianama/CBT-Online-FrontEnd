@@ -368,12 +368,6 @@ export const postTokenUjian = async (token?: string, id_peserta?: number) => {
         token,
         id_peserta,
       },
-      // {
-        //     headers: {
-          //         Accept: "application/json",
-          //         "Content-Type": "application/json",
-          //     },
-          // }
         );
         return response.data;
       } catch (error) {
@@ -389,6 +383,16 @@ export const postTokenUjian = async (token?: string, id_peserta?: number) => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 throw new Error(error.response?.data?.message || "Failed to get Hasil Ujian");
+            }
+        }
+    }
+  export const getHistoriJawaban = async (id: string | undefined) => {
+        try {
+            const response = await axiosInstance.get(`${BASE_URL}/hasil/${id}`, {});
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                throw new Error(error.response?.data?.message || "Gagal mengambil Histori Jawaban");
             }
         }
     }

@@ -1,17 +1,17 @@
 import { useState, useEffect, useContext, useCallback } from "react"
-import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Eye, History, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 
 import Layout from "@/components/sidebar/Layout"
 import LanguageContext from "@/context/LanguageContext"
 import { getHasilUjian } from "@/app/api/api-cbt"
+import { useNavigate } from "react-router-dom"
 
 interface ExamResult {
   id_peserta: number
@@ -70,7 +70,8 @@ const translations: Record<Locale, Record<string, string>> = {
     startTime: "Waktu Mulai",
     endTime: "Waktu Selesai",
     kkmLabel: "Nilai KKM",
-    viewDetail: "Lihat Detail",
+    viewDetail: "Detail",
+    viewHistory: "History Jawaban",
     description:
       "Menampilkan informasi lengkap tentang kinerja siswa dalam ujian, termasuk nilai, durasi, dan riwayat jawaban.",
   },
@@ -103,7 +104,8 @@ const translations: Record<Locale, Record<string, string>> = {
     startTime: "Start Time",
     endTime: "End Time",
     kkmLabel: "Minimum Passing Grade",
-    viewDetail: "View Detail",
+    viewDetail: "Detail",
+    viewHistory: "Answer history",
     description:
       "Displays complete information about student performance in exams, including grades, duration, and answer history.",
   },
@@ -117,6 +119,7 @@ export default function ExamResultsPage() {
   const [error, setError] = useState<string | null>(null)
   const [selectedExam, setSelectedExam] = useState<ExamResult | null>(null)
   const [isDetailOpen, setIsDetailOpen] = useState(false)
+  const navigate = useNavigate();
 
   const { locale } = useContext(LanguageContext)
   const pagedata = pageMeta[(locale as Locale) ?? "id"]
@@ -216,7 +219,7 @@ export default function ExamResultsPage() {
                                 </TableCell>
                                 <TableCell>
                                   <div className="flex flex-col">
-                                    <span className="font-semibold">{result.nilai}</span>
+                                    <span className={isLulus ? "text-primary font-semibold" : "text-red-500 font-semibold"}>{result.nilai}</span>
                                     <span className="text-xs text-muted-foreground">
                                       {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                     </span>
@@ -236,6 +239,15 @@ export default function ExamResultsPage() {
                                   </div>
                                 </TableCell>
                                 <TableCell className="text-center">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => navigate(`/result/answer/${result.id_peserta}`)}
+                                    className="h-8 p-3"
+                                  >
+                                    <History className="h-4 w-4" /> {t.viewHistory}
+                                    <span className="sr-only">{t.viewHistory}</span>
+                                  </Button>
                                   <Button
                                     variant="ghost"
                                     size="sm"
@@ -272,7 +284,7 @@ export default function ExamResultsPage() {
                             <div className="grid grid-cols-2 gap-2 mb-3">
                               <div>
                                 <div className="text-xs text-muted-foreground">{t.score}</div>
-                                <div className="font-semibold">{result.nilai}</div>
+                                <div className={isLulus ? "text-primary font-semibold" : "text-red-500 font-semibold"}>{result.nilai}</div>
                                 <div className="text-xs text-muted-foreground">
                                   {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                 </div>
@@ -285,15 +297,26 @@ export default function ExamResultsPage() {
                                 </div>
                               </div>
                             </div>
-
+                            <div className="flex gap-5" >
+                            <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => navigate(`/result/answer/${result.id_peserta}`)}
+                                    className="w-full justify-center bg-slate-300/30"
+                                    >
+                                    <History className="h-4 w-4" /> {t.viewHistory}
+                                    <span className="sr-only">{t.viewHistory}</span>
+                                  </Button>
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => openDetail(result)}
-                              className="w-full justify-center"
+                              className="w-full justify-center bg-slate-300/30"
                             >
                               <Eye className="h-4 w-4 mr-2" /> {t.viewDetail}
                             </Button>
+                            </div>
+                            
                           </div>
                         )
                       })}
@@ -365,69 +388,58 @@ export default function ExamResultsPage() {
             </DialogHeader>
 
             {selectedExam && (
-              <Tabs defaultValue="detail" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="detail">{t.examInfo}</TabsTrigger>
-                  <TabsTrigger value="history">{t.answerHistory}</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="detail" className="space-y-4 pt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">{t.participantId}</p>
-                      <p className="text-lg font-semibold">{selectedExam.id_peserta}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{t.examType}</p>
-                      <p className="text-lg font-semibold">{selectedExam.jenis_ujian}</p>
-                    </div>
-                    <div className="col-span-2">
-                      <p className="text-sm text-muted-foreground">{t.bankName}</p>
-                      <p className="text-lg">{selectedExam.nama_bank}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{t.startTime}</p>
-                      <p>{formatDate(selectedExam.mulai)}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{t.endTime}</p>
-                      <p>{formatDate(selectedExam.submit)}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{t.duration}</p>
-                      <p>{calculateDuration(selectedExam.mulai, selectedExam.submit)}</p>
-                    </div>
+              <div className="space-y-4 pt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t.participantId}</p>
+                    <p className="text-lg font-semibold">{selectedExam.id_peserta}</p>
                   </div>
-
-                  <div className="pt-6 border-t mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                    <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-                      <p className="text-sm text-muted-foreground">{t.score}</p>
-                      <p className="text-3xl font-bold">{selectedExam.nilai}</p>
-                      <Badge variant={selectedExam.nilai >= selectedExam.kkm ? "default" : "destructive"}>
-                        {selectedExam.nilai >= selectedExam.kkm ? t.passed : t.failed}
-                      </Badge>
-                    </div>
-                    <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-                      <p className="text-sm text-muted-foreground">{t.correct}</p>
-                      <p className="text-3xl font-bold text-green-600">{selectedExam.benar}</p>
-                    </div>
-                    <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-                      <p className="text-sm text-muted-foreground">{t.wrong}</p>
-                      <p className="text-3xl font-bold text-red-600">{selectedExam.salah}</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t.examType}</p>
+                    <p className="text-lg font-semibold">{selectedExam.jenis_ujian}</p>
                   </div>
-
-                  <div className="text-center mt-4">
-                    <p className="text-sm text-muted-foreground">
-                      {t.kkmLabel}: <span className="font-medium">{selectedExam.kkm}</span>
-                    </p>
+                  <div className="col-span-2">
+                    <p className="text-sm text-muted-foreground">{t.bankName}</p>
+                    <p className="text-lg">{selectedExam.nama_bank}</p>
                   </div>
-                </TabsContent>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t.startTime}</p>
+                    <p>{formatDate(selectedExam.mulai)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t.endTime}</p>
+                    <p>{formatDate(selectedExam.submit)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t.duration}</p>
+                    <p>{calculateDuration(selectedExam.mulai, selectedExam.submit)}</p>
+                  </div>
+                </div>
 
-                <TabsContent value="history" className="pt-4">
-                  <div className="text-center py-8 text-muted-foreground">{t.noHistory}</div>
-                </TabsContent>
-              </Tabs>
+                <div className="pt-6 border-t mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                  <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+                    <p className="text-sm text-muted-foreground">{t.score}</p>
+                    <p className={`text-3xl font-bold ${selectedExam.nilai >= selectedExam.kkm ? 'text-primary' : 'text-red-500'}`}>{selectedExam.nilai}</p>
+                    <Badge variant={selectedExam.nilai >= selectedExam.kkm ? "default" : "destructive"}>
+                      {selectedExam.nilai >= selectedExam.kkm ? t.passed : t.failed}
+                    </Badge>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+                    <p className="text-sm text-muted-foreground">{t.correct}</p>
+                    <p className="text-3xl font-bold text-green-600">{selectedExam.benar}</p>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+                    <p className="text-sm text-muted-foreground">{t.wrong}</p>
+                    <p className="text-3xl font-bold text-red-600">{selectedExam.salah}</p>
+                  </div>
+                </div>
+
+                <div className="text-center mt-4">
+                  <p className="text-sm text-muted-foreground">
+                    {t.kkmLabel}: <span className="font-medium">{selectedExam.kkm}</span>
+                  </p>
+                </div>
+              </div>
             )}
           </DialogContent>
         </Dialog>

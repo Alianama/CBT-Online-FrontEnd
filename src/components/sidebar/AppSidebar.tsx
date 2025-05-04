@@ -1,4 +1,3 @@
-"use client";
 import type * as React from "react";
 import { useContext } from "react";
 import {
@@ -9,7 +8,6 @@ import {
   FileCheck,
   GalleryVerticalEnd,
   House,
-  Map,
   Pencil,
 } from "lucide-react";
 import { NavPrimary } from "./nav-primary.tsx";
@@ -77,11 +75,6 @@ const data = {
         icon: BookMarked,
       },
       {
-        name: "Laporan",
-        url: "#",
-        icon: Map,
-      },
-      {
         name: "Ujian",
         url: "/exam",
         icon: ClipboardList,
@@ -107,11 +100,6 @@ const data = {
         name: "Lesson",
         url: "/lesson",
         icon: BookMarked,
-      },
-      {
-        name: "Report",
-        url: "#",
-        icon: Map,
       },
       {
         name: "Exam",
