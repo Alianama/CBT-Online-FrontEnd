@@ -347,38 +347,48 @@ export const getJadwalList = async () => {
     }
 }
 export const putProfileImage = async (file: File) => {
-    const formData = new FormData();
-    formData.append('profile_img', file);
-    try {
-        const response = await axiosInstance.patch(`${BASE_URL}/profil/upload-img`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return response.data;
-    } catch (error: any) {
-        console.error('Upload gagal:', error);
-        throw new Error(error?.response?.data?.message || 'Gagal upload foto profil');
-    }
+  const formData = new FormData();
+  formData.append('profile_img', file);
+  try {
+    const response = await axiosInstance.patch(`${BASE_URL}/profil/upload-img`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error('Upload gagal:', error);
+    throw new Error(error?.response?.data?.message || 'Gagal upload foto profil');
+  }
 };
 export const postTokenUjian = async (token?: string, id_peserta?: number) => {
-    try {
-        const response = await axiosInstance.post(`${BASE_URL}/ujian/start`,
-            {
-                token,
-                id_peserta,
-            },
-            // {
-            //     headers: {
-            //         Accept: "application/json",
-            //         "Content-Type": "application/json",
-            //     },
-            // }
+  try {
+    const response = await axiosInstance.post(`${BASE_URL}/ujian/start`,
+      {
+        token,
+        id_peserta,
+      },
+      // {
+        //     headers: {
+          //         Accept: "application/json",
+          //         "Content-Type": "application/json",
+          //     },
+          // }
         );
         return response.data;
-    } catch (error) {
+      } catch (error) {
         if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data?.message || "Failed to post Token Ujian");
+          throw new Error(error.response?.data?.message || "Failed to post Token Ujian");
+        }
+      }
+    }
+  export const getHasilUjian = async (page: number, limit: number) => {
+        try {
+            const response = await axiosInstance.get(`${BASE_URL}/hasil/siswa?page=${page}&limit=${limit}`, {});
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                throw new Error(error.response?.data?.message || "Failed to get Hasil Ujian");
+            }
         }
     }
-}

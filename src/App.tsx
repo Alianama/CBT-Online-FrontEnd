@@ -18,6 +18,7 @@ import SubjectPage from "@/components/lesson/SubjectPage";
 import DocumentOpen from "@/components/lesson/viewer/document-open.tsx";
 import UpdateProfile from "@/components/profile/UpdateProfile.tsx";
 import QuestionPage from "@/pages/Question.tsx";
+import Result from "./pages/Result";
 
 export default function App() {
     const [locale, setLanguage] = useState<string>(
@@ -93,6 +94,10 @@ export default function App() {
                         path: "/exam/start",
                         element: <QuestionPage/>,
                     },
+                    {
+                      path: "/result",
+                      element: <Result/>,
+                  },
                 ].map(({path, element}) => (
                     <Route
                         key={path}
