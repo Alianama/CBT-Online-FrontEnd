@@ -125,9 +125,8 @@ export default function InsertToken({id_peserta, isInsertToken, setIsInsertToken
       const response = await postTokenUjian(inputToken, id_peserta)
       setWsToken(null)
       console.log(response)
-      const websocket = response.websocket;
+      const websocket = response.data;
       if (response.status === "success") {
-        console.log(websocket.token)
         setWsToken(websocket.token)
         toast.success(response.status)
         navigate(`/exam/start`)
