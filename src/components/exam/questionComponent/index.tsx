@@ -21,7 +21,7 @@ import {toast} from "sonner";
 
 export default function ExamPage() {
 
-    const { soal, setTimer, timer, readyState, sendJawaban, submitUjian } = useExamSocket();
+    const { soal, setTimer, timer, readyState, sendJawaban, submitUjian, } = useExamSocket();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState<Record<number, string | null>>({});
     const [examFinished, setExamFinished] = useState(false);
@@ -39,26 +39,45 @@ export default function ExamPage() {
         setAnswers(initialAnswers);
     }, [soal]);
     
-    const handleClearHistory = () => {
-        localStorage.removeItem("soal-timer");
-        localStorage.removeItem("wsToken");
-    }
+    // useEffect(() => {
+    //     if (timer === null) return;
+    //     if (timer <= 0) {
+    //         submitUjian();
+    //         toast.success("Time Up! Redirect To Result");
+    //         return;
+    //     }
+    //
+    //     const interval = setInterval(() => {
+    //         setTimer((prev) => (prev !== null ? prev - 1 : null));
+    //     }, 1000);
+    //
+    //     return () => clearInterval(interval);
+    // }, [timer]);
 
     useEffect(() => {
-        if (timer === null) return;
-        if (timer <= 0) {
-            submitUjian();
-            handleClearHistory()
-            toast.success("Time Up! Redirect To Result");
-            return;
-        }
-
         const interval = setInterval(() => {
-            setTimer((prev) => (prev !== null ? prev - 1 : null));
+            const endTimeStr = localStorage.getItem("exam_end_time");
+            if (!endTimeStr) return;
+
+            const endTime = parseInt(endTimeStr);
+            const now = Date.now();
+            const remaining = Math.floor((endTime - now) / 1000);
+
+            if (remaining <= 0) {
+                setTimer(0);
+                submitUjian();
+                toast.success("Time Up! Redirect To Result");
+                setExamFinished(true);
+                clearInterval(interval);
+            } else {
+                setTimer(remaining);
+            }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer]);
+    }, [submitUjian, setTimer]);
+
+
     const handleAnswerChange = (questionId: number, answer: string) => {
         setAnswers((prev) => ({
             ...prev,
@@ -128,7 +147,7 @@ export default function ExamPage() {
                                 <Timer
                                     timeLeft={timer}
                                     setTimeLeft={setTimer}
-                                    onTimeUp={() => console.log("waktu habis")}
+                                    onTimeUp={() => console.log("Reload Waktu Ujian")}
                                 />
                             )}
                         </div>
@@ -209,7 +228,6 @@ export default function ExamPage() {
                                 submitUjian();
                                 setOpenSubmitAlert(false);
                                 setExamFinished(true);
-                                handleClearHistory()
                             }}
                         >
                             Ya, Submit
