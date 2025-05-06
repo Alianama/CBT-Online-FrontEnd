@@ -7,6 +7,7 @@ import LanguageContext from "@/context/LanguageContext.tsx";
 import {useContext, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import InsertToken from "@/components/exam/InsertToken.tsx";
+import {toast} from "sonner";
 
 type Locale = "id" | "en";
 const translations: Record<Locale, {
@@ -109,11 +110,12 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
                 <CardFooter className="flex gap-10 justify-end">
                     <span>{"-->"}</span>
                     <Button
+                        disabled={examData.token === 0}
                         onClick={() => {
                             if (examData.token === 1) {
                                 setIsInsertToken(true);
                             } else {
-                                alert("Token ujian belum tersedia.");
+                                toast("Token ujian belum tersedia.");
                             }
                         }}
                         className="px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700  dark:bg-neutral-200 text-secondary text-xs font-bold flex items-center gap-1"

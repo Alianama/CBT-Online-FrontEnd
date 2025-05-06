@@ -39,6 +39,7 @@ export default function ExamCard() {
         staleTime: 10 * 60 * 1000,
         refetchOnWindowFocus: true,
     });
+    const scheduleList = data?.data;
     const {locale} = useContext(LanguageContext);
     const t = translations[(locale as Locale) || "id"];
     return (
@@ -63,9 +64,9 @@ export default function ExamCard() {
 
             {error && <p className="text-red-500">{t.error}</p>}
 
-            {data && data.length > 0 ? (
+            {scheduleList && scheduleList.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {data.map((examData: ExamData) => (
+                    {scheduleList.map((examData: ExamData) => (
                         <ScheduleCard
                             key={`${examData.id_peserta}-${examData.id_bank}`}
                             examData={examData}

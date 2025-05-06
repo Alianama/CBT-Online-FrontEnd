@@ -3,8 +3,8 @@ import { useEffect } from "react"
 import { Clock } from "lucide-react"
 
 interface TimerProps {
-    timeLeft: number
-    setTimeLeft: (time: (prev: number) => (number)) => void
+    timeLeft: number | null
+    setTimeLeft: (time: (prev: number | null ) => (number | null)) => void
     onTimeUp: () => void
 }
 
@@ -12,12 +12,12 @@ export default function Timer({ timeLeft, setTimeLeft, onTimeUp }: TimerProps) {
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
-                if (prev <= 1) {
+                if (prev ?? 0 <= 1) {
                     clearInterval(timer)
                     onTimeUp()
                     return 0
                 }
-                return prev - 1
+                return prev ?? 0 - 1
             })
         }, 1000)
 
@@ -35,7 +35,7 @@ export default function Timer({ timeLeft, setTimeLeft, onTimeUp }: TimerProps) {
     return (
         <div className="flex items-center gap-2 text-sm font-medium">
             <Clock className="h-4 w-4" />
-            <span className={timeLeft < 300 ? "text-red-500" : ""}>{formatTime(timeLeft)}</span>
+            <span className={timeLeft ?? 0 < 300 ? "text-red-500" : ""}>{formatTime(timeLeft ?? 0)}</span>
         </div>
     )
 }
