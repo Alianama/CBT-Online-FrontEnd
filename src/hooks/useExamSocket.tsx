@@ -135,9 +135,9 @@ export const useExamSocket = () => {
                 submitUjian();
                 break;
             case "jawaban":
-                console.log(message.payload);
                 break;
             default:
+                console.log(message);
                 break;
         }
     }, [lastJsonMessage, readyState, sendJsonMessage, navigate, resetTimer]);

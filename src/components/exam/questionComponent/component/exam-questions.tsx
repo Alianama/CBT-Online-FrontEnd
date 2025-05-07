@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import type { QuestionType } from "@/types/types.ts"
 import MathJax from "./math-jax.tsx"
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 interface ExamQuestionsProps {
     questions: QuestionType[]
@@ -18,7 +19,17 @@ interface ExamQuestionsProps {
 export default function ExamQuestions({ questions, currentQuestion, onAnswerChange, answers }: ExamQuestionsProps) {
     const question = questions[currentQuestion]
 
-    if (!question) return <div>No question found</div>
+    if (!question) return (
+      <div className="flex flex-col items-center justify-center h-[60vh] space-y-6">
+        <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">
+          Soal Sedang Disiapkan...
+        </h2>
+        <Skeleton className="h-6 w-3/4 rounded-md" />
+        <Skeleton className="h-6 w-5/6 rounded-md" />
+        <Skeleton className="h-6 w-2/3 rounded-md" />
+        <Skeleton className="h-48 w-[300px] rounded-xl" />
+      </div>
+    )
 
     const handleMultipleChoiceChange = (value: string) => {
         onAnswerChange(question.id_soal_ujian, value)
@@ -27,8 +38,6 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
     const handleTextAnswerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onAnswerChange(question.id_soal_ujian, e.target.value)
     }
-
-    console.log(question)
 
     return (
         <div>
