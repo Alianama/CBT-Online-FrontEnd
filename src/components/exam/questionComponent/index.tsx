@@ -38,7 +38,7 @@ export default function ExamPage() {
         });
         setAnswers(initialAnswers);
     }, [soal]);
-    
+
     // useEffect(() => {
     //     if (timer === null) return;
     //     if (timer <= 0) {
@@ -77,6 +77,11 @@ export default function ExamPage() {
         return () => clearInterval(interval);
     }, [submitUjian, setTimer]);
 
+    const onSetTimeLeft = (sisa_time : any) => {
+        console.log("setTimeLeft", sisa_time);
+        setTimer(sisa_time)
+    }
+
 
     const handleAnswerChange = (questionId: number, answer: string) => {
         setAnswers((prev) => ({
@@ -89,7 +94,7 @@ export default function ExamPage() {
         setOpenSubmitAlert(true);
     };
     const allQuestionsAnswered = Object.values(answers).every((a) => a !== null);
-    
+
     if (examFinished) {
         return (
             <div className="container mx-auto py-8 px-4 text-center">
@@ -109,7 +114,7 @@ export default function ExamPage() {
                     <Card className="p-4 mb-4 w-full">
                         <div className="flex justify-between items-center mb-2">
                             <h2 className="text-lg font-semibold">Questions</h2>
-                            <Timer timeLeft={timer} setTimeLeft={setTimer} onTimeUp={() => navigate("/result")}/>
+                            <Timer timeLeft={timer} setTimeLeft={onSetTimeLeft} onTimeUp={() => navigate("/result")}/>
                         </div>
                         <QuestionNavigation
                             questions={soal}
@@ -146,7 +151,7 @@ export default function ExamPage() {
                             {!isMobile && (
                                 <Timer
                                     timeLeft={timer}
-                                    setTimeLeft={setTimer}
+                                    setTimeLeft={onSetTimeLeft}
                                     onTimeUp={() => console.log("Reload Waktu Ujian")}
                                 />
                             )}

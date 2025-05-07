@@ -28,6 +28,8 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
         onAnswerChange(question.id_soal_ujian, e.target.value)
     }
 
+    console.log(question)
+
     return (
         <div>
             <div className="mb-6">
@@ -49,10 +51,10 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
                         <RadioGroup value={answers[question.id_soal_ujian] || question.jawaban || ""} onValueChange={handleMultipleChoiceChange}>
                             {["a", "b", "c", "d", "e"].map((option) => {
                                 if (!question[option as keyof QuestionType]) return null
-
                                 return (
-                                    <div key={option} className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted">
+                                    <div key={option} className="flex items-center justify-center space-x-2 p-2 rounded-md hover:bg-muted">
                                         <RadioGroupItem value={option} id={`option-${option}`} className="mt-1" />
+                                        <h1 className="mt-1">{option}</h1>
                                         <Label htmlFor={`option-${option}`} className="flex-1 cursor-pointer">
                                             <MathJax>
                                                 <div
