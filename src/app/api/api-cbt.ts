@@ -252,7 +252,8 @@ export const sendOTP = async (no_hp: string) => {
     try {
         const response = await axiosInstance.post(
             `${BASE_URL}/auth/send-otp`,
-            {phone: no_hp},
+            {phone: no_hp,
+            type: "update"},
             {
                 headers: {
                     Accept: "application/json",
