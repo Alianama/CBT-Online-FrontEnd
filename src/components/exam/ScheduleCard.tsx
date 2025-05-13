@@ -43,6 +43,24 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
     const [isInsertToken, setIsInsertToken] = useState<boolean>(false);
     const t = translations[(locale as Locale) || "id"];
     const examDate = parseISO(examData.tanggal_ujian);
+
+    const now = new Date();
+    const [jam, menit] = examData.jam_ujian.split(":").map(Number);
+    const examStartDate = new Date(examDate);
+    examStartDate.setHours(jam, menit, 0, 0);
+    const examEndDate = new Date(examStartDate.getTime() + examData.durasi_ujian * 1000);
+    const isBeforeStart = now < examStartDate;
+    const isAfterEnd = now > examEndDate;
+    let examStatusText = "Mulai Ujian";
+    let isButtonDisabled = false;
+    if (isBeforeStart) {
+        examStatusText = "Belum dimulai";
+        isButtonDisabled = true;
+    } else if (isAfterEnd) {
+        examStatusText = "Ujian selesai";
+        isButtonDisabled = true;
+    }
+
     const formattedDate = format(examDate, "MMMM d, yyyy");
     const durationInMinutes = Math.floor(examData.durasi_ujian / 60);
     const hours = Math.floor(durationInMinutes / 60);
@@ -110,18 +128,23 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
                 <CardFooter className="flex gap-10 justify-end">
                     <span>{"-->"}</span>
                     <Button
-                        disabled={examData.token === 0}
-                        onClick={() => {
-                            if (examData.token === 1) {
-                                setIsInsertToken(true);
-                            } else {
-                                toast("Token ujian belum tersedia.");
-                            }
-                        }}
-                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700  dark:bg-neutral-200 text-secondary text-xs font-bold flex items-center gap-1"
+                      disabled={examData.token === 0 || isButtonDisabled}
+                      onClick={() => {
+                          if (examData.token === 1 && !isBeforeStart && !isAfterEnd) {
+                              setIsInsertToken(true);
+                          } else if (isBeforeStart) {
+                              toast("Ujian belum dimulai.");
+                          } else if (isAfterEnd) {
+                              toast("Waktu ujian sudah berakhir.");
+                          } else {
+                              toast("Token ujian belum tersedia.");
+                          }
+                      }}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700 dark:bg-neutral-200 text-secondary text-xs font-bold flex items-center gap-1"
                     >
-                        <Play className="w-4 h-4"/> Mulai Ujian
+                        <Play className="w-4 h-4" /> {examStatusText}
                     </Button>
+
 
                 </CardFooter>
             </Card>
