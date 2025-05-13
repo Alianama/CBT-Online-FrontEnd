@@ -400,3 +400,30 @@ export const postTokenUjian = async (token?: string, id_peserta?: number) => {
             }
         }
     }
+
+   export  const sendFotoJawaban = async ({file, token, id_soal_ujian,}: { file: File; token: string; id_soal_ujian: number;
+   }) => {
+     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+     const maxSize = 5 * 1024 * 1024; // 5MB
+
+     if (!allowedTypes.includes(file.type)) {
+       throw new Error("Format file harus JPG, JPEG, atau PNG.");
+     }
+
+     if (file.size > maxSize) {
+       throw new Error("Ukuran file melebihi 5MB.");
+     }
+
+     const formData = new FormData();
+     formData.append("token", token);
+     formData.append("id_soal_ujian", id_soal_ujian.toString());
+     formData.append("jawaban", file);
+
+     const response = await axiosInstance.post(`${BASE_URL}/ujian/jawab`, formData, {
+       headers: {
+         "Content-Type": "multipart/form-data",
+       },
+     });
+
+     return response.data;
+   }

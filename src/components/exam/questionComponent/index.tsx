@@ -19,6 +19,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import LanguageContext from "@/context/LanguageContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton";
+import {useGlobal} from "@/context/GlobalContext.tsx";
 
 export default function ExamPage() {
     const {
@@ -37,6 +38,7 @@ export default function ExamPage() {
     const statusList = ["Connecting", "Online", "Closing", "Offline"];
     const navigate = useNavigate();
     const { locale } = useContext(LanguageContext);
+    const { wsToken } = useGlobal();
 
     const t = {
         id: {
@@ -173,6 +175,7 @@ export default function ExamPage() {
                       {soal ? (
                         <>
                             <ExamQuestions
+                              token={wsToken}
                               questions={soal}
                               currentQuestion={currentQuestion}
                               onAnswerChange={handleAnswerChange}

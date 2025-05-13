@@ -243,7 +243,7 @@ export const useExamSocket = () => {
     const [errors, setErrors] = useState<string[]>([]);
     const [timer, setTimer] = useState<number>(3000);
     const [mapingJawaban, setMapingJawaban] = useState<Record<string, string>>({});
-    const { wsToken } = useGlobal();
+    const { wsToken, setWsToken } = useGlobal();
     const navigate = useNavigate();
 
     const resetTimer = useCallback(() => {
@@ -270,6 +270,10 @@ export const useExamSocket = () => {
         },
         onError: (err) => {
             console.error("WebSocket error", err);
+            resetTimer();
+            setWsToken("")
+            navigate("/exam")
+
         },
         shouldReconnect: () => true,
         reconnectAttempts: 10,

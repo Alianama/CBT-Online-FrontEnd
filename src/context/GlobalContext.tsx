@@ -20,8 +20,8 @@ interface UserContextType {
     setSchool: (school: string | null) => void;
     userPicture: string | undefined;
     setUserPicture: (userPicture: string) => void;
-    wsToken: string | null;
-    setWsToken: (wsToken: string | null) => void;
+    wsToken: string;
+    setWsToken: (wsToken: string) => void;
     biodata: Profil | null;
     setBiodata: (
       biodata: (prev: Profil | null) => Profil
@@ -31,7 +31,7 @@ interface UserContextType {
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
-    const [wsToken, setWsToken] = useState<string | null>(null);
+    const [wsToken, setWsToken] = useState<string>("");
     const [user, setUser] = useState<UserData | null>(null);
     const [userPicture, setUserPicture] = useState<string>();
     const [school, setSchool] = useState<string | null>(null);
@@ -82,7 +82,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
             if (elapsed > 180000) {
                 localStorage.removeItem("wsToken");
-                setWsToken(null);
+                setWsToken("");
             } else {
                 const savedToken = localStorage.getItem("wsToken");
                 if (savedToken) {
