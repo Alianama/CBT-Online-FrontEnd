@@ -252,8 +252,9 @@ export const sendOTP = async (no_hp: string) => {
     try {
         const response = await axiosInstance.post(
             `${BASE_URL}/auth/send-otp`,
-            {phone: no_hp,
-            type: "update"},
+            {"phone": no_hp,
+            "type": "update"
+            },
             {
                 headers: {
                     Accept: "application/json",
@@ -261,7 +262,9 @@ export const sendOTP = async (no_hp: string) => {
                 },
             }
         );
+      console.log(response.data);
         return response.data;
+
     } catch (error) {
         console.error("Error sending OTP:", error);
         if (axios.isAxiosError(error)) {

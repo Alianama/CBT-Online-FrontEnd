@@ -75,15 +75,15 @@ export interface SubjectCardProps {
 }
 
 export interface Materi {
+    indexing: any,
     size: string
     id_materi: number,
     title: string,
-    content: string,
-    level: string,
+    content?: string,
     time_created: string,
     date: string,
     tipe_materi: string,
-    attachment: string,
+    attachment: string
 }
 
 export interface materiCard {

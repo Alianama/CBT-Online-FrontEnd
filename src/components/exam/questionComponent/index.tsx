@@ -83,37 +83,16 @@ export default function ExamPage() {
         setAnswers(initialAnswers);
     }, [soal]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         const endTimeStr = localStorage.getItem("exam_end_time");
-    //         if (!endTimeStr) return;
-    //         const endTime = parseInt(endTimeStr);
-    //         const now = Date.now();
-    //         const remaining = Math.floor((endTime - now) / 1000);
-    //
-    //         if (remaining <= 0) {
-    //             setTimer(0);
-    //             submitUjian();
-    //             toast.success("Time Up! Redirect To Result");
-    //             setExamFinished(true);
-    //             clearInterval(interval);
-    //         } else {
-    //             setTimer(remaining);
-    //         }
-    //     }, 1000);
-    //     return () => clearInterval(interval);
-    // }, [submitUjian, setTimer]);
-
     const onSetTimeLeft = (sisa_time: any) => {
         setTimer(sisa_time);
     };
 
-    const handleAnswerChange = (questionId: number, answer: string) => {
+    const handleAnswerChange = (questionId: number, answer: string, type: number) => {
         setAnswers((prev) => ({
             ...prev,
             [questionId]: answer,
         }));
-        sendJawaban(questionId, answer);
+        sendJawaban(questionId, answer, type);
     };
 
     const handleFinishExam = () => {

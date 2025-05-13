@@ -136,7 +136,7 @@ export default function UpdateProfile() {
         }
         try {
             const response = await sendOTP(phone);
-            if (response && response.status === true) {
+            if (response.status === "success") {
                 toast.success("OTP telah dikirim ke nomor HP Anda!");
                 setIsOtpSend(true);
                 setDisableButton(true);

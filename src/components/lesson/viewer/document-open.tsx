@@ -5,10 +5,13 @@ import LanguageContext from "@/context/LanguageContext.tsx";
 import { ArrowLeft } from "lucide-react";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+import { useMateriStore } from "@/stores/materiStore";
 
 export default function DocumentOpen() {
-  const { tipe_materi, attachment, title, subject, idKelas, idMapel } =
+  const materiList = useMateriStore((state) => state.materiList);
+  const { tipe_materi, attachment, title, subject, idKelas, idMapel, index } =
     useParams<{
+      index: any;
       tipe_materi?: string;
       attachment?: string;
       subject?: string;
@@ -16,9 +19,14 @@ export default function DocumentOpen() {
       idMapel?: string;
       title?: string;
     }>();
+
+  const parsedIndex = index ? parseInt(index, 10) : -1;
+  const materi :any = materiList[parsedIndex];
   const { locale } = useContext(LanguageContext);
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
+
   const [file_url, setFileUrl] = useState("");
+
   const pageData: Record<"id" | "en", { name: string; url: string }[]> = {
     id: [
       { name: "Materi", url: "/lesson" },
@@ -29,17 +37,21 @@ export default function DocumentOpen() {
       { name: "Book", url: "#" },
     ],
   };
+
   useEffect(() => {
     if (attachment) {
       setFileUrl(decodeURIComponent(attachment));
+    } else if (materi?.attachment) {
+      setFileUrl(materi.attachment.replace(/\{\{DOMAIN}}/g, import.meta.env.VITE_ASSET_DOMAIN));
     }
-  }, [attachment]);
+  }, [attachment, materi]);
+
   const determinedFileType =
     tipe_materi?.toLowerCase() || file_url.split(".").pop()?.toLowerCase();
+
   const isPdf = determinedFileType === "pdf";
-  const isDoc = ["doc", "docx", "xlsx", "excel", "ppt", "pptx"].includes(
-    determinedFileType || "",
-  );
+  const isDoc = ["doc", "docx", "xlsx", "excel", "ppt", "pptx"].includes(determinedFileType || "");
+
   return (
     <Layout data={pageData[safeLocale]}>
       <title>{`Materi - ${title}`}</title>
@@ -54,6 +66,17 @@ export default function DocumentOpen() {
           </Link>
 
           <div className="flex-1 overflow-auto">
+            {materi?.content ? (
+              <div
+                className="text-sm p-10 max-md:p-5 max-md:text-xs leading-relaxed mb-4"
+                dangerouslySetInnerHTML={{
+                  __html: materi.content,
+                }}
+              ></div>
+            ) : (
+              <p className="text-sm text-muted-foreground mb-4">Tidak ada konten.</p>
+            )}
+
             {file_url ? (
               isPdf ? (
                 <div className="flex flex-col items-center h-full">
@@ -65,7 +88,9 @@ export default function DocumentOpen() {
                 </div>
               ) : isDoc ? (
                 <iframe
-                  src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(file_url)}`}
+                  src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+                    file_url,
+                  )}`}
                   className="w-full h-[80vh]"
                   frameBorder="0"
                 ></iframe>
@@ -85,7 +110,7 @@ export default function DocumentOpen() {
                 </div>
               )
             ) : (
-              <p className="text-center">Loading file...</p>
+              <p className="text-center text-sm text-muted-foreground">Loading file...</p>
             )}
           </div>
         </div>

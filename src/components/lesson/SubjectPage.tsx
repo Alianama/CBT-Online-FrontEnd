@@ -1,4 +1,3 @@
-"use client";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import Layout from "@/components/sidebar/Layout.tsx";
@@ -10,6 +9,9 @@ import { getMateri } from "@/app/api/api-cbt.ts";
 import { Materi } from "@/types/types.ts";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import MateriCard from "@/components/lesson/materi-card.tsx";
+import { useMateriStore } from "@/stores/materiStore.ts"
+import { useEffect } from "react";
+
 
 export default function SubjectPage() {
   const { subject, idKelas, idMapel } = useParams<{
@@ -19,6 +21,7 @@ export default function SubjectPage() {
   }>();
   const id_kelas = idKelas ? parseInt(idKelas, 10) : undefined;
   const id_mapel = idMapel ? parseInt(idMapel, 10) : undefined;
+  const { setMateri } = useMateriStore();
   const subjectMap: Record<
     string,
     { title: string; description: string; color: string }
@@ -46,6 +49,11 @@ export default function SubjectPage() {
     refetchOnWindowFocus: true,
     retry: 1,
   });
+  useEffect(() => {
+    if (data) {
+      setMateri(data);
+    }
+  }, [data, setMateri]);
   const { locale } = useContext(LanguageContext);
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   const pageData: Record<"id" | "en", { name: string; url: string }[]> = {
@@ -121,9 +129,10 @@ export default function SubjectPage() {
                   !keyword ||
                   materi.title.toLowerCase().includes(keyword.toLowerCase()),
               )
-              .map((materi: Materi) => (
+              .map((materi: Materi, index: string) => (
                 <MateriCard
-                  key={materi.id_materi}
+                  key={index}
+                  index={index}
                   subject={subject}
                   idKelas={idKelas}
                   idMapel={idMapel}

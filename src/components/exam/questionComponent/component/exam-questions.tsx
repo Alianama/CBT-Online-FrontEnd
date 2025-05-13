@@ -12,7 +12,7 @@ import {Skeleton} from "@/components/ui/skeleton.tsx";
 interface ExamQuestionsProps {
     questions: QuestionType[]
     currentQuestion: number
-    onAnswerChange: (questionId: number, answer: string) => void
+    onAnswerChange: (questionId: number, answer: string, type: number) => void
     answers: Record<number, string | null>
 }
 
@@ -31,12 +31,12 @@ export default function ExamQuestions({ questions, currentQuestion, onAnswerChan
       </div>
     )
 
-    const handleMultipleChoiceChange = (value: string) => {
-        onAnswerChange(question.id_soal_ujian, value)
+    const handleMultipleChoiceChange = (value: string, type = 1) => {
+        onAnswerChange(question.id_soal_ujian, value, type)
     }
 
-    const handleTextAnswerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        onAnswerChange(question.id_soal_ujian, e.target.value)
+    const handleTextAnswerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type = 2) => {
+        onAnswerChange(question.id_soal_ujian, e.target.value, type)
     }
 
     return (

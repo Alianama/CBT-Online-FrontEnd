@@ -22,15 +22,15 @@ const refreshAccessToken = async (): Promise<boolean> => {
       type: "access",
     });
     if (
-      !data?.access_token?.access_token ||
-      !Number.isFinite(data.access_token.expired_at)
+      !data?.data?.token ||
+      !Number.isFinite(data.data.expired_at)
     ) {
       console.error("Invalid access token response:", data);
       return false;
     }
     setAccessToken({
-      token: data.access_token.access_token,
-      expired_at: data.access_token.expired_at,
+      token: data.data.token,
+      expired_at: data.data.expired_at,
     });
     console.log("Access token refreshed!");
     return true;

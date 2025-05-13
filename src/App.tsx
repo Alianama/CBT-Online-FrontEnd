@@ -88,7 +88,7 @@ export default function App() {
                         element: <SubjectPage/>,
                     },
                     {
-                        path: "/lesson/:subject/:idKelas/:idMapel/materi/:tipe_materi/:attachment/:title",
+                        path: "/lesson/:index/:subject/:idKelas/:idMapel/materi/:tipe_materi/:attachment/:title",
                         element: <DocumentOpen/>,
                     },
                     {

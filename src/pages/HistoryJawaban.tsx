@@ -119,6 +119,8 @@ export default function ExamResults() {
     fetchData()
   }, [id])
 
+
+
   const toggleQuestion = (id: number) => {
     setExpandedQuestions((prev) =>
       prev.includes(id) ? prev.filter((qId) => qId !== id) : [...prev, id]
@@ -165,9 +167,9 @@ export default function ExamResults() {
     )
   }
 
+
   const { info_ujian, soal_ujian } = examData
   const totalQuestions = (info_ujian?.benar || 0) + (info_ujian?.salah || 0) + (info_ujian?.kosong || 0)
-
   return (
     <Layout data={pageData[safeLocale]}>
       <div className="container mx-auto py-6 px-4 md:px-6">
@@ -283,6 +285,7 @@ export default function ExamResults() {
               return (
                 <TabsContent key={tab} value={tab} className="space-y-4">
                   {soal_ujian.filter(filter).map((soal: any, index: number) => {
+                    console.log(soal)
                     const isExpanded = expandedQuestions.includes(soal.id_soal_ujian)
                     const correct = soal.koreksi === 1
 
@@ -320,38 +323,61 @@ export default function ExamResults() {
                               </MathJax>
 
                               <div className="grid gap-2">
-                                {["a", "b", "c", "d", "e"].map((option) => {
-                                  const isCorrect = soal.kunci_jawaban.toLowerCase() === option
-                                  const isSelected = soal.jawaban === option
-
-                                  let optionClass = "flex items-start p-3 rounded-md border"
-                                  if (isCorrect) {
-                                    optionClass += " bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800"
-                                  } else if (isSelected) {
-                                    optionClass += " bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800"
-                                  }
-
-                                  return (
-                                    <div key={option} className={optionClass}>
-                                      <div className="mr-3">
-                                        <div className={`w-6 h-6 flex items-center justify-center rounded-full border ${isCorrect ? "bg-green-500 text-white border-green-500" : isSelected ? "bg-red-500 text-white border-red-500" : "border-gray-300"}`}>
-                                          {option.toUpperCase()}
-                                        </div>
-                                      </div>
-                                      <div className="flex-grow">
+                                {soal.tipe === "2" ? (
+                                  // Render untuk soal tipe 2 (misalnya jawaban isian atau essay)
+                                  <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
+                                    <div className="mb-2">
+                                      <strong>Jawaban Anda:</strong>
+                                      <div className={`mt-1 p-2 rounded ${soal.jawaban === soal.kunci_jawaban ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                                         <MathJax>
-                                          <div className="prose prose-sm max-w-none dark:prose-invert"
-                                            dangerouslySetInnerHTML={{ __html: soal[option] }} />
+                                          <div dangerouslySetInnerHTML={{ __html: soal.jawaban || "<em>(Belum dijawab)</em>" }} />
                                         </MathJax>
                                       </div>
-                                      <div className="ml-2">
-                                        {isCorrect && <Badge className="bg-green-100 text-green-800 border-green-200">{t.correctAnswer}</Badge>}
-                                        {isSelected && !isCorrect && <Badge className="bg-red-100 text-red-800 border-red-200">{t.yourAnswer}</Badge>}
-                                        {isSelected && isCorrect && <Badge className="bg-green-100 text-green-800 border-green-200">{t.yourAnswerCorrect}</Badge>}
+                                    </div>
+                                    <div>
+                                      <strong>Kunci Jawaban:</strong>
+                                      <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
+                                        <MathJax>
+                                          <div dangerouslySetInnerHTML={{ __html: soal.kunci_jawaban }} />
+                                        </MathJax>
                                       </div>
                                     </div>
-                                  )
-                                })}
+                                  </div>
+                                ) : (
+                                  // Render untuk soal pilihan ganda
+                                  ["a", "b", "c", "d", "e"].map((option) => {
+                                    const isCorrect = soal.kunci_jawaban.toLowerCase() === option
+                                    const isSelected = soal.jawaban === option
+
+                                    let optionClass = "flex items-start p-3 rounded-md border"
+                                    if (isCorrect) {
+                                      optionClass += " bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800"
+                                    } else if (isSelected) {
+                                      optionClass += " bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800"
+                                    }
+
+                                    return (
+                                      <div key={option} className={optionClass}>
+                                        <div className="mr-3">
+                                          <div className={`w-6 h-6 flex items-center justify-center rounded-full border ${isCorrect ? "bg-green-500 text-white border-green-500" : isSelected ? "bg-red-500 text-white border-red-500" : "border-gray-300"}`}>
+                                            {option.toUpperCase()}
+                                          </div>
+                                        </div>
+                                        <div className="flex-grow">
+                                          <MathJax>
+                                            <div className="prose prose-sm max-w-none dark:prose-invert"
+                                                 dangerouslySetInnerHTML={{ __html: soal[option] }} />
+                                          </MathJax>
+                                        </div>
+                                        <div className="ml-2">
+                                          {isCorrect && <Badge className="bg-green-100 text-green-800 border-green-200">{t.correctAnswer}</Badge>}
+                                          {isSelected && !isCorrect && <Badge className="bg-red-100 text-red-800 border-red-200">{t.yourAnswer}</Badge>}
+                                          {isSelected && isCorrect && <Badge className="bg-green-100 text-green-800 border-green-200">{t.yourAnswerCorrect}</Badge>}
+                                        </div>
+                                      </div>
+                                    )
+                                  })
+                                )}
                               </div>
                             </div>
                           </div>

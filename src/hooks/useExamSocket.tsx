@@ -203,6 +203,7 @@
 //     };
 // };
 
+
 import useWebSocket from "react-use-websocket";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useGlobal } from "@/context/GlobalContext";
@@ -275,7 +276,7 @@ export const useExamSocket = () => {
         reconnectInterval: 3000,
     });
 
-    // Load saved timer and mapping_jawaban
+
     useEffect(() => {
         const savedEndTime = localStorage.getItem("exam_end_time");
         const savedMapping = localStorage.getItem(MAPPING_KEY);
@@ -363,8 +364,21 @@ export const useExamSocket = () => {
     }, [lastJsonMessage, readyState, sendJsonMessage, navigate, resetTimer]);
 
     const sendJawaban = useCallback(
-      (id_soal: number, jawaban: string) => {
+      (id_soal: number, jawaban: string, type: number) => {
           if (readyState !== WebSocket.OPEN) return;
+
+          if (type === 2) {
+              if (jawabanSentRef.current[id_soal] === jawaban) return;
+
+              sendJsonMessage({
+                  type: "jawab",
+                  id_soal_ujian: id_soal,
+                  jawaban: jawaban,
+              });
+
+              jawabanSentRef.current[id_soal] = jawaban;
+              return;
+          }
 
           const mappedJawaban = mapingJawaban[jawaban];
 
@@ -384,7 +398,7 @@ export const useExamSocket = () => {
           jawabanSentRef.current[id_soal] = mappedJawaban;
       },
       [readyState, sendJsonMessage, mapingJawaban]
-    );
+    )
 
     const sendTimer = (sisa_timer: number | null) => {
         if (readyState === WebSocket.OPEN) {
