@@ -33,13 +33,13 @@ axiosInstance.interceptors.response.use(
                         type: "access"
                     });
                     console.log("New Access Token:", data);
-                    if (!data?.access_token || !data.access_token.access_token || !Number.isFinite(data.access_token.expired_at)) {
+                    if (!data?.data.token || !data.data.token || !Number.isFinite(data.data.expired_at)) {
                         console.error("Invalid access token response:", data);
                         return Promise.reject(new Error("Invalid access token response structure"));
                     }
                     const newAccessToken = {
-                        token: data.access_token.access_token,
-                        expired_at: data.access_token.expired_at
+                        token: data.data.token,
+                        expired_at: data.data.expired_at
                     };
                     setAccessToken(newAccessToken);
                     originalRequest.headers["Authorization"] = `Bearer ${newAccessToken.token}`;
