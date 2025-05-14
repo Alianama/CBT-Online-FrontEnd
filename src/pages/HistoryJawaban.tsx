@@ -142,12 +142,12 @@ export default function ExamResults() {
     return (
       <Layout data={pageData[safeLocale]}>
         <div className="flex flex-col items-center justify-center h-screen space-y-4 text-center">
-          <XCircle className="h-16 w-16 text-red-500 animate-pulse" />
-          <h2 className="text-3xl font-bold text-red-600 mb-2">{t.errorTitle}</h2>
-          <p className="text-lg text-gray-700 mb-4">{t.errorDesc}</p>
+          <XCircle className="h-16 w-16 text-primary animate-pulse" />
+          <h2 className="text-3xl font-bold text-primary mb-2">{t.errorTitle}</h2>
+          <p className="text-xs text-gray-700 mb-4">{t.errorDesc}</p>
           <Button
             onClick={() => navigate("/result")}
-            className="bg-red-500 text-white hover:bg-red-600 transition-all duration-200"
+            className="bg-primary text-white hover:bg-red-600 transition-all duration-200"
           >
             {t.back}
           </Button>

@@ -14,7 +14,7 @@ interface ExamResult {
   id_peserta: number
   benar: number
   salah: number
-  nilai: number
+  nilai: number | any
   kkm: number
   mulai: string
   submit: string
@@ -185,6 +185,8 @@ export default function ExamResultsPage() {
                         <TableBody>
                           {results?.data.map((result) => {
                             const isLulus = result.nilai >= result.kkm
+                            const isProses = typeof result.nilai !== "number"
+
 
                             return (
                               <TableRow key={result.id_peserta}
@@ -209,8 +211,7 @@ export default function ExamResultsPage() {
                                 </TableCell>
                                 <TableCell>
                                   <Badge className={isLulus ? "bg-primary" : "bg-red-500"}>
-                                    {typeof result.nilai === "number"
-                                      ? (isLulus ? t.passed : t.failed)
+                                    {!isProses ? (isLulus ? t.passed : t.failed)
                                       : result.nilai}
                                   </Badge>
                                 </TableCell>
@@ -223,6 +224,7 @@ export default function ExamResultsPage() {
                                 </TableCell>
                                 <TableCell className="text-center">
                                   <Button
+                                    disabled={isProses}
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => navigate(`/result/answer/${result.id_peserta}`)}
@@ -243,6 +245,7 @@ export default function ExamResultsPage() {
                     <div className="sm:hidden">
                       {results?.data.map((result) => {
                         const isLulus = result.nilai >= result.kkm
+                        const isProses = typeof result.nilai !== "number"
                         return (
                           <div key={result.id_peserta} className="border-b p-4">
                             <div className="flex justify-between items-start mb-2">
@@ -252,7 +255,8 @@ export default function ExamResultsPage() {
                                   className="text-xs text-muted-foreground">{result.nama_bank}</div>
                               </div>
                               <Badge className={isLulus ? "bg-primary" : "bg-red-500"}>
-                                {isLulus ? t.passed : t.failed}
+                                {!isProses ? (isLulus ? t.passed : t.failed)
+                                  : result.nilai}
                               </Badge>
                             </div>
 
@@ -261,8 +265,8 @@ export default function ExamResultsPage() {
                                 <div
                                   className="text-xs text-muted-foreground">{t.score}</div>
                                 <div
-                                  className={isLulus ? "text-primary font-semibold" : "text-red-500 font-semibold"}>{result.nilai}</div>
-                                <div className="text-xs text-muted-foreground">
+                                  className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-xs font-semibold"}>{result.nilai}</div>
+                                <div hidden={isProses} className="text-xs text-muted-foreground">
                                   {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                 </div>
                               </div>
@@ -278,6 +282,7 @@ export default function ExamResultsPage() {
                             </div>
                             <div className="flex gap-5">
                               <Button
+                                disabled={isProses}
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => navigate(`/result/answer/${result.id_peserta}`)}
