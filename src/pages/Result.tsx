@@ -203,8 +203,8 @@ export default function ExamResultsPage() {
                                 <TableCell>
                                   <div className="flex flex-col">
                                                                         <span
-                                                                          className={isLulus ? "text-primary font-semibold" : "text-red-500 font-semibold"}>{result.nilai}</span>
-                                    <span className="text-xs text-muted-foreground">
+                                                                          className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-sm font-semibold"}>{result.nilai}</span>
+                                    <span hidden={isProses}  className="text-xs text-muted-foreground">
                                       {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                     </span>
                                   </div>
