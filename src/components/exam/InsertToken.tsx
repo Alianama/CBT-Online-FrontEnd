@@ -113,10 +113,10 @@ export default function InsertToken({
                         <FormItem>
                           <FormLabel>Token Ujian</FormLabel>
                           <FormControl>
-                            <InputOTP maxLength={5} {...field}>
+                            <InputOTP type="text" maxLength={5} {...field}>
                               <InputOTPGroup>
                                 {[0, 1, 2, 3, 4].map((i) => (
-                                    <InputOTPSlot key={i} index={i} />
+                                    <InputOTPSlot  key={i} index={i} />
                                 ))}
                               </InputOTPGroup>
                             </InputOTP>
