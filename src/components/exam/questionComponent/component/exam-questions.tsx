@@ -148,7 +148,7 @@ import type { QuestionType } from "@/types/types.ts";
 import MathJax from "./math-jax.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { sendFotoJawaban } from "@/app/api/api-cbt.ts";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 import React from "react";
 
 interface ExamQuestionsProps {
@@ -199,7 +199,7 @@ export default function ExamQuestions({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const maxSize = 3 * 1024 * 1024; 
+    const maxSize = 10 * 1024 * 1024;
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
 
     if (!allowedTypes.includes(file.type)) {
