@@ -8,6 +8,8 @@ import { sendFotoJawaban } from "@/app/api/api-cbt.ts";
 import { toast } from "sonner";
 import React from "react";
 import HTMLWithImagePreview from "@/components/exam/questionComponent/component/SafeHTMLWithImagePreview.tsx";
+import { useEffect, useRef, useState } from "react";
+
 
 interface ExamQuestionsProps {
   questions: QuestionType[];
@@ -25,8 +27,77 @@ export default function ExamQuestions({
                                         token,
                                       }: ExamQuestionsProps) {
   const question = questions[currentQuestion];
+  
+  
+  // kemananan ujian 
+  
+    const [blurCount, setBlurCount] = useState(0);
+    const blurStartRef = useRef<number | null>(null);
+    console.log(blurCount);
 
-  if (!question)
+    useEffect(() => {
+        const handleBlur = () => {
+            blurStartRef.current = Date.now();
+        };
+
+        const handleFocus = () => {
+            if (blurStartRef.current) {
+                const timeAway = Date.now() - blurStartRef.current;
+                if (timeAway > 5000) { // lebih dari 5 detik
+                    setBlurCount(prev => {
+                        const newCount = prev + 1;
+                        console.log(`Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 5 detik.`);
+                        return newCount;
+                    });
+                }
+                blurStartRef.current = null;
+            }
+        };
+
+        window.addEventListener("blur", handleBlur);
+        window.addEventListener("focus", handleFocus);
+
+        return () => {
+            window.removeEventListener("blur", handleBlur);
+            window.removeEventListener("focus", handleFocus);
+        };
+    }, []);
+
+    useEffect(() => {
+        const disableActions = (e: Event) => {
+            e.preventDefault();
+        };
+
+        document.addEventListener("copy", disableActions);
+        document.addEventListener("cut", disableActions);
+        document.addEventListener("paste", disableActions);
+        document.addEventListener("contextmenu", disableActions); // klik kanan
+
+        return () => {
+            document.removeEventListener("copy", disableActions);
+            document.removeEventListener("cut", disableActions);
+            document.removeEventListener("paste", disableActions);
+            document.removeEventListener("contextmenu", disableActions);
+        };
+    }, []);
+
+    useEffect(() => {
+        const blockPrint = (e: KeyboardEvent) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+                e.preventDefault();
+                toast.error("Print tidak diizinkan selama ujian.");
+            }
+        };
+        document.addEventListener("keydown", blockPrint);
+        return () => document.removeEventListener("keydown", blockPrint);
+    }, []);
+
+    // kemananan ujian 
+
+
+
+
+    if (!question)
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] space-y-6">
         <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">
