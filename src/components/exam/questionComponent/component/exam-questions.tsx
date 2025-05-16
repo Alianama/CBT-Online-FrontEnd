@@ -105,28 +105,34 @@ export default function ExamQuestions({
               value={answers[question.id_soal_ujian] || question.jawaban || ""}
               onValueChange={handleMultipleChoiceChange}
             >
-              {["a", "b", "c", "d", "e"].map((option) => {
-                if (!question[option as keyof QuestionType]) return null;
-                return (
-                  <div
-                    key={option}
-                    className="flex items-center space-x-2 m-2 rounded-md hover:bg-muted"
-                  >
-                    <RadioGroupItem
-                      value={option}
-                      id={`option-${option}`}
-                      className="m-0"
-                    />
-                    <h1 className="mt-0">{option}</h1>
-                    <Label
-                      htmlFor={`option-${option}`}
-                      className="flex-1 cursor-pointer"
-                    >
-                        <HTMLWithImagePreview html={question[option as keyof QuestionType] as string} />
-                    </Label>
-                  </div>
-                );
-              })}
+                {["a", "b", "c", "d", "e"].map((option) => {
+                    if (!question[option as keyof QuestionType]) return null;
+                    const isSelected = answers[question.id_soal_ujian] === option;
+
+                    return (
+                        <Label
+                            key={option}
+                            htmlFor={`option-${option}`}
+                            className={`flex items-start gap-3 p-4 m-2 border rounded-md cursor-pointer transition-colors ${
+                                isSelected
+                                    ? "bg-green-100 border-green-500"
+                                    : "hover:bg-muted border-border"
+                            }`}
+                        >
+                            <RadioGroupItem
+                                value={option}
+                                id={`option-${option}`}
+                                className="mt-0"
+                            />
+                            <div className="flex flex-row">
+                                <span className="font-bold uppercase">{ `${option} .`}</span>
+                                <HTMLWithImagePreview
+                                    html={question[option as keyof QuestionType] as string}
+                                />
+                            </div>
+                        </Label>
+                    );
+                })}
             </RadioGroup>
           </div>
         )}

@@ -44,8 +44,18 @@ const HTMLWithImagePreview: React.FC<HTMLWithImagePreviewProps> = ({ html }) => 
                     />
                 );
             }
+
+            if (
+                domNode.name === "span" &&
+                domNode.attribs?.class === "math-tex" &&
+                domNode.children?.[0]?.data
+            ) {
+                const latex = domNode.children[0].data;
+                return <MathJax inline={!latex.startsWith("\\[")}>{latex}</MathJax>;
+            }
         },
     };
+
 
     return (
         <>
