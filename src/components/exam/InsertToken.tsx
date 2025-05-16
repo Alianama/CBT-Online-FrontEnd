@@ -19,15 +19,11 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form.tsx"
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot
-} from "@/components/ui/input-otp.tsx"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { postTokenUjian } from "@/app/api/api-cbt"
+import OTPInputFields from "@/components/exam/TokenInputFields.tsx";
 
 const FormSchema = z.object({
   token: z.string().min(5, "Token harus 5 digit").max(5, "Token harus 5 digit")
@@ -110,16 +106,14 @@ export default function InsertToken({
                     control={form.control}
                     name="token"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="flex flex-col items-center">
                           <FormLabel>Token Ujian</FormLabel>
                           <FormControl>
-                            <InputOTP type="text" maxLength={5} {...field}>
-                              <InputOTPGroup>
-                                {[0, 1, 2, 3, 4].map((i) => (
-                                    <InputOTPSlot  key={i} index={i} />
-                                ))}
-                              </InputOTPGroup>
-                            </InputOTP>
+                            <OTPInputFields
+                                value={field.value}
+                                onChange={field.onChange}
+                                length={5}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
