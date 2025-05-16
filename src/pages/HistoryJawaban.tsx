@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useContext } from "react"
+import  { useState, useEffect, useContext } from "react"
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
 } from "@/components/ui/card"
@@ -14,10 +14,10 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { getHistoriJawaban } from "@/app/api/api-cbt"
 import { useNavigate, useParams } from "react-router-dom"
-import MathJax from "@/components/exam/questionComponent/component/math-jax"
 import Layout from "@/components/sidebar/Layout"
 import LanguageContext from "@/context/LanguageContext"
 import { Button } from "@/components/ui/button"
+import HTMLWithImagePreview from "@/components/exam/questionComponent/component/SafeHTMLWithImagePreview.tsx";
 
 export default function ExamResults() {
   const [expandedQuestions, setExpandedQuestions] = useState<number[]>([])
@@ -317,10 +317,7 @@ export default function ExamResults() {
                           <div className="px-4 pb-4">
                             <Separator className="mb-4" />
                             <div className="space-y-4">
-                              <MathJax>
-                                <div className="prose prose-sm max-w-none dark:prose-invert"
-                                  dangerouslySetInnerHTML={{ __html: soal.pertanyaan }} />
-                              </MathJax>
+                              <HTMLWithImagePreview html={soal.pertanyaan} />
 
                               <div className="grid gap-2">
                                 {soal.tipe === "3" ? (
@@ -347,17 +344,13 @@ export default function ExamResults() {
                                                 soal.jawaban === soal.kunci_jawaban ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                                             }`}
                                         >
-                                          <MathJax>
-                                            <div dangerouslySetInnerHTML={{ __html: soal.jawaban || "<em>(Belum dijawab)</em>" }} />
-                                          </MathJax>
+                                       <HTMLWithImagePreview html={ soal.jawaban || "<em>(Belum dijawab)</em>"} />
                                         </div>
                                       </div>
                                       <div>
                                         <strong>Kunci Jawaban:</strong>
                                         <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
-                                          <MathJax>
-                                            <div dangerouslySetInnerHTML={{ __html: soal.kunci_jawaban }} />
-                                          </MathJax>
+                                          <HTMLWithImagePreview html={soal.kunci_jawaban } />
                                         </div>
                                       </div>
                                     </div>
@@ -390,12 +383,7 @@ export default function ExamResults() {
                                               </div>
                                             </div>
                                             <div className="flex-grow">
-                                              <MathJax>
-                                                <div
-                                                    className="prose prose-sm max-w-none dark:prose-invert"
-                                                    dangerouslySetInnerHTML={{ __html: soal[option] }}
-                                                />
-                                              </MathJax>
+                                              <HTMLWithImagePreview html={soal[option]} />
                                             </div>
                                             <div className="ml-2">
                                               {isCorrect && (

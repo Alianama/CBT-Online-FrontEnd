@@ -1,155 +1,13 @@
-//
-// import type React from "react"
-// import { Card } from "@/components/ui/card"
-// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-// import { Label } from "@/components/ui/label"
-// import { Textarea } from "@/components/ui/textarea"
-// import { Input } from "@/components/ui/input"
-// import type { QuestionType } from "@/types/types.ts"
-// import MathJax from "./math-jax.tsx"
-// import {Skeleton} from "@/components/ui/skeleton.tsx";
-// import {sendFotoJawaban} from "@/app/api/api-cbt.ts";
-//
-// interface ExamQuestionsProps {
-//     questions: QuestionType[]
-//     currentQuestion: number
-//     onAnswerChange: (questionId: number, answer: string, type: number) => void
-//     answers: Record<number, string | null>
-// }
-//
-// export default function ExamQuestions({ questions, currentQuestion, onAnswerChange, answers }: ExamQuestionsProps) {
-//     const question = questions[currentQuestion]
-//   const [fileName, setFileName] = useState("");
-//
-//     if (!question) return (
-//       <div className="flex flex-col items-center justify-center h-[60vh] space-y-6">
-//         <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">
-//           Soal Sedang Disiapkan...
-//         </h2>
-//         <Skeleton className="h-6 w-3/4 rounded-md" />
-//         <Skeleton className="h-6 w-5/6 rounded-md" />
-//         <Skeleton className="h-6 w-2/3 rounded-md" />
-//         <Skeleton className="h-48 w-[300px] rounded-xl" />
-//       </div>
-//     )
-//
-//     const handleMultipleChoiceChange = (value: string, type = 1) => {
-//         onAnswerChange(question.id_soal_ujian, value, type)
-//     }
-//
-//     const handleTextAnswerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type = 2) => {
-//         onAnswerChange(question.id_soal_ujian, e.target.value, type)
-//     }
-//
-//   const handleFileChange = async (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//
-//     try {
-//       await uploadEssayAnswer({ file, token, id_soal_ujian });
-//       toast.success("Jawaban berhasil diupload!");
-//       setFileName(file.name);
-//     } catch (error: any) {
-//       toast.error(error.message || "Gagal mengupload jawaban.");
-//     }
-//   };
-//
-//     return (
-//         <div>
-//             <div className="mb-6">
-//                 <div className="flex items-center gap-2 mb-2">
-//           <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold">
-//             {currentQuestion + 1}
-//           </span>
-//                     <h2 className="text-lg font-semibold">Question</h2>
-//                 </div>
-//
-//                 <Card className="p-4 mb-4">
-//                     <MathJax>
-//                         <div dangerouslySetInnerHTML={{ __html: question.pertanyaan }} />
-//                     </MathJax>
-//                 </Card>
-//
-//                 {question.tipe === "1" && (
-//                     <div className="space-y-4">
-//                         <RadioGroup value={answers[question.id_soal_ujian] || question.jawaban || ""} onValueChange={handleMultipleChoiceChange}>
-//                             {["a", "b", "c", "d", "e"].map((option) => {
-//                                 if (!question[option as keyof QuestionType]) return null
-//                                 return (
-//                                     <div key={option} className="flex items-center justify-center space-x-2 p-2 rounded-md hover:bg-muted">
-//                                         <RadioGroupItem value={option} id={`option-${option}`} className="mt-1" />
-//                                         <h1 className="mt-1">{option}</h1>
-//                                         <Label htmlFor={`option-${option}`} className="flex-1 cursor-pointer">
-//                                             <MathJax>
-//                                                 <div
-//                                                     dangerouslySetInnerHTML={{
-//                                                         __html: question[option as keyof QuestionType] as string,
-//                                                     }}
-//                                                 />
-//                                             </MathJax>
-//                                         </Label>
-//                                     </div>
-//                                 )
-//                             })}
-//                         </RadioGroup>
-//                     </div>
-//                 )}
-//
-//                 {question.tipe === "2" && (
-//                     <div className="space-y-4">
-//                         <Label htmlFor="short-answer">Your Answer:</Label>
-//                         <Input
-//                             id="short-answer"
-//                             value={answers[question.id_soal_ujian] || question.jawaban || ""}
-//                             onChange={handleTextAnswerChange}
-//                             placeholder="Type your answer here..."
-//                             className="w-full"
-//                         />
-//                     </div>
-//                 )}
-//
-//               {question.tipe === "3" && (
-//                 <div className="space-y-4">
-//                   <Label htmlFor={`upload-answer-${question.id_soal_ujian}`}>Upload Jawaban (gambar maks. 3MB):</Label>
-//                   <input
-//                     type="file"
-//                     accept="image/*"
-//                     id={`upload-answer-${question.id_soal_ujian}`}
-//                     onChange={(e) => handleImageUpload(e, question.id_soal_ujian)}
-//                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-primary file:text-white hover:file:bg-blue-600"
-//                   />
-//                   {answers[question.id_soal_ujian] && (
-//                     <div className="pt-2">
-//                       <img
-//                         src={typeof answers[question.id_soal_ujian] === "string" ? answers[question.id_soal_ujian] : URL.createObjectURL(answers[question.id_soal_ujian])}
-//                         alt="Preview"
-//                         className="max-h-64 rounded border"
-//                       />
-//                     </div>
-//                   )}
-//                 </div>
-//               )}
-//
-//             </div>
-//
-//             <div className="text-sm text-muted-foreground">
-//                 Question {currentQuestion + 1} of {questions.length}
-//             </div>
-//         </div>
-//     )
-// }
 import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import type { QuestionType } from "@/types/types.ts";
-import MathJax from "./math-jax.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { sendFotoJawaban } from "@/app/api/api-cbt.ts";
 import { toast } from "sonner";
 import React from "react";
+import HTMLWithImagePreview from "@/components/exam/questionComponent/component/SafeHTMLWithImagePreview.tsx";
 
 interface ExamQuestionsProps {
   questions: QuestionType[];
@@ -225,6 +83,7 @@ export default function ExamQuestions({
       toast.error(error.message || "Gagal mengupload jawaban.");
     }
   };
+  console.log(question);
 
   return (
     <div>
@@ -237,9 +96,7 @@ export default function ExamQuestions({
         </div>
 
         <Card className="p-4 mb-4">
-          <MathJax>
-            <div dangerouslySetInnerHTML={{ __html: question.pertanyaan }} />
-          </MathJax>
+            <HTMLWithImagePreview html={question.pertanyaan} />
         </Card>
 
         {question.tipe === "1" && (
@@ -253,26 +110,19 @@ export default function ExamQuestions({
                 return (
                   <div
                     key={option}
-                    className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted"
+                    className="flex items-center space-x-2 m-2 rounded-md hover:bg-muted"
                   >
                     <RadioGroupItem
                       value={option}
                       id={`option-${option}`}
-                      className="mt-1"
+                      className="m-0"
                     />
-                    <h1 className="mt-1">{option}</h1>
+                    <h1 className="mt-0">{option}</h1>
                     <Label
                       htmlFor={`option-${option}`}
                       className="flex-1 cursor-pointer"
                     >
-                      <MathJax>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              question[option as keyof QuestionType] as string,
-                          }}
-                        />
-                      </MathJax>
+                        <HTMLWithImagePreview html={question[option as keyof QuestionType] as string} />
                     </Label>
                   </div>
                 );
