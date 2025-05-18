@@ -28,6 +28,7 @@ interface ApiResponse {
   page: number
   limit: number
   data: ExamResult[]
+  message: string
 }
 
 type Locale = "id" | "en"
@@ -122,6 +123,8 @@ export default function ExamResultsPage() {
       const response = await getHasilUjian(page, limit)
       setResults(response)
     } catch (err) {
+      // @ts-ignore
+      setResults(err)
       setError(t.error)
       console.error("Error fetching exam results:", err)
     } finally {
@@ -166,7 +169,10 @@ export default function ExamResultsPage() {
                   <span className="ml-2 text-muted-foreground">{t.loading}</span>
                 </div>
               ) : error ? (
-                <div className="text-center text-red-500 py-8">{error}</div>
+                <div className="text-center text-red-500 py-8">{results?.message}
+                <p className="text-xs" >{error}</p>
+                </div>
+
               ) : (
                 <>
                   {/* Replace the existing Table with this mobile-friendly version */}

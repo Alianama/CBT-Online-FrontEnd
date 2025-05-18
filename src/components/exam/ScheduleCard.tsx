@@ -8,6 +8,9 @@ import {useContext, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import InsertToken from "@/components/exam/InsertToken.tsx";
 import {toast} from "sonner";
+import {postTokenUjian} from "@/app/api/api-cbt.ts";
+import {useGlobal} from "@/context/GlobalContext.tsx";
+import {useNavigate} from "react-router-dom";
 
 type Locale = "id" | "en";
 const translations: Record<Locale, {
@@ -43,6 +46,8 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
     const [isInsertToken, setIsInsertToken] = useState<boolean>(false);
     const t = translations[(locale as Locale) || "id"];
     const examDate = parseISO(examData.tanggal_ujian);
+    const {setWsToken} = useGlobal()
+    const navigate = useNavigate();
 
     const now = new Date();
     const [jam, menit] = examData.jam_ujian.split(":").map(Number);
@@ -60,6 +65,31 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
         examStatusText = "Ujian selesai";
         isButtonDisabled = true;
     }
+    console.log(examData)
+
+    const onSubmitWithoutToken = async () => {
+
+
+        try {
+            const response = await postTokenUjian(null, examData.id_peserta)
+            const websocket = response.data
+
+            if (response.status === "success") {
+                setWsToken(websocket.token)
+                toast.success("Token berhasil diverifikasi!")
+                navigate(`/exam/start`, { replace: true })
+
+
+            }
+        } catch (error) {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Terjadi kesalahan yang tidak diketahui."
+            toast.error(message)
+        }
+    }
+
 
     const formattedDate = format(examDate, "MMMM d, yyyy");
     const durationInMinutes = Math.floor(examData.durasi_ujian / 60);
@@ -128,8 +158,18 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
                 <CardFooter className="flex gap-10 justify-end">
                     <span>{"-->"}</span>
                     <Button
-                      disabled={examData.token === 0 || isButtonDisabled}
-                      onClick={() => {
+                      disabled={isButtonDisabled}
+                      onClick={async () => {
+                          if (examData.token === 0) {
+                              try {
+                                  await onSubmitWithoutToken();
+                              } catch (error) {
+                                  console.error("Gagal submit tanpa token:", error);
+                                  toast("Terjadi kesalahan saat submit.");
+                              }
+                              return;
+                          }
+
                           if (examData.token === 1 && !isBeforeStart && !isAfterEnd) {
                               setIsInsertToken(true);
                           } else if (isBeforeStart) {
@@ -144,6 +184,7 @@ export default function ScheduleCard({examData}: ScheduleCardProps) {
                     >
                         <Play className="w-4 h-4" /> {examStatusText}
                     </Button>
+
 
 
                 </CardFooter>

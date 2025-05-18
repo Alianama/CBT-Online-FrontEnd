@@ -365,7 +365,7 @@ export const putProfileImage = async (file: File) => {
     throw new Error(error?.response?.data?.message || 'Gagal upload foto profil');
   }
 };
-export const postTokenUjian = async (token?: string, id_peserta?: number) => {
+export const postTokenUjian = async (token?: string | null, id_peserta?: number) => {
   try {
     const response = await axiosInstance.post(`${BASE_URL}/ujian/start`,
       {
