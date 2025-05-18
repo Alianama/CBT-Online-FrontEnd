@@ -248,6 +248,7 @@ export default function ExamResultsPage() {
                     <div className="sm:hidden">
                       {results?.data.map((result) => {
                         const isLulus = result.nilai >= result.kkm
+                        const isHiden = result.nilai === null
                         const isProses = typeof result.nilai !== "number"
                         return (
                           <div key={result.id_peserta} className="border-b p-4">
@@ -267,7 +268,7 @@ export default function ExamResultsPage() {
                                 <div
                                   className="text-xs text-muted-foreground">{t.score}</div>
                                 <div
-                                  className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-xs font-semibold"}>{result.nilai}</div>
+                                  className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-xs font-semibold"}>{isHiden ? "Nilai Disembunyikan" : result.nilai}</div>
                                 <div hidden={isProses} className="text-xs text-muted-foreground">
                                   {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                 </div>
