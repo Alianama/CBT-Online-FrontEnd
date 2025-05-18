@@ -203,7 +203,6 @@ export default function ExamQuestions({
                                 className="mt-0"
                             />
                             <div className="flex flex-row">
-                                {/*<span className="font-bold uppercase">{ `${option} .`}</span>*/}
                                 <HTMLWithImagePreview
                                     html={question[option as keyof QuestionType] as string}
                                 />

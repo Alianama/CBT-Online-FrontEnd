@@ -242,6 +242,7 @@ export default function ExamPage() {
                           />
                           {allQuestionsAnswered && (
                             <Button
+                              disabled={true}
                               variant="default"
                               onClick={handleFinishExam}
                               className="w-full mt-4 bg-green-600 hover:bg-green-700"
