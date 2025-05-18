@@ -210,10 +210,6 @@ export default function ExamResultsPage() {
                                   </div>
                                 </TableCell>
                                 <TableCell>
-                                  {/*<Badge className={isLulus ? "bg-primary" : "bg-red-500"}>*/}
-                                  {/*  {!isProses ? (isLulus ? t.passed : t.failed)*/}
-                                  {/*    : result.nilai}*/}
-                                  {/*</Badge>*/}
                                   <Badge className="bg-primary" >
                                     {result.jenis_ujian}
                                   </Badge>
@@ -222,7 +218,6 @@ export default function ExamResultsPage() {
                                   <div
                                     className="flex flex-col text-xs text-muted-foreground">
                                     <span>{formatDate(result.mulai)}</span>
-                                    {/*<span>{t.duration}: {calculateDuration(result.mulai, result.submit)}</span>*/}
                                   </div>
                                 </TableCell>
                                 <TableCell className="text-center">
@@ -278,9 +273,9 @@ export default function ExamResultsPage() {
                                   className="text-xs text-muted-foreground">{t.time}</div>
                                 <div
                                   className="text-xs">{formatDate(result.mulai)}</div>
-                                <div className="text-xs text-muted-foreground">
+                                {/* <div className="text-xs text-muted-foreground">
                                   {t.duration}: {calculateDuration(result.mulai, result.submit)}
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                             <div className="flex gap-5">
