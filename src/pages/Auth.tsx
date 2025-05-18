@@ -12,7 +12,7 @@ import LoginLoadingAnimation from "@/components/ui/login-loading.tsx";
 import { isAuthenticated } from "@/utils/auth.ts";
 import { useGlobal } from "@/context/GlobalContext.tsx";
 
-// const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
+const LOGOUT_URL: string = import.meta.env.VITE_LOGOUT_URL;
 
 export default function Auth() {
   const { token } = useParams();
@@ -53,7 +53,7 @@ export default function Auth() {
             setMessage("Authentication failed! Invalid response.");
             toast.error("Login failed. Invalid response.");
             setTimeout(() => {
-              // window.location.href = LOGOUT_URL;
+              window.location.href = LOGOUT_URL;
             }, 3000);
           }
         } catch (error) {
@@ -62,7 +62,7 @@ export default function Auth() {
           toast.error("Login failed.");
           console.log(error);
           setTimeout(() => {
-            // window.location.href = LOGOUT_URL;
+            window.location.href = LOGOUT_URL;
           }, 3000);
         } finally {
           setLoading(false);

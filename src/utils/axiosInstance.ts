@@ -2,7 +2,7 @@ import axios from "axios";
 import {clearAuthData, getAuthData, setAccessToken} from "./storage";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-// const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL;
+const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL;
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
     headers: {"Content-Type": "application/json"},
@@ -49,8 +49,7 @@ axiosInstance.interceptors.response.use(
                     console.error("Token refresh failed, logging out...");
                     console.log(refreshError);
                     clearAuthData();
-
-                    // window.location.href = LOGOUT_URL;
+                    window.location.href = LOGOUT_URL;
                 }
             }
         }

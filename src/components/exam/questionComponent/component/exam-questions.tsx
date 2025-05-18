@@ -33,6 +33,7 @@ export default function ExamQuestions({
 
     const [blurCount, setBlurCount] = useState(0);
     const blurStartRef = useRef<number | null>(null);
+    const  [ isLoadingUpload, setIsLoadingUpload] = useState(false)
     console.log(blurCount);
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export default function ExamQuestions({
         const handleFocus = () => {
             if (blurStartRef.current) {
                 const timeAway = Date.now() - blurStartRef.current;
-                if (timeAway > 5000) { // lebih dari 5 detik
+                if (timeAway > 5000) {
                     setBlurCount(prev => {
                         const newCount = prev + 1;
                         console.log(`Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 5 detik.`);
@@ -71,7 +72,7 @@ export default function ExamQuestions({
         document.addEventListener("copy", disableActions);
         document.addEventListener("cut", disableActions);
         document.addEventListener("paste", disableActions);
-        document.addEventListener("contextmenu", disableActions); // klik kanan
+        document.addEventListener("contextmenu", disableActions);
 
         return () => {
             document.removeEventListener("copy", disableActions);
@@ -93,9 +94,6 @@ export default function ExamQuestions({
     }, []);
 
     // kemananan ujian
-
-
-
 
     if (!question)
     return (
@@ -121,6 +119,8 @@ export default function ExamQuestions({
     onAnswerChange(question.id_soal_ujian, e.target.value, type);
   };
 
+
+
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     soalId: number
@@ -141,7 +141,9 @@ export default function ExamQuestions({
       return;
     }
 
+
     try {
+      setIsLoadingUpload(true)
       await sendFotoJawaban({
         file,
         token,
@@ -152,6 +154,8 @@ export default function ExamQuestions({
       onAnswerChange(soalId, URL.createObjectURL(file), 3);
     } catch (error: any) {
       toast.error(error.message || "Gagal mengupload jawaban.");
+    } finally {
+      setIsLoadingUpload(false);
     }
   };
   console.log(question);
@@ -226,6 +230,7 @@ export default function ExamQuestions({
             <Label htmlFor={`upload-answer-${question.id_soal_ujian}`}>
               Upload Jawaban (gambar maks. 3MB):
             </Label>
+
             <input
               type="file"
               accept="image/*"
@@ -233,10 +238,11 @@ export default function ExamQuestions({
               onChange={(e) => handleImageUpload(e, question.id_soal_ujian)}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-primary file:text-white hover:file:bg-blue-600"
             />
-            {answers[question.id_soal_ujian] && (
+
+            {(answers[question.id_soal_ujian] || question.jawaban) && (
               <div className="pt-2">
                 <img
-                  src={answers[question.id_soal_ujian] || ""}
+                  src={answers[question.id_soal_ujian] || question.jawaban || ""}
                   alt="Preview"
                   className="max-h-64 rounded border"
                 />
@@ -244,11 +250,39 @@ export default function ExamQuestions({
             )}
           </div>
         )}
+
       </div>
 
       <div className="text-sm text-muted-foreground">
         Question {currentQuestion + 1} of {questions.length}
       </div>
+      {isLoadingUpload && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 flex items-center gap-4 shadow-lg">
+            <svg
+              className="animate-spin h-6 w-6 text-primary"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+            <span className="text-sm font-medium text-gray-700">Mengupload gambar...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
