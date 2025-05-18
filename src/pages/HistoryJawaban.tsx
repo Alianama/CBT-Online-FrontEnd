@@ -1,4 +1,3 @@
-
 import  { useState, useEffect, useContext } from "react"
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
@@ -351,12 +350,14 @@ export default function ExamResults() {
                                        <HTMLWithImagePreview html={ soal.jawaban || "<em>(Belum dijawab)</em>"} />
                                         </div>
                                       </div>
-                                      <div>
-                                        <strong>Kunci Jawaban:</strong>
-                                        <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
-                                          <HTMLWithImagePreview html={soal.kunci_jawaban } />
+                                      {soal.kunci_jawaban && soal.kunci_jawaban !== "" && (
+                                        <div>
+                                          <strong>Kunci Jawaban:</strong>
+                                          <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
+                                            <HTMLWithImagePreview html={soal.kunci_jawaban} />
+                                          </div>
                                         </div>
-                                      </div>
+                                      )}
                                     </div>
                                 ) : (
                                     // Render untuk soal pilihan ganda
@@ -391,7 +392,7 @@ export default function ExamResults() {
                                               <HTMLWithImagePreview html={soal[option]} />
                                             </div>
                                             <div className="ml-2">
-                                              {isCorrect && (
+                                              {isCorrect && soal.kunci_jawaban && soal.kunci_jawaban !== "" && (
                                                   <Badge className="bg-green-100 text-green-800 border-green-200">{t.correctAnswer}</Badge>
                                               )}
                                               {isSelected && !isCorrect && (
