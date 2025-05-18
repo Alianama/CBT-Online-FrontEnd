@@ -96,20 +96,20 @@ export const useExamSocket = () => {
         }
     }, []);
 
-    const timerRef = useRef(timer);
-    timerRef.current = timer;
+    // const timerRef = useRef(timer);
+    // timerRef.current = timer;
+    //
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         sendTimer(timerRef.current);
+    //     }, 100);
+    //
+    //     return () => clearInterval(interval);
+    // }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            sendTimer(timerRef.current); 
-        }, 100); 
-
-        return () => clearInterval(interval); 
-    }, []);
-
-    // useEffect(() => {
-    //     sendTimer(timer);
-    // }, [timer]);
+        sendTimer(timer);
+    }, [timer]);
 
     useEffect(() => {
         if (!lastJsonMessage) return;
@@ -157,7 +157,7 @@ export const useExamSocket = () => {
                 resetTimer()
                 navigate("/exam");
                 break;
-                
+
             case "submit-ujian":
                 resetTimer();
                 localStorage.removeItem("wsToken");

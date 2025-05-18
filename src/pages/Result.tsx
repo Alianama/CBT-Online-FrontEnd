@@ -48,8 +48,8 @@ const translations: Record<Locale, Record<string, string>> = {
     action: "Aksi",
     correct: "Benar",
     wrong: "Salah",
-    passed: "Lulus",
-    failed: "Tidak Lulus",
+    passed: "Selesai",
+    failed: "Selesai",
     duration: "Durasi",
     show: "Tampilkan",
     page: "Halaman",
@@ -82,8 +82,8 @@ const translations: Record<Locale, Record<string, string>> = {
     action: "Action",
     correct: "Correct",
     wrong: "Wrong",
-    passed: "Passed",
-    failed: "Failed",
+    passed: "Selesai",
+    failed: "Selesai",
     duration: "Duration",
     show: "Show",
     page: "Page",
@@ -159,7 +159,7 @@ export default function ExamResultsPage() {
       <div className="container mx-auto py-8 px-4">
         <Card className="w-full shadow-sm">
           <CardHeader className="pb-3">
-            <CardTitle className="text-2xl font-bold">{t.pageTitle}</CardTitle>
+            <CardTitle className="text-2xl font-bold">{t.pageTitl}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col space-y-6">
@@ -192,33 +192,30 @@ export default function ExamResultsPage() {
                           {results?.data.map((result) => {
                             const isLulus = result.nilai >= result.kkm
                             const isProses = typeof result.nilai !== "number"
-
-
                             return (
                               <TableRow key={result.id_peserta}
                                         className="hover:bg-muted/30">
                                 <TableCell>
-                                  <div className="flex flex-col">
-                                    <span>{result.jenis_ujian}</span>
-                                    <span
-                                      className="text-xs text-muted-foreground truncate max-w-[200px]">
-                                      {result.nama_bank}
-                                    </span>
+                                  <div className="flex font-semibold flex-col">
+                                    <span>{result.nama_bank}</span>
                                   </div>
                                 </TableCell>
                                 <TableCell>
                                   <div className="flex flex-col">
-                                                                        <span
-                                                                          className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-sm font-semibold"}>{result.nilai}</span>
+                                    <span
+                                      className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-sm font-semibold"}>{result.nilai}</span>
                                     <span hidden={isProses}  className="text-xs text-muted-foreground">
                                       {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                     </span>
                                   </div>
                                 </TableCell>
                                 <TableCell>
-                                  <Badge className={isLulus ? "bg-primary" : "bg-red-500"}>
-                                    {!isProses ? (isLulus ? t.passed : t.failed)
-                                      : result.nilai}
+                                  {/*<Badge className={isLulus ? "bg-primary" : "bg-red-500"}>*/}
+                                  {/*  {!isProses ? (isLulus ? t.passed : t.failed)*/}
+                                  {/*    : result.nilai}*/}
+                                  {/*</Badge>*/}
+                                  <Badge className="bg-primary" >
+                                    {result.jenis_ujian}
                                   </Badge>
                                 </TableCell>
                                 <TableCell>
@@ -256,13 +253,19 @@ export default function ExamResultsPage() {
                           <div key={result.id_peserta} className="border-b p-4">
                             <div className="flex justify-between items-start mb-2">
                               <div>
-                                <div className="font-medium">{result.jenis_ujian}</div>
-                                <div
-                                  className="text-xs text-muted-foreground">{result.nama_bank}</div>
+                                <div className="flex font-semibold flex-col">
+                                  <span className='text-xs' >{result.nama_bank}</span>
+                                </div>
+                                {/*<div className="font-medium">{result.jenis_ujian}</div>*/}
+                                {/*<div*/}
+                                {/*  className="text-xs text-muted-foreground">{result.nama_bank}</div>*/}
                               </div>
-                              <Badge className={isLulus ? "bg-primary" : "bg-red-500"}>
-                                {!isProses ? (isLulus ? t.passed : t.failed)
-                                  : result.nilai}
+                              {/*<Badge className={isLulus ? "bg-primary" : "bg-red-500"}>*/}
+                              {/*  {!isProses ? (isLulus ? t.passed : t.failed)*/}
+                              {/*    : result.nilai}*/}
+                              {/*</Badge>*/}
+                              <Badge className="bg-primary text-xs" >
+                                {result.jenis_ujian}
                               </Badge>
                             </div>
 

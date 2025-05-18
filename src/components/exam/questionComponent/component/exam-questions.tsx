@@ -27,10 +27,10 @@ export default function ExamQuestions({
                                         token,
                                       }: ExamQuestionsProps) {
   const question = questions[currentQuestion];
-  
-  
-  // kemananan ujian 
-  
+
+
+  // kemananan ujian
+
     const [blurCount, setBlurCount] = useState(0);
     const blurStartRef = useRef<number | null>(null);
     console.log(blurCount);
@@ -92,7 +92,7 @@ export default function ExamQuestions({
         return () => document.removeEventListener("keydown", blockPrint);
     }, []);
 
-    // kemananan ujian 
+    // kemananan ujian
 
 
 
@@ -166,8 +166,8 @@ export default function ExamQuestions({
           <h2 className="text-lg font-semibold">Question</h2>
         </div>
 
-        <Card className="p-4 mb-4">
-            <HTMLWithImagePreview html={question.pertanyaan} />
+        <Card className="p-4 mb-4 flex-row flex">
+            <HTMLWithImagePreview html={question.pertanyaan as string} />
         </Card>
 
         {question.tipe === "1" && (
@@ -196,7 +196,7 @@ export default function ExamQuestions({
                                 className="mt-0"
                             />
                             <div className="flex flex-row">
-                                <span className="font-bold uppercase">{ `${option} .`}</span>
+                                {/*<span className="font-bold uppercase">{ `${option} .`}</span>*/}
                                 <HTMLWithImagePreview
                                     html={question[option as keyof QuestionType] as string}
                                 />

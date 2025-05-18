@@ -1,4 +1,3 @@
-"use client";
 import { BadgeCheck, ChevronsUpDown } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar.tsx";
 import {
@@ -26,6 +25,10 @@ export function NavUser() {
   const handleClickProfile = () => {
     document.body.style.pointerEvents = "auto";
     navigate(`/profile`);
+  };
+  const handleClickUpdateProfile = () => {
+    document.body.style.pointerEvents = "auto";
+    navigate(`/update-profile`);
   };
   return (
     <SidebarMenu>
@@ -84,6 +87,10 @@ export function NavUser() {
               <DropdownMenuItem onClick={handleClickProfile}>
                 <BadgeCheck />
                 Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleClickUpdateProfile}>
+                <BadgeCheck />
+                Update Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

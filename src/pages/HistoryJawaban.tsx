@@ -287,7 +287,7 @@ export default function ExamResults() {
                   {soal_ujian.filter(filter).map((soal: any, index: number) => {
                     console.log(soal)
                     const isExpanded = expandedQuestions.includes(soal.id_soal_ujian)
-                    const correct = soal.jawaban === soal.kunci_jawaban.toLowerCase()
+                    const correct = soal.koreksi === 1
 
                     return (
                       <Card key={soal.id_soal_ujian}>
@@ -340,9 +340,13 @@ export default function ExamResults() {
                                       <div className="mb-2">
                                         <strong>Jawaban Anda:</strong>
                                         <div
-                                            className={`mt-1 p-2 rounded ${
-                                                soal.jawaban === soal.kunci_jawaban ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                                            }`}
+                                          className={`mt-1 p-2 rounded ${
+                                            correct
+                                              ? soal.jawaban === soal.kunci_jawaban
+                                                ? "bg-green-100 text-green-800"
+                                                : "bg-blue-100 text-blue-800"
+                                              : "bg-red-100 text-red-800"
+                                          }`}
                                         >
                                        <HTMLWithImagePreview html={ soal.jawaban || "<em>(Belum dijawab)</em>"} />
                                         </div>
@@ -357,7 +361,8 @@ export default function ExamResults() {
                                 ) : (
                                     // Render untuk soal pilihan ganda
                                     ["a", "b", "c", "d", "e"].map((option) => {
-                                      const isCorrect = soal.kunci_jawaban.toLowerCase() === option;
+                                      // const isCorrect = soal.kunci_jawaban.toLowerCase() === option;
+                                      const isCorrect = soal.koreksi === 1
                                       const isSelected = soal.jawaban === option;
 
                                       let optionClass = "flex items-start p-3 rounded-md border";

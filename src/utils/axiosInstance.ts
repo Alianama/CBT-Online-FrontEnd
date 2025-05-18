@@ -2,7 +2,7 @@ import axios from "axios";
 import {clearAuthData, getAuthData, setAccessToken} from "./storage";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL;
+// const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL;
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
     headers: {"Content-Type": "application/json"},
@@ -21,7 +21,7 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 ) {
             originalRequest._retry = true;
             const {refreshToken} = getAuthData();
             console.log(refreshToken);
@@ -33,13 +33,13 @@ axiosInstance.interceptors.response.use(
                         type: "access"
                     });
                     console.log("New Access Token:", data);
-                    if (!data?.data.token || !data.data.token || !Number.isFinite(data.data.expired_at)) {
+                    if (!data?.access_token.token || !data.access_token.token || !Number.isFinite(data.access_token.expired_at)) {
                         console.error("Invalid access token response:", data);
                         return Promise.reject(new Error("Invalid access token response structure"));
                     }
                     const newAccessToken = {
-                        token: data.data.token,
-                        expired_at: data.data.expired_at
+                        token: data.access_token.token,
+                        expired_at: data.access_token.expired_at
                     };
                     setAccessToken(newAccessToken);
                     originalRequest.headers["Authorization"] = `Bearer ${newAccessToken.token}`;
@@ -49,7 +49,8 @@ axiosInstance.interceptors.response.use(
                     console.error("Token refresh failed, logging out...");
                     console.log(refreshError);
                     clearAuthData();
-                    window.location.href = LOGOUT_URL;
+
+                    // window.location.href = LOGOUT_URL;
                 }
             }
         }
