@@ -144,12 +144,15 @@ export default function ExamQuestions({
 
     try {
       setIsLoadingUpload(true)
-      await sendFotoJawaban({
+      const response = await sendFotoJawaban({
         file,
         token,
         id_soal_ujian: soalId,
       });
 
+      if (response.status !== "success"){
+        setIsLoadingUpload(false);
+      }
       toast.success("Jawaban berhasil diupload!");
       onAnswerChange(soalId, URL.createObjectURL(file), 3);
     } catch (error: any) {
