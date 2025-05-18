@@ -21,36 +21,42 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        if (error.response?.status === 401 ) {
+        if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const {refreshToken} = getAuthData();
-            console.log(refreshToken);
-            if (refreshToken) {
-                try {
-                    console.log(refreshToken);
-                    const {data} = await axios.post(`${BASE_URL}/auth/refresh`, {
-                        refresh_token: refreshToken.token,
-                        type: "access"
-                    });
-                    console.log("New Access Token:", data);
-                    if (!data?.access_token.token || !data.access_token.token || !Number.isFinite(data.access_token.expired_at)) {
-                        console.error("Invalid access token response:", data);
-                        return Promise.reject(new Error("Invalid access token response structure"));
-                    }
-                    const newAccessToken = {
-                        token: data.access_token.token,
-                        expired_at: data.access_token.expired_at
-                    };
-                    setAccessToken(newAccessToken);
-                    originalRequest.headers["Authorization"] = `Bearer ${newAccessToken.token}`;
-                    console.log("berhasil")
-                    return axiosInstance(originalRequest);
-                } catch (refreshError) {
-                    console.error("Token refresh failed, logging out...");
-                    console.log(refreshError);
+            
+            if (!refreshToken) {
+                console.error("No refresh token available");
+                clearAuthData();
+                window.location.href = LOGOUT_URL;
+                return Promise.reject(error);
+            }
+
+            try {
+                const {data} = await axios.post(`${BASE_URL}/auth/refresh`, {
+                    refresh_token: refreshToken.token,
+                    type: "access"
+                });
+
+                if (!data?.access_token?.token || !Number.isFinite(data.access_token.expired_at)) {
+                    console.error("Invalid access token response:", data);
                     clearAuthData();
                     window.location.href = LOGOUT_URL;
+                    return Promise.reject(new Error("Invalid access token response structure"));
                 }
+
+                const newAccessToken = {
+                    token: data.access_token.token,
+                    expired_at: data.access_token.expired_at
+                };
+                setAccessToken(newAccessToken);
+                originalRequest.headers["Authorization"] = `Bearer ${newAccessToken.token}`;
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                console.error("Token refresh failed:", refreshError);
+                clearAuthData();
+                window.location.href = LOGOUT_URL;
+                return Promise.reject(refreshError);
             }
         }
         return Promise.reject(error);

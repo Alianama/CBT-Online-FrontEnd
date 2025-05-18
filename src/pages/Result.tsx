@@ -144,15 +144,15 @@ export default function ExamResultsPage() {
       minute: "2-digit",
     }).format(date)
   }
-  const calculateDuration = (start: string, end: string) => {
-    const startTime = new Date(start).getTime()
-    const endTime = new Date(end).getTime()
-    const durationMs = endTime - startTime
-    const hours = Math.floor(durationMs / 3600000)
-    const minutes = Math.floor((durationMs % 3600000) / 60000)
-    const seconds = Math.floor((durationMs % 60000) / 1000)
-    return `${hours}h ${minutes}m ${seconds}s`
-  }
+  // const calculateDuration = (start: string, end: string) => {
+  //   const startTime = new Date(start).getTime()
+  //   const endTime = new Date(end).getTime()
+  //   const durationMs = endTime - startTime
+  //   const hours = Math.floor(durationMs / 3600000)
+  //   const minutes = Math.floor((durationMs % 3600000) / 60000)
+  //   const seconds = Math.floor((durationMs % 60000) / 1000)
+  //   return `${hours}h ${minutes}m ${seconds}s`
+  // }
   const totalPages = results ? Math.ceil(results.total / limit) : 1
   return (
     <Layout data={[pagedata]}>
