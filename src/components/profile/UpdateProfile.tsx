@@ -246,7 +246,9 @@ export default function UpdateProfile() {
         setLoading(true)
         try {
             const response = await verifyOTP(biodataNew.no_hp, otp);
-            if (response.status === true) {
+            console.log(response)
+            if (response.status === "success") {
+                console.log(response);
                 setTelponVerif(true)
                 setIsOtpSend(false);
                 setConfirmDialogOpen(false);
@@ -258,6 +260,8 @@ export default function UpdateProfile() {
                 setVerifyOTPMessage("Terjadi kesalahan yang tidak diketahui");
             }
             console.log(error);
+            toast.error(verifyOTPMessage);
+            setIsOtpSend(false);
         } finally {
             setLoading(false)
         }

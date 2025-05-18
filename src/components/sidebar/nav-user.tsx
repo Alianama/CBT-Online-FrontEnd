@@ -26,10 +26,6 @@ export function NavUser() {
     document.body.style.pointerEvents = "auto";
     navigate(`/profile`);
   };
-  const handleClickUpdateProfile = () => {
-    document.body.style.pointerEvents = "auto";
-    navigate(`/update-profile`);
-  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -87,10 +83,6 @@ export function NavUser() {
               <DropdownMenuItem onClick={handleClickProfile}>
                 <BadgeCheck />
                 Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleClickUpdateProfile}>
-                <BadgeCheck />
-                Update Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

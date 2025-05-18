@@ -256,14 +256,7 @@ export default function ExamResultsPage() {
                                 <div className="flex font-semibold flex-col">
                                   <span className='text-xs' >{result.nama_bank}</span>
                                 </div>
-                                {/*<div className="font-medium">{result.jenis_ujian}</div>*/}
-                                {/*<div*/}
-                                {/*  className="text-xs text-muted-foreground">{result.nama_bank}</div>*/}
                               </div>
-                              {/*<Badge className={isLulus ? "bg-primary" : "bg-red-500"}>*/}
-                              {/*  {!isProses ? (isLulus ? t.passed : t.failed)*/}
-                              {/*    : result.nilai}*/}
-                              {/*</Badge>*/}
                               <Badge className="bg-primary text-xs" >
                                 {result.jenis_ujian}
                               </Badge>

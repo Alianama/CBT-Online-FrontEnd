@@ -1,15 +1,12 @@
 import type * as React from "react";
 import { useContext } from "react";
 import {
-  AudioWaveform,
   BookMarked,
   Calendar1,
   ClipboardList,
   FileCheck,
-  GalleryVerticalEnd,
   House,
-  Pencil,
-} from "lucide-react";
+  UserPen} from "lucide-react";
 import { NavPrimary } from "./nav-primary.tsx";
 import { NavUser } from "./nav-user.tsx";
 import { NavSignout } from "./nav-signout.tsx";
@@ -23,45 +20,6 @@ import {
 import LanguageContext from "@/context/LanguageContext.tsx";
 
 const data = {
-  teams: [
-    {
-      name: "Siswa",
-      logo: GalleryVerticalEnd,
-      plan: "SMAN 8 Tamsel",
-      url: "/",
-    },
-    {
-      name: "Guru",
-      logo: AudioWaveform,
-      plan: "SMAN 8 Tamsel",
-      url: "guru",
-    },
-  ],
-  navMain: [
-    {
-      title: "Ujian Online",
-      url: "#",
-      icon: Pencil,
-      isActive: true,
-      items: [
-        {
-          title: "Ujian",
-          url: "/exam",
-          icon: ClipboardList,
-        },
-        {
-          title: "Jadwal Ujian",
-          url: "/schedule",
-          icon: Calendar1,
-        },
-        {
-          title: "Hasil Ujian",
-          url: "/result",
-          icon: FileCheck,
-        },
-      ],
-    },
-  ],
   utils: {
     id: [
       {
@@ -89,6 +47,12 @@ const data = {
         url: "/result",
         icon: FileCheck,
       },
+      {
+        name: "Update Profil",
+        url: "/update-profile",
+        icon: UserPen ,
+      },
+
     ],
     en: [
       {
@@ -115,6 +79,11 @@ const data = {
         name: "Exam Result",
         url: "/result",
         icon: FileCheck,
+      },
+      {
+        name: "Update Profil",
+        url: "/update-profile",
+        icon: UserPen ,
       },
     ],
   },

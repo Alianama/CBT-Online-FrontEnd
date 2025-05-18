@@ -146,18 +146,15 @@ export const useExamSocket = () => {
                     soalRequestedRef.current = true;
                 }
                 break;
-
             case "soal-ujian":
                 setSoal(message.payload);
                 setSoalReady(true);
                 break;
-
             case "reset-ujian":
                 setSoal([])
                 resetTimer()
                 navigate("/exam");
                 break;
-
             case "submit-ujian":
                 resetTimer();
                 localStorage.removeItem("wsToken");
@@ -166,13 +163,7 @@ export const useExamSocket = () => {
             case "auto-submit":
                 submitUjian();
                 break;
-
-            case "jawaban":
-                console.log("Jawaban received:", message.payload);
-                break;
-
             default:
-                console.log("Unhandled message:", message);
                 break;
         }
     }, [lastJsonMessage, readyState, sendJsonMessage, navigate, resetTimer]);
