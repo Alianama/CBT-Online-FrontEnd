@@ -323,12 +323,12 @@ export default function ExamResults() {
                                     // Render untuk soal tipe 3 (jawaban berupa gambar)
                                     <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
                                       <div className="mb-2">
-                                        <strong>Jawaban Anda:</strong>
+                                        <strong>{t.yourAnswer}:</strong>
                                         <div className="mt-1 p-2 rounded bg-gray-100 dark:bg-gray-800">
                                           {soal.jawaban ? (
                                               <img src={soal.jawaban} alt="Jawaban Anda" className="max-w-full h-auto rounded" />
                                           ) : (
-                                              <em>(Belum dijawab)</em>
+                                              <em>({t.empty})</em>
                                           )}
                                         </div>
                                       </div>
@@ -337,22 +337,20 @@ export default function ExamResults() {
                                     // Render untuk soal tipe 2 (isian/essay)
                                     <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
                                       <div className="mb-2">
-                                        <strong>Jawaban Anda:</strong>
+                                        <strong>{t.yourAnswer}:</strong>
                                         <div
                                           className={`mt-1 p-2 rounded ${
                                             correct
-                                              ? soal.jawaban === soal.kunci_jawaban
-                                                ? "bg-green-100 text-green-800"
-                                                : "bg-blue-100 text-blue-800"
+                                              ? "bg-green-100 text-green-800"
                                               : "bg-red-100 text-red-800"
                                           }`}
                                         >
-                                       <HTMLWithImagePreview html={ soal.jawaban || "<em>(Belum dijawab)</em>"} />
+                                          <HTMLWithImagePreview html={soal.jawaban || `<em>(${t.empty})</em>`} />
                                         </div>
                                       </div>
-                                      {soal.kunci_jawaban && soal.kunci_jawaban !== "" && (
-                                        <div>
-                                          <strong>Kunci Jawaban:</strong>
+                                      {soal.kunci_jawaban && (
+                                        <div className="mt-2">
+                                          <strong>{t.correctAnswer}:</strong>
                                           <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
                                             <HTMLWithImagePreview html={soal.kunci_jawaban} />
                                           </div>
@@ -362,9 +360,11 @@ export default function ExamResults() {
                                 ) : (
                                     // Render untuk soal pilihan ganda
                                     ["a", "b", "c", "d", "e"].map((option) => {
-                                      // const isCorrect = soal.kunci_jawaban.toLowerCase() === option;
-                                      const isCorrect = soal.koreksi === 1
-                                      const isSelected = soal.jawaban === option;
+                                      const isCorrect = soal.kunci_jawaban?.toLowerCase() === option;
+                                      const isSelected = soal.jawaban?.toLowerCase() === option;
+                                      const hasAnswer = soal[option] && soal[option].trim() !== "";
+
+                                      if (!hasAnswer) return null;
 
                                       let optionClass = "flex items-start p-3 rounded-md border";
                                       if (isCorrect) {
@@ -392,7 +392,7 @@ export default function ExamResults() {
                                               <HTMLWithImagePreview html={soal[option]} />
                                             </div>
                                             <div className="ml-2">
-                                              {isCorrect && soal.kunci_jawaban && soal.kunci_jawaban !== "" && (
+                                              {isCorrect && (
                                                   <Badge className="bg-green-100 text-green-800 border-green-200">{t.correctAnswer}</Badge>
                                               )}
                                               {isSelected && !isCorrect && (
