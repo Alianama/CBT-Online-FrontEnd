@@ -10,7 +10,6 @@ import React from "react";
 import HTMLWithImagePreview from "@/components/exam/questionComponent/component/SafeHTMLWithImagePreview.tsx";
 import { useEffect, useRef, useState } from "react";
 
-
 interface ExamQuestionsProps {
   questions: QuestionType[];
   currentQuestion: number;
@@ -20,82 +19,83 @@ interface ExamQuestionsProps {
 }
 
 export default function ExamQuestions({
-                                        questions,
-                                        currentQuestion,
-                                        onAnswerChange,
-                                        answers,
-                                        token,
-                                      }: ExamQuestionsProps) {
+  questions,
+  currentQuestion,
+  onAnswerChange,
+  answers,
+  token,
+}: ExamQuestionsProps) {
   const question = questions[currentQuestion];
-
 
   // kemananan ujian
 
-    const [blurCount, setBlurCount] = useState(0);
-    const blurStartRef = useRef<number | null>(null);
-    const  [ isLoadingUpload, setIsLoadingUpload] = useState(false)
-    console.log(blurCount);
+  const [blurCount, setBlurCount] = useState(0);
+  const blurStartRef = useRef<number | null>(null);
+  const [isLoadingUpload, setIsLoadingUpload] = useState(false);
+  console.log(blurCount);
 
-    useEffect(() => {
-        const handleBlur = () => {
-            blurStartRef.current = Date.now();
-        };
+  useEffect(() => {
+    const handleBlur = () => {
+      blurStartRef.current = Date.now();
+    };
 
-        const handleFocus = () => {
-            if (blurStartRef.current) {
-                const timeAway = Date.now() - blurStartRef.current;
-                if (timeAway > 5000) {
-                    setBlurCount(prev => {
-                        const newCount = prev + 1;
-                        console.log(`Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 5 detik.`);
-                        return newCount;
-                    });
-                }
-                blurStartRef.current = null;
-            }
-        };
+    const handleFocus = () => {
+      if (blurStartRef.current) {
+        const timeAway = Date.now() - blurStartRef.current;
+        if (timeAway > 5000) {
+          setBlurCount((prev) => {
+            const newCount = prev + 1;
+            console.log(
+              `Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 5 detik.`
+            );
+            return newCount;
+          });
+        }
+        blurStartRef.current = null;
+      }
+    };
 
-        window.addEventListener("blur", handleBlur);
-        window.addEventListener("focus", handleFocus);
+    window.addEventListener("blur", handleBlur);
+    window.addEventListener("focus", handleFocus);
 
-        return () => {
-            window.removeEventListener("blur", handleBlur);
-            window.removeEventListener("focus", handleFocus);
-        };
-    }, []);
+    return () => {
+      window.removeEventListener("blur", handleBlur);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, []);
 
-    useEffect(() => {
-        const disableActions = (e: Event) => {
-            e.preventDefault();
-        };
+  useEffect(() => {
+    const disableActions = (e: Event) => {
+      e.preventDefault();
+    };
 
-        document.addEventListener("copy", disableActions);
-        document.addEventListener("cut", disableActions);
-        document.addEventListener("paste", disableActions);
-        document.addEventListener("contextmenu", disableActions);
+    document.addEventListener("copy", disableActions);
+    document.addEventListener("cut", disableActions);
+    document.addEventListener("paste", disableActions);
+    document.addEventListener("contextmenu", disableActions);
 
-        return () => {
-            document.removeEventListener("copy", disableActions);
-            document.removeEventListener("cut", disableActions);
-            document.removeEventListener("paste", disableActions);
-            document.removeEventListener("contextmenu", disableActions);
-        };
-    }, []);
+    return () => {
+      document.removeEventListener("copy", disableActions);
+      document.removeEventListener("cut", disableActions);
+      document.removeEventListener("paste", disableActions);
+      document.removeEventListener("contextmenu", disableActions);
+    };
+  }, []);
 
-    useEffect(() => {
-        const blockPrint = (e: KeyboardEvent) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-                e.preventDefault();
-                toast.error("Print tidak diizinkan selama ujian.");
-            }
-        };
-        document.addEventListener("keydown", blockPrint);
-        return () => document.removeEventListener("keydown", blockPrint);
-    }, []);
+  useEffect(() => {
+    const blockPrint = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+        e.preventDefault();
+        toast.error("Print tidak diizinkan selama ujian.");
+      }
+    };
+    document.addEventListener("keydown", blockPrint);
+    return () => document.removeEventListener("keydown", blockPrint);
+  }, []);
 
-    // kemananan ujian
+  // kemananan ujian
 
-    if (!question)
+  if (!question)
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] space-y-6">
         <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">
@@ -119,8 +119,6 @@ export default function ExamQuestions({
     onAnswerChange(question.id_soal_ujian, e.target.value, type);
   };
 
-
-
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     soalId: number
@@ -141,16 +139,15 @@ export default function ExamQuestions({
       return;
     }
 
-
     try {
-      setIsLoadingUpload(true)
+      setIsLoadingUpload(true);
       const response = await sendFotoJawaban({
         file,
         token,
         id_soal_ujian: soalId,
       });
 
-      if (response.status !== "success"){
+      if (response.status !== "success") {
         setIsLoadingUpload(false);
       }
       toast.success("Jawaban berhasil diupload!");
@@ -174,7 +171,7 @@ export default function ExamQuestions({
         </div>
 
         <Card className="p-4 mb-4 flex-row flex">
-            <HTMLWithImagePreview html={question.pertanyaan as string} />
+          <HTMLWithImagePreview html={question.pertanyaan as string} />
         </Card>
 
         {question.tipe === "1" && (
@@ -183,33 +180,33 @@ export default function ExamQuestions({
               value={answers[question.id_soal_ujian] || question.jawaban || ""}
               onValueChange={handleMultipleChoiceChange}
             >
-                {["a", "b", "c", "d", "e"].map((option) => {
-                    if (!question[option as keyof QuestionType]) return null;
-                    const isSelected = answers[question.id_soal_ujian] === option;
+              {["a", "b", "c", "d", "e"].map((option) => {
+                if (!question[option as keyof QuestionType]) return null;
+                const isSelected = answers[question.id_soal_ujian] === option;
 
-                    return (
-                        <Label
-                            key={option}
-                            htmlFor={`option-${option}`}
-                            className={`flex items-start gap-3 p-4 m-2 border rounded-md cursor-pointer transition-colors ${
-                                isSelected
-                                    ? "bg-green-100 border-green-500"
-                                    : "hover:bg-muted border-border"
-                            }`}
-                        >
-                            <RadioGroupItem
-                                value={option}
-                                id={`option-${option}`}
-                                className="mt-0"
-                            />
-                            <div className="flex flex-row">
-                                <HTMLWithImagePreview
-                                    html={question[option as keyof QuestionType] as string}
-                                />
-                            </div>
-                        </Label>
-                    );
-                })}
+                return (
+                  <Label
+                    key={option}
+                    htmlFor={`option-${option}`}
+                    className={`flex items-start gap-3 p-4 m-2 border rounded-md cursor-pointer transition-colors ${
+                      isSelected
+                        ? "bg-green-100 border-green-500"
+                        : "hover:bg-muted border-border"
+                    }`}
+                  >
+                    <RadioGroupItem
+                      value={option}
+                      id={`option-${option}`}
+                      className="mt-0"
+                    />
+                    <div className="flex flex-row">
+                      <HTMLWithImagePreview
+                        html={question[option as keyof QuestionType] as string}
+                      />
+                    </div>
+                  </Label>
+                );
+              })}
             </RadioGroup>
           </div>
         )}
@@ -220,7 +217,11 @@ export default function ExamQuestions({
             <Input
               id="short-answer"
               value={answers[question.id_soal_ujian] || question.jawaban || ""}
-              onChange={handleTextAnswerChange}
+              onChange={(e) => {
+                const input = e.target;
+                input.value = e.target.value;
+              }}
+              onBlur={handleTextAnswerChange}
               placeholder="Type your answer here..."
               className="w-full"
             />
@@ -244,7 +245,9 @@ export default function ExamQuestions({
             {(answers[question.id_soal_ujian] || question.jawaban) && (
               <div className="pt-2">
                 <img
-                  src={answers[question.id_soal_ujian] || question.jawaban || ""}
+                  src={
+                    answers[question.id_soal_ujian] || question.jawaban || ""
+                  }
                   alt="Preview"
                   className="max-h-64 rounded border"
                 />
@@ -252,7 +255,6 @@ export default function ExamQuestions({
             )}
           </div>
         )}
-
       </div>
 
       <div className="text-sm text-muted-foreground">
@@ -281,7 +283,9 @@ export default function ExamQuestions({
                 d="M4 12a8 8 0 018-8v8H4z"
               ></path>
             </svg>
-            <span className="text-sm font-medium text-gray-700">Mengupload gambar...</span>
+            <span className="text-sm font-medium text-gray-700">
+              Mengupload gambar...
+            </span>
           </div>
         </div>
       )}
