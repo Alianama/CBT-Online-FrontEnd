@@ -82,6 +82,13 @@ export default function UpdateProfile() {
       beforeSave: "Plaese Verify your phone number before save biodata!!",
     },
   };
+  const { generalUser, biodata, setBiodata, refreshUser, fetchUserProfile } =
+    useGlobal();
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [fetchUserProfile]);
+
   const [kota, setKota] = useState<{ id: string; name: string }[]>([]);
   const [kecamatan, setKecamatan] = useState<
     { id: string; name: string; regency_id: string }[]
@@ -89,8 +96,6 @@ export default function UpdateProfile() {
   const [kelurahan, setKelurahan] = useState<
     { id: string; name: string; district_id: string }[]
   >([]);
-  const { generalUser, biodata, setBiodata, refreshUser, fetchUserProfile } =
-    useGlobal();
   const user_id = generalUser?.user_id;
   const user_type = String(generalUser?.user_type);
   const { locale } = useContext(LanguageContext);
