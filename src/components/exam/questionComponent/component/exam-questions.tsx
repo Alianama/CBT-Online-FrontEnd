@@ -33,6 +33,7 @@ export default function ExamQuestions({
   const [blurCount, setBlurCount] = useState(0);
   const blurStartRef = useRef<number | null>(null);
   const [isLoadingUpload, setIsLoadingUpload] = useState(false);
+   console.log(blurCount)
 
   useEffect(() => {
     // Reset local answer when question changes
