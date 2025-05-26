@@ -26,13 +26,18 @@ export default function ExamQuestions({
   token,
 }: ExamQuestionsProps) {
   const question = questions[currentQuestion];
+  const [localAnswer, setLocalAnswer] = useState<string>("");
+  const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // kemananan ujian
-
   const [blurCount, setBlurCount] = useState(0);
   const blurStartRef = useRef<number | null>(null);
   const [isLoadingUpload, setIsLoadingUpload] = useState(false);
-  console.log(blurCount);
+
+  useEffect(() => {
+    // Reset local answer when question changes
+    setLocalAnswer(answers[question?.id_soal_ujian] || question?.jawaban || "");
+  }, [currentQuestion, question, answers]);
 
   useEffect(() => {
     const handleBlur = () => {
@@ -116,7 +121,27 @@ export default function ExamQuestions({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     type = 2
   ) => {
-    onAnswerChange(question.id_soal_ujian, e.target.value, type);
+    const value = e.target.value;
+    setLocalAnswer(value);
+
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    // Set new timer
+    debounceTimerRef.current = setTimeout(() => {
+      onAnswerChange(question.id_soal_ujian, value, type);
+    }, 1000); // 1 detik delay
+  };
+
+  const handleTextAnswerBlur = () => {
+    // Clear any pending debounce
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    // Immediately send the answer on blur
+    onAnswerChange(question.id_soal_ujian, localAnswer, 2);
   };
 
   const handleImageUpload = async (
@@ -158,7 +183,6 @@ export default function ExamQuestions({
       setIsLoadingUpload(false);
     }
   };
-  console.log(question);
 
   return (
     <div>
@@ -216,12 +240,9 @@ export default function ExamQuestions({
             <Label htmlFor="short-answer">Your Answer:</Label>
             <Input
               id="short-answer"
-              value={answers[question.id_soal_ujian] || question.jawaban || ""}
-              onChange={(e) => {
-                const input = e.target;
-                input.value = e.target.value;
-              }}
-              onBlur={handleTextAnswerChange}
+              value={localAnswer}
+              onChange={handleTextAnswerChange}
+              onBlur={handleTextAnswerBlur}
               placeholder="Type your answer here..."
               className="w-full"
             />
