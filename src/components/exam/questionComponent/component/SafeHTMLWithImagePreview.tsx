@@ -1,5 +1,3 @@
-
-
 import React, { useState, useMemo } from "react";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
@@ -45,6 +43,15 @@ const HTMLWithImagePreview: React.FC<HTMLWithImagePreviewProps> = ({ html }) => 
                 );
             }
 
+            // Handle text nodes that contain LaTeX
+            if (domNode.type === 'text' && domNode.data) {
+                const text = domNode.data;
+                if (text.includes('\\(') || text.includes('\\[')) {
+                    return <MathJax inline={text.includes('\\(')}>{text}</MathJax>;
+                }
+            }
+
+            // Handle span with math-tex class
             if (
                 domNode.name === "span" &&
                 domNode.attribs?.class === "math-tex" &&
@@ -61,7 +68,7 @@ const HTMLWithImagePreview: React.FC<HTMLWithImagePreviewProps> = ({ html }) => 
         <>
             <MathJaxContext version={3} config={config}>
                 <div
-                    className="mathjax-container"
+                    className="mathjax-container math-tex"
                     style={{
                         maxWidth: "100%",
                         fontSize: "14px",
