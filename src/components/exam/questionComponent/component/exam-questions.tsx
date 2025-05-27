@@ -36,8 +36,22 @@ export default function ExamQuestions({
    console.log(blurCount)
 
   useEffect(() => {
+    // Load saved answer from localStorage
+    const savedData = localStorage.getItem('examAnswers')
+    if (savedData) {
+      const parsedData = JSON.parse(savedData)
+      const savedAnswer = parsedData[question?.id_soal_ujian]
+      if (savedAnswer) {
+        setLocalAnswer(savedAnswer)
+        onAnswerChange(question.id_soal_ujian, savedAnswer, question.tipe === "1" ? 1 : 2)
+      }
+    }
+  }, [currentQuestion, question?.id_soal_ujian])
+
+  useEffect(() => {
     // Reset local answer when question changes
-    setLocalAnswer(answers[question?.id_soal_ujian] || question?.jawaban || "");
+    const currentAnswer = answers[question?.id_soal_ujian] || question?.jawaban || "";
+    setLocalAnswer(currentAnswer);
   }, [currentQuestion, question, answers]);
 
   useEffect(() => {
@@ -202,12 +216,12 @@ export default function ExamQuestions({
         {question.tipe === "1" && (
           <div className="space-y-4">
             <RadioGroup
-              value={answers[question.id_soal_ujian] || question.jawaban || ""}
+              value={localAnswer || answers[question.id_soal_ujian] || question.jawaban || ""}
               onValueChange={handleMultipleChoiceChange}
             >
               {["a", "b", "c", "d", "e"].map((option) => {
                 if (!question[option as keyof QuestionType]) return null;
-                const isSelected = answers[question.id_soal_ujian] === option;
+                const isSelected = localAnswer === option || answers[question.id_soal_ujian] === option || question.jawaban === option;
 
                 return (
                   <Label

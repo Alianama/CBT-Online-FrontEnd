@@ -1,6 +1,4 @@
-
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -18,17 +16,41 @@ interface QuestionNavigationProps {
 
 export default function QuestionNavigation({questions, currentQuestion, setCurrentQuestion, answers, isMobile}: QuestionNavigationProps) {
     const [isOpen, setIsOpen] = useState(!isMobile)
+    const [savedAnswers, setSavedAnswers] = useState<Record<number, string | null>>({})
+
+    useEffect(() => {
+        // Load saved answers from localStorage on mount
+        const savedData = localStorage.getItem('examAnswers')
+        if (savedData) {
+            const parsedData = JSON.parse(savedData)
+            setSavedAnswers(parsedData)
+        }
+    }, [])
+
+    useEffect(() => {
+        // Update saved answers when answers change
+        if (Object.keys(answers).length > 0) {
+            const newAnswers = { ...savedAnswers, ...answers }
+            localStorage.setItem('examAnswers', JSON.stringify(newAnswers))
+            setSavedAnswers(newAnswers)
+        }
+    }, [answers])
 
     const getQuestionStatus = (questionId: number) => {
-        if (answers[questionId] === null) return "unanswered"
-        return "answered"
+        // Cek jawaban dari state answers, savedAnswers, dan jawaban dari soal
+        const currentAnswer = answers[questionId]
+        const savedAnswer = savedAnswers[questionId]
+        const questionAnswer = questions.find(q => q.id_soal_ujian === questionId)?.jawaban
+        
+        if (currentAnswer !== null || savedAnswer !== null || questionAnswer) return "answered"
+        return "unanswered"
     }
 
     const getButtonClass = (index: number, status: string) => {
         return cn("w-8 h-8 rounded-full font-medium text-sm flex items-center justify-center", {
             "bg-primary text-primary-foreground": index === currentQuestion,
             "bg-muted text-muted-foreground hover:bg-muted/80": status === "unanswered" && index !== currentQuestion,
-            "bg-green-100 text-green-700 hover:bg-green-200": status === "answered" && index !== currentQuestion,
+            "bg-green-500 text-white hover:bg-green-600": status === "answered" && index !== currentQuestion,
             "ring-2 ring-primary": index === currentQuestion,
         })
     }
@@ -48,7 +70,7 @@ export default function QuestionNavigation({questions, currentQuestion, setCurre
 
             <CollapsibleContent>
                 <ScrollArea className={isMobile ? "h-24" : "h-[calc(100vh-200px)]"}>
-                    <div className={` m-4 grid ${isMobile ? "grid-cols-10" : "grid-cols-5"} gap-2`}>
+                    <div className={`m-4 grid ${isMobile ? "grid-cols-10" : "grid-cols-5"} gap-2`}>
                         {questions.map((question, index) => (
                             <Button
                                 key={question.id_soal_ujian}
