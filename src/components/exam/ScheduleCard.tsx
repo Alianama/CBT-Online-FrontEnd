@@ -87,10 +87,14 @@ export default function ScheduleCard({
   let isButtonDisabled = false;
   let examStatusText = "Mulai Ujian";
 
-  if (isRemedial && !isSameMonthAsNow) {
-    isButtonDisabled = true;
-    examStatusText = "Bukan bulan remedial";
+  if (isRemedial) {
+    // Jika remedial, hanya cek apakah bulan sama
+    if (!isSameMonthAsNow) {
+      isButtonDisabled = true;
+      examStatusText = "Bukan bulan remedial";
+    }
   } else {
+    // Logika normal untuk ujian non-remedial
     const isBeforeStart = now < examStartDate;
     const isAfterEnd = now > examEndDate;
     const isToday = now.toDateString() === examStartDate.toDateString();

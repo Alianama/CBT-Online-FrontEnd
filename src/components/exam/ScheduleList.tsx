@@ -50,6 +50,8 @@ export default function ExamCard() {
     refetchOnWindowFocus: true,
   });
 
+  console.log(data);
+
   const scheduleList = data?.data?.jadwal;
   const { locale } = useContext(LanguageContext);
   const t = translations[(locale as Locale) || "id"];
