@@ -21,6 +21,7 @@ import LanguageContext from "@/context/LanguageContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGlobal } from "@/context/GlobalContext.tsx";
 import { toast } from "sonner";
+import { examActivityTracker } from "@/utils/examActivityTracker";
 
 export default function ExamPage() {
   const { soal, setTimer, timer, readyState, sendJawaban, submitUjian } =
@@ -71,15 +72,13 @@ export default function ExamPage() {
   }[locale as "id" | "en"];
 
   useEffect(() => {
-    if (!soal) return;
-    const initialAnswers: Record<number, string | null> = {};
-    soal.forEach((q) => {
-      initialAnswers[q.id_soal_ujian] = null;
-    });
-    setAnswers(initialAnswers);
-  }, [soal]);
+    examActivityTracker.setPesertaId(
+      Number(localStorage.getItem("id_peserta"))
+    );
 
-  useEffect(() => {
+    // Mulai tracking aktivitas ujian
+    examActivityTracker.startTracking();
+
     // Hapus semua history dan set state baru
     window.history.pushState(null, "", window.location.href);
 
@@ -133,6 +132,7 @@ export default function ExamPage() {
 
     // Cleanup
     return () => {
+      examActivityTracker.stopTracking();
       window.removeEventListener("popstate", handlePopState, true);
       window.removeEventListener("keydown", handleKeyDown, true);
       window.removeEventListener("beforeunload", handleBeforeUnload, true);
@@ -140,6 +140,15 @@ export default function ExamPage() {
       clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if (!soal) return;
+    const initialAnswers: Record<number, string | null> = {};
+    soal.forEach((q) => {
+      initialAnswers[q.id_soal_ujian] = null;
+    });
+    setAnswers(initialAnswers);
+  }, [soal]);
 
   const onSetTimeLeft = (sisa_time: any) => {
     setTimer(sisa_time);

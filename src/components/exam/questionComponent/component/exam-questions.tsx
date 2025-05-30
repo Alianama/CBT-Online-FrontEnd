@@ -30,59 +30,64 @@ export default function ExamQuestions({
   const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // kemananan ujian
-  const [blurCount, setBlurCount] = useState(0);
-  const blurStartRef = useRef<number | null>(null);
+  // const [blurCount, setBlurCount] = useState(0);
+  // const blurStartRef = useRef<number | null>(null);
   const [isLoadingUpload, setIsLoadingUpload] = useState(false);
-   console.log(blurCount)
+  // console.log(blurCount);
 
   useEffect(() => {
     // Load saved answer from localStorage
-    const savedData = localStorage.getItem('examAnswers')
+    const savedData = localStorage.getItem("examAnswers");
     if (savedData) {
-      const parsedData = JSON.parse(savedData)
-      const savedAnswer = parsedData[question?.id_soal_ujian]
+      const parsedData = JSON.parse(savedData);
+      const savedAnswer = parsedData[question?.id_soal_ujian];
       if (savedAnswer) {
-        setLocalAnswer(savedAnswer)
-        onAnswerChange(question.id_soal_ujian, savedAnswer, question.tipe === "1" ? 1 : 2)
+        setLocalAnswer(savedAnswer);
+        onAnswerChange(
+          question.id_soal_ujian,
+          savedAnswer,
+          question.tipe === "1" ? 1 : 2
+        );
       }
     }
-  }, [currentQuestion, question?.id_soal_ujian])
+  }, [currentQuestion, question?.id_soal_ujian]);
 
   useEffect(() => {
     // Reset local answer when question changes
-    const currentAnswer = answers[question?.id_soal_ujian] || question?.jawaban || "";
+    const currentAnswer =
+      answers[question?.id_soal_ujian] || question?.jawaban || "";
     setLocalAnswer(currentAnswer);
   }, [currentQuestion, question, answers]);
 
-  useEffect(() => {
-    const handleBlur = () => {
-      blurStartRef.current = Date.now();
-    };
+  // useEffect(() => {
+  //   const handleBlur = () => {
+  //     blurStartRef.current = Date.now();
+  //   };
 
-    const handleFocus = () => {
-      if (blurStartRef.current) {
-        const timeAway = Date.now() - blurStartRef.current;
-        if (timeAway > 5000) {
-          setBlurCount((prev) => {
-            const newCount = prev + 1;
-            console.log(
-              `Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 5 detik.`
-            );
-            return newCount;
-          });
-        }
-        blurStartRef.current = null;
-      }
-    };
+  //   const handleFocus = () => {
+  //     if (blurStartRef.current) {
+  //       const timeAway = Date.now() - blurStartRef.current;
+  //       if (timeAway > 2) {
+  //         setBlurCount((prev) => {
+  //           const newCount = prev + 1;
+  //           console.log(
+  //             `Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 2 detik.`
+  //           );
+  //           return newCount;
+  //         });
+  //       }
+  //       blurStartRef.current = null;
+  //     }
+  //   };
 
-    window.addEventListener("blur", handleBlur);
-    window.addEventListener("focus", handleFocus);
+  //   window.addEventListener("blur", handleBlur);
+  //   window.addEventListener("focus", handleFocus);
 
-    return () => {
-      window.removeEventListener("blur", handleBlur);
-      window.removeEventListener("focus", handleFocus);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("blur", handleBlur);
+  //     window.removeEventListener("focus", handleFocus);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const disableActions = (e: Event) => {
@@ -216,12 +221,20 @@ export default function ExamQuestions({
         {question.tipe === "1" && (
           <div className="space-y-4">
             <RadioGroup
-              value={localAnswer || answers[question.id_soal_ujian] || question.jawaban || ""}
+              value={
+                localAnswer ||
+                answers[question.id_soal_ujian] ||
+                question.jawaban ||
+                ""
+              }
               onValueChange={handleMultipleChoiceChange}
             >
               {["a", "b", "c", "d", "e"].map((option) => {
                 if (!question[option as keyof QuestionType]) return null;
-                const isSelected = localAnswer === option || answers[question.id_soal_ujian] === option || question.jawaban === option;
+                const isSelected =
+                  localAnswer === option ||
+                  answers[question.id_soal_ujian] === option ||
+                  question.jawaban === option;
 
                 return (
                   <Label

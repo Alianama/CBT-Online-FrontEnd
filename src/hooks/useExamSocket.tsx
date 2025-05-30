@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 type AuthMessage = { token: string; type: "auth" };
 
 type InfoUjianPayload = {
-  id_peserta: string;
+  id_peserta: number;
   id_bank: number;
   status_ujian: number;
   kode_bank: string;
@@ -31,7 +31,7 @@ export const useExamSocket = () => {
   const authSentRef = useRef(false);
   const soalRequestedRef = useRef(false);
   const jawabanSentRef = useRef<Record<number, string>>({});
-  const [dataUjian, setDataUjian] = useState<InfoUjianPayload | null>(null);
+  const [dataUjian, setDataUjian] = useState<InfoUjianPayload>();
   const [soal, setSoal] = useState<QuestionType[]>([]);
   const [soalReady, setSoalReady] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -46,19 +46,23 @@ export const useExamSocket = () => {
     setTimer(0);
     localStorage.removeItem("exam_end_time");
     localStorage.removeItem("exam_duration");
+    localStorage.removeItem("id_peserta");
     localStorage.removeItem(MAPPING_KEY);
   }, []);
 
   const { sendJsonMessage, lastJsonMessage, readyState, getWebSocket } =
     useWebSocket(WSS_URL, {
       onOpen: () => {
+        console.log("WebSocket Connected, sending auth...");
         if (!authSentRef.current) {
           sendJsonMessage({ token: wsToken, type: "auth" } as AuthMessage);
           authSentRef.current = true;
         }
       },
       onClose: () => {
+        console.log("WebSocket Disconnected");
         authSentRef.current = false;
+        resetTimer();
       },
       onError: (err) => {
         console.error("WebSocket error", err);
@@ -131,7 +135,9 @@ export const useExamSocket = () => {
 
     switch (message.type) {
       case "info-ujian":
+        console.log("Received info-ujian");
         setDataUjian(message.payload);
+        localStorage.setItem("id_peserta", message.payload.id_peserta);
         setTimer(message.payload.sisa_timer);
 
         if (message.payload.mapping_jawaban) {
@@ -143,6 +149,7 @@ export const useExamSocket = () => {
         }
 
         if (!soalRequestedRef.current && readyState === WebSocket.OPEN) {
+          console.log("Requesting soal...");
           sendJsonMessage({ type: "soal" });
           soalRequestedRef.current = true;
         }
