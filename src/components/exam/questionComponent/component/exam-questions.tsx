@@ -28,29 +28,7 @@ export default function ExamQuestions({
   const question = questions[currentQuestion];
   const [localAnswer, setLocalAnswer] = useState<string>("");
   const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
-
-  // kemananan ujian
-  // const [blurCount, setBlurCount] = useState(0);
-  // const blurStartRef = useRef<number | null>(null);
   const [isLoadingUpload, setIsLoadingUpload] = useState(false);
-  // console.log(blurCount);
-
-  useEffect(() => {
-    // Load saved answer from localStorage
-    const savedData = localStorage.getItem("examAnswers");
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      const savedAnswer = parsedData[question?.id_soal_ujian];
-      if (savedAnswer) {
-        setLocalAnswer(savedAnswer);
-        onAnswerChange(
-          question.id_soal_ujian,
-          savedAnswer,
-          question.tipe === "1" ? 1 : 2
-        );
-      }
-    }
-  }, [currentQuestion, question?.id_soal_ujian]);
 
   useEffect(() => {
     // Reset local answer when question changes
@@ -58,36 +36,6 @@ export default function ExamQuestions({
       answers[question?.id_soal_ujian] || question?.jawaban || "";
     setLocalAnswer(currentAnswer);
   }, [currentQuestion, question, answers]);
-
-  // useEffect(() => {
-  //   const handleBlur = () => {
-  //     blurStartRef.current = Date.now();
-  //   };
-
-  //   const handleFocus = () => {
-  //     if (blurStartRef.current) {
-  //       const timeAway = Date.now() - blurStartRef.current;
-  //       if (timeAway > 2) {
-  //         setBlurCount((prev) => {
-  //           const newCount = prev + 1;
-  //           console.log(
-  //             `Kamu telah keluar dari halaman ${newCount} kali selama lebih dari 2 detik.`
-  //           );
-  //           return newCount;
-  //         });
-  //       }
-  //       blurStartRef.current = null;
-  //     }
-  //   };
-
-  //   window.addEventListener("blur", handleBlur);
-  //   window.addEventListener("focus", handleFocus);
-
-  //   return () => {
-  //     window.removeEventListener("blur", handleBlur);
-  //     window.removeEventListener("focus", handleFocus);
-  //   };
-  // }, []);
 
   useEffect(() => {
     const disableActions = (e: Event) => {
@@ -117,8 +65,6 @@ export default function ExamQuestions({
     document.addEventListener("keydown", blockPrint);
     return () => document.removeEventListener("keydown", blockPrint);
   }, []);
-
-  // kemananan ujian
 
   if (!question)
     return (
@@ -309,6 +255,7 @@ export default function ExamQuestions({
       <div className="text-sm text-muted-foreground">
         Question {currentQuestion + 1} of {questions.length}
       </div>
+
       {isLoadingUpload && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 flex items-center gap-4 shadow-lg">
