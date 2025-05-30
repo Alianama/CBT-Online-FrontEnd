@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { useNavigate } from "react-router-dom";
 
+const HELP_URL = import.meta.env.VITE_HELP_URL;
+
 export function NavSignout() {
   const { locale } = useContext(LanguageContext);
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ export function NavSignout() {
     <SidebarMenu>
       <SidebarMenuItem>
         <Button
-          onClick={() => window.open("https://cbtsite.tawk.help/", "_blank")}
+          onClick={() => window.open(HELP_URL, "_blank")}
           className="bg-primary w-full flex items-center gap-2 hover:bg-primary/90 transition-colors"
         >
           <HelpCircle className="size-4" />
