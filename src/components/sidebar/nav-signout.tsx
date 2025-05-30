@@ -1,5 +1,5 @@
 "use client";
-import { Power } from "lucide-react";
+import { Power, HelpCircle } from "lucide-react";
 import LanguageContext from "@/context/LanguageContext.tsx";
 import { useContext } from "react";
 import {
@@ -25,6 +25,18 @@ export function NavSignout() {
   const navigate = useNavigate();
   return (
     <SidebarMenu>
+      <SidebarMenuItem>
+        <Button
+          onClick={() => window.open("https://cbtsite.tawk.help/", "_blank")}
+          className="bg-primary w-full flex items-center gap-2 hover:bg-primary/90 transition-colors"
+        >
+          <HelpCircle className="size-4" />
+          <span className="font-medium">
+            {locale === "id" ? "Bantuan" : "Help"}
+          </span>
+        </Button>
+      </SidebarMenuItem>
+      <div className="h-px w-full bg-neutral-800/30 my-2" />
       <SidebarMenuItem>
         <Dialog>
           <DialogTrigger asChild>
