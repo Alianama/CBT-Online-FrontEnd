@@ -98,8 +98,13 @@ export default function ScheduleCard({
 
     switch (sesi_ujian) {
       case 0:
-        isButtonDisabled = !isToday(examDate);
-        if (!isToday(examDate)) {
+        if (isToday(examDate)) {
+          isButtonDisabled = currentHour < jam || currentHour >= 24;
+          if (currentHour < jam || currentHour >= 24) {
+            examStatusText = "Mulai Ujian";
+          }
+        } else {
+          isButtonDisabled = true;
           examStatusText = "Mulai Ujian";
         }
         break;
