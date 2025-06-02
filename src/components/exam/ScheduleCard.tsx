@@ -100,27 +100,28 @@ export default function ScheduleCard({
       case 0:
         isButtonDisabled = !isToday(examDate);
         if (!isToday(examDate)) {
-          examStatusText = "Bukan Hari ini";
+          examStatusText = "Mulai Ujian";
         }
         break;
       case 1: // flexible
         if (isToday(examDate)) {
           const isFlexibleTime = currentHour >= 15 && currentHour < 17;
-          isButtonDisabled = !isFlexibleTime;
-          if (!isFlexibleTime) {
-            examStatusText = "Waktu fleksibel: 15:00 - 17:00";
+          const isExactTime = currentHour === jam;
+          isButtonDisabled = !(isFlexibleTime || isExactTime);
+          if (!(isFlexibleTime || isExactTime)) {
+            examStatusText = "Mulai Ujian";
           }
         } else {
           isButtonDisabled = true;
-          examStatusText = "Bukan hari ujian";
+          examStatusText = "Mulai Ujian";
         }
         break;
       case 2: // strict
         isButtonDisabled = !isToday(examDate) || currentHour !== jam;
         if (!isToday(examDate)) {
-          examStatusText = "Bukan hari ujian";
+          examStatusText = "Mulai Ujian";
         } else if (currentHour !== jam) {
-          examStatusText = `Waktu ujian: ${data.jam_ujian}`;
+          examStatusText = "Mulai Ujian";
         }
         break;
     }
