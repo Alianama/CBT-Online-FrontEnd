@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Calendar, Clock, FileText, Info, Play } from "lucide-react";
-import { format, parseISO, isSameMonth } from "date-fns";
+import { format, parseISO, isSameMonth, isToday } from "date-fns";
 import { ExamData } from "@/types/types.ts";
 import LanguageContext from "@/context/LanguageContext.tsx";
 import { useContext, useState } from "react";
@@ -73,9 +73,9 @@ export default function ScheduleCard({
   const [jam, menit] = data.jam_ujian.split(":").map(Number);
   const examStartDate = new Date(examDate);
   examStartDate.setHours(jam, menit, 0, 0);
-  const examEndDate = new Date(
-    examStartDate.getTime() + data.durasi_ujian * 1000
-  );
+  // const examEndDate = new Date(
+  //   examStartDate.getTime() + data.durasi_ujian * 1000
+  // );
 
   // Cek apakah ujian adalah remedial
   const isRemedial = sesi_remedial === 1;
@@ -94,47 +94,35 @@ export default function ScheduleCard({
       examStatusText = "Bukan bulan remedial";
     }
   } else {
-    // Logika normal untuk ujian non-remedial
-    const isBeforeStart = now < examStartDate;
-    const isAfterEnd = now > examEndDate;
-    const isToday = now.toDateString() === examStartDate.toDateString();
     const currentHour = now.getHours();
 
-    if (isBeforeStart) {
-      examStatusText = "Belum dimulai";
-      isButtonDisabled = true;
-    } else if (isAfterEnd) {
-      examStatusText = "Ujian selesai";
-      isButtonDisabled = true;
-    } else {
-      switch (sesi_ujian) {
-        case 0: // fullday
-          isButtonDisabled = !isToday;
-          if (!isToday) {
-            examStatusText = "Bukan hari ujian";
+    switch (sesi_ujian) {
+      case 0:
+        isButtonDisabled = !isToday(examDate);
+        if (!isToday(examDate)) {
+          examStatusText = "Bukan Hari ini";
+        }
+        break;
+      case 1: // flexible
+        if (isToday(examDate)) {
+          const isFlexibleTime = currentHour >= 15 && currentHour < 17;
+          isButtonDisabled = !isFlexibleTime;
+          if (!isFlexibleTime) {
+            examStatusText = "Waktu fleksibel: 15:00 - 17:00";
           }
-          break;
-        case 1: // flexible
-          if (isToday) {
-            const isFlexibleTime = currentHour >= 15 && currentHour < 17;
-            isButtonDisabled = !isFlexibleTime;
-            if (!isFlexibleTime) {
-              examStatusText = "Waktu fleksibel: 15:00 - 17:00";
-            }
-          } else {
-            isButtonDisabled = true;
-            examStatusText = "Bukan hari ujian";
-          }
-          break;
-        case 2: // strict
-          isButtonDisabled = !isToday || currentHour !== jam;
-          if (!isToday) {
-            examStatusText = "Bukan hari ujian";
-          } else if (currentHour !== jam) {
-            examStatusText = `Waktu ujian: ${data.jam_ujian}`;
-          }
-          break;
-      }
+        } else {
+          isButtonDisabled = true;
+          examStatusText = "Bukan hari ujian";
+        }
+        break;
+      case 2: // strict
+        isButtonDisabled = !isToday(examDate) || currentHour !== jam;
+        if (!isToday(examDate)) {
+          examStatusText = "Bukan hari ujian";
+        } else if (currentHour !== jam) {
+          examStatusText = `Waktu ujian: ${data.jam_ujian}`;
+        }
+        break;
     }
   }
 
