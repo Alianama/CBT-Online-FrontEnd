@@ -31,6 +31,7 @@ export interface UserData {
   nis: string;
   ban: number;
   username: string;
+  new_user?: number;
 }
 
 export interface Profil {

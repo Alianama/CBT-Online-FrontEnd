@@ -21,7 +21,7 @@ export default function Home() {
     id: { name: "Beranda", url: "/" },
     en: { name: "Home", url: "/" },
   };
- 
+
   return (
     <Layout data={[pageData[safeLocale]]}>
       <title>{pageData[safeLocale].name}</title>
@@ -71,9 +71,7 @@ export default function Home() {
                 {t.home.videoTutorial}
                 <div className="h-1 w-10 bg-primary ml-4 rounded-full"></div>
               </h2>
-              <p className="text-muted-foreground mb-8">
-                {t.home.videoDesc}
-              </p>
+              <p className="text-muted-foreground mb-8">{t.home.videoDesc}</p>
             </div>
 
             <div className="aspect-video w-full overflow-hidden rounded-xl border shadow-lg bg-muted relative group">

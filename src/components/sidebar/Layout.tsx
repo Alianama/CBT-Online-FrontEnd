@@ -18,6 +18,8 @@ import { ModeToggle } from "@/components/Theme/ModeToggle.tsx";
 import { useNavigate } from "react-router-dom";
 import LanguageContext from "@/context/LanguageContext.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { useGlobal } from "@/context/GlobalContext.tsx";
+import NewUserChangePassword from "@/components/profile/NewUserChangePassword.tsx";
 
 export default function Layout({
   children,
@@ -28,6 +30,12 @@ export default function Layout({
 }) {
   const navigate = useNavigate();
   const { locale, toggleLocale } = React.useContext(LanguageContext);
+  const { showNewUserModal, setShowNewUserModal } = useGlobal();
+
+  const handlePasswordChangeSuccess = () => {
+    setShowNewUserModal(false);
+  };
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -69,6 +77,12 @@ export default function Layout({
         </header>
         <div className="px-5 pt-0">{children}</div>
       </SidebarInset>
+
+      {/* Modal untuk new user ganti password - ditampilkan di semua halaman */}
+      <NewUserChangePassword
+        open={showNewUserModal}
+        onSuccess={handlePasswordChangeSuccess}
+      />
     </SidebarProvider>
   );
 }

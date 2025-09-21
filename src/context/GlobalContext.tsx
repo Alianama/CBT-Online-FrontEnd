@@ -25,6 +25,8 @@ interface UserContextType {
   setWsToken: (wsToken: string) => void;
   biodata: Profil | null;
   setBiodata: (biodata: (prev: Profil | null) => Profil) => void;
+  showNewUserModal: boolean;
+  setShowNewUserModal: (show: boolean) => void;
 }
 
 const GlobalContext = createContext<UserContextType | undefined>(undefined);
@@ -37,6 +39,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [generalUser, setGeneralUser] = useState<UserData | null>(null);
   const [biodata, setBiodata] = useState<Profil | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showNewUserModal, setShowNewUserModal] = useState(false);
 
   const refreshUser = useCallback(async () => {
     setLoading(true);
@@ -47,6 +50,11 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(storedUser);
       const schoolNameUser = getAuthData()?.schoolName;
       setSchool(schoolNameUser);
+
+      // Cek apakah user adalah new_user dan tampilkan modal
+      if (storedUser?.new_user === 1) {
+        setShowNewUserModal(true);
+      }
     } else {
       setUser(null);
       setGeneralUser(null);
@@ -132,6 +140,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setUserPicture,
         wsToken,
         setWsToken,
+        showNewUserModal,
+        setShowNewUserModal,
       }}
     >
       {children}
