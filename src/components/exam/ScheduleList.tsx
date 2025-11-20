@@ -46,7 +46,7 @@ export default function ExamCard() {
   const { data, error, isLoading } = useQuery<ScheduleResponse>({
     queryKey: ["ScheduleList"],
     queryFn: getJadwalList,
-    staleTime: 10 * 60 * 1000,
+    staleTime: 0,
     refetchOnWindowFocus: true,
   });
 

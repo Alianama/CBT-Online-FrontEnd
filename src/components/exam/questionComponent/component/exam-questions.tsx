@@ -167,20 +167,15 @@ export default function ExamQuestions({
         {question.tipe === "1" && (
           <div className="space-y-4">
             <RadioGroup
-              value={
-                localAnswer ||
-                answers[question.id_soal_ujian] ||
-                question.jawaban ||
-                ""
-              }
+              value={answers[question.id_soal_ujian] ?? question.jawaban ?? ""}
               onValueChange={handleMultipleChoiceChange}
             >
               {["a", "b", "c", "d", "e"].map((option) => {
                 if (!question[option as keyof QuestionType]) return null;
-                const isSelected =
-                  localAnswer === option ||
-                  answers[question.id_soal_ujian] === option ||
-                  question.jawaban === option;
+
+                const currentVal =
+                  answers[question.id_soal_ujian] ?? question.jawaban ?? "";
+                const isSelected = currentVal === option;
 
                 return (
                   <Label
