@@ -73,25 +73,26 @@ export default function ScheduleCard({
   const [jam, menit] = data.jam_ujian.split(":").map(Number);
   const examStartDate = new Date(examDate);
   examStartDate.setHours(jam, menit, 0, 0);
-  // const examEndDate = new Date(
-  //   examStartDate.getTime() + data.durasi_ujian * 1000
-  // );
 
-  // Cek apakah ujian adalah remedial
+  const examEndDate = new Date(
+    examStartDate.getTime() + data.durasi_ujian * 1000
+  );
+
   const isRemedial = sesi_remedial === 1;
-
-  // Cek apakah bulan ujian sama dengan bulan sekarang (untuk remedial)
   const isSameMonthAsNow = isSameMonth(examDate, now);
 
-  // Logika untuk menentukan apakah tombol bisa diklik
   let isButtonDisabled = false;
   let examStatusText = "Mulai Ujian";
 
+  const isExamExpired = now > examEndDate;
+
   if (isRemedial) {
-    // Jika remedial, hanya cek apakah bulan sama
     if (!isSameMonthAsNow) {
       isButtonDisabled = true;
       examStatusText = "Bukan bulan remedial";
+    } else if (isExamExpired) {
+      isButtonDisabled = true;
+      examStatusText = "Waktu Habis";
     }
   } else {
     const currentHour = now.getHours();
@@ -100,35 +101,46 @@ export default function ScheduleCard({
       case 0:
         if (isToday(examDate)) {
           const isAfterStart = now >= examStartDate;
-          isButtonDisabled = !isAfterStart;
 
-          if (!isAfterStart) {
+          if (isExamExpired) {
+            isButtonDisabled = true;
+            examStatusText = "Waktu Habis";
+          } else if (!isAfterStart) {
+            isButtonDisabled = true;
             examStatusText = "Belum Waktunya";
           }
-        } else {
+        } else if (now < examDate) {
           isButtonDisabled = true;
           examStatusText = "Bukan Hari Ujian";
+        } else {
+          isButtonDisabled = true;
+          examStatusText = "Waktu Habis";
         }
         break;
       case 1:
         if (isToday(examDate)) {
           const isFlexibleTime = currentHour >= 15 && currentHour < 17;
           const isExactTime = currentHour === jam;
-          isButtonDisabled = !(isFlexibleTime || isExactTime);
-          if (!(isFlexibleTime || isExactTime)) {
-            examStatusText = "Mulai Ujian";
+
+          if (isExamExpired) {
+            isButtonDisabled = true;
+            examStatusText = "Waktu Habis";
+          } else {
+            isButtonDisabled = !(isFlexibleTime || isExactTime);
+            if (!(isFlexibleTime || isExactTime)) {
+              examStatusText = "Belum Waktunya";
+            }
           }
+        } else if (now < examDate) {
+          isButtonDisabled = true;
+          examStatusText = "Bukan Hari Ujian";
         } else {
           isButtonDisabled = true;
-          examStatusText = "Mulai Ujian";
+          examStatusText = "Waktu Habis";
         }
         break;
       case 2:
         if (isToday(examDate)) {
-          const examEndDate = new Date(
-            examStartDate.getTime() + data.durasi_ujian * 60 * 1000
-          );
-
           const isRunning = now >= examStartDate && now <= examEndDate;
 
           isButtonDisabled = !isRunning;
@@ -138,9 +150,12 @@ export default function ScheduleCard({
           } else if (now > examEndDate) {
             examStatusText = "Waktu Habis";
           }
-        } else {
+        } else if (now < examDate) {
           isButtonDisabled = true;
           examStatusText = "Bukan Hari Ujian";
+        } else {
+          isButtonDisabled = true;
+          examStatusText = "Waktu Habis";
         }
         break;
     }
