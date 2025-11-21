@@ -32,13 +32,13 @@ export default function ChangeProfileImage({
 
     const t = {
         id: {
-            title: "Ubah Foto Profil",
-            description: "Pilih gambar baru dan simpan untuk memperbarui foto profil.",
+            title: "Perbarui Foto Profil",
+            description: "Klik tombol Pilih Gambar untuk memperbarui foto profil.",
             chooseImage: "Pilih Gambar",
-            save: "Simpan",
+            save: "Simpan Perubahan",
             saving: "Menyimpan...",
             cancel: "Batal",
-            imageSuccess: "Gambar berhasil dipilih. Klik 'Simpan' untuk mengunggah.",
+            imageSuccess: "Klik Simpan Perubahan untuk melanjutkan!",
             uploadSuccess: "Foto profil berhasil diperbarui!",
             uploadFailed: "Gagal upload foto.",
             invalidFormat: "Format tidak didukung. Gunakan .jpeg, .jpg, atau .png.",
@@ -47,7 +47,7 @@ export default function ChangeProfileImage({
         },
         en: {
             title: "Change Profile Picture",
-            description: "Select a new image and save to update your profile picture.",
+            description: "Select new image button to update your profile picture.",
             chooseImage: "Choose Image",
             save: "Save",
             saving: "Saving...",

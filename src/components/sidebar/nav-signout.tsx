@@ -53,7 +53,7 @@ export function NavSignout() {
               <div className="flex aspect-square m-1 size-6 items-center justify-center text-sm rounded-lg bg-neutral-900 text-sidebar-primary-foreground">
                 <Power className="size-4" />
               </div>
-              Sign Out
+              {locale === "id" ? "Keluar" : "Logout"}
             </SidebarMenuButton>
           </DialogTrigger>
           <DialogContent>

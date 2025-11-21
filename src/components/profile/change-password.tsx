@@ -31,13 +31,13 @@ export default function ChangePassword() {
             no: "Tidak",
             newPassword: "Masukkan password baru",
             confirmNewPassword: "Konfirmasi password baru",
-            updatePassword: "Ubah Password",
-            enterNewPassword: "Masukkan password baru untuk memperbarui akun Anda.",
+            updatePassword: "Ganti Password",
+            enterNewPassword: "Buat password yang lebih kuat untuk menjaga keamanan akun.",
             savePassword: "Simpan Password",
             passwordMismatch: "Password tidak cocok",
             passwordUpdated: "Password berhasil diperbarui",
             errorOccurred: "Terjadi kesalahan",
-            successChnagePassword: "Ubah Password Berhasil",
+            successChnagePassword: "Password Berhasil Disimpan",
             successChnagePassword2: "Silahkan login kembali dengan password baru!",
         },
         en: {
@@ -178,7 +178,7 @@ export default function ChangePassword() {
                     <div
                         className="bg-white rounded-xl p-5 shadow-md transition-shadow duration-300 border border-gray-200">
                         <h3 className="text-lg font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                            <Key className="h-5 w-5 text-primary"/> {t.updatePassword}
+                            <Key className="h-5 w-5 text-primary"/> Password Baru
                         </h3>
                         <div className="relative mb-4">
                             <Input
@@ -260,14 +260,14 @@ export default function ChangePassword() {
             <Dialog open={isThridDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Ubah password Berhasil</DialogTitle>
+                        <DialogTitle>Ganti Password Berhasil</DialogTitle>
                         <DialogDescription>
                             Silahkan Login kembali dengan password baru
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button onClick={() => navigate("/logout")}>Ok</Button>
+                            <Button onClick={() => navigate("/logout")}>Lanjutkan</Button>
                         </DialogClose>
                     </DialogFooter>
                 </DialogContent>

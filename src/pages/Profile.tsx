@@ -5,17 +5,13 @@ import {
   Book,
   CalendarDays,
   GraduationCap,
-  Hash,
   House,
-  Mail,
   MapPinHouse,
   PhoneCall,
   School,
-  ShieldAlert,
   Smile,
   Type,
   User,
-  UserCheck,
   UserRoundPen,
   Volleyball,
 } from "lucide-react";
@@ -73,36 +69,22 @@ export default function ProfilPage() {
                   }}
                 ></div>
                 <div className="mt-6 w-full text-center">
-                  <CardTitle className="text-lg font-bold tracking-tight">
+                  <CardTitle className="text-lg font-bold tracking-tight mt-3">
                     {user?.nama}
                   </CardTitle>
                   <p className="text-muted-foreground mt-1">
-                    @{user?.username}
+                    {user?.nis}
                   </p>
 
                   <div className="mt-4 flex gap-3 flex-col items-center justify-center">
-                    {user?.ban === 0 ? (
-                      <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition-colors duration-300 px-3 py-1">
-                        <UserCheck className="h-3.5 w-3.5 mr-1" />{" "}
-                        {t.profilPage.active}
-                      </Badge>
-                    ) : (
-                      <Badge
-                        variant="outline"
-                        className="bg-red-50 text-red-700 border-red-200 px-3 py-1"
-                      >
-                        <ShieldAlert className="h-3.5 w-3.5 mr-1" />{" "}
-                        {t.profilPage.blocked}
-                      </Badge>
-                    )}
+
                     <div className="flex flex-col max-md:flex-row gap-3">
                       <ChangePassword />
                       <Badge
                         onClick={() => navigate(`/update-profile`)}
                         className="bg-blue-50 text-green-600 cursor-pointer border-blue-200 hover:bg-emerald-100 transition-colors duration-300 px-3 py-1"
                       >
-                        <UserRoundPen className="h-3.5 w-3.5 mr-1" /> Update
-                        Biodata
+                        <UserRoundPen className="h-3.5 w-3.5 mr-1" /> Lengkapi Biodata
                       </Badge>
                     </div>
                   </div>
@@ -111,29 +93,6 @@ export default function ProfilPage() {
 
               <CardContent>
                 <div className="space-y-3 mt-2">
-                  <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
-                    <Hash className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">
-                        {t.profilPage.nis}
-                      </p>
-                      <p className="font-medium text-sm text-black ">
-                        {user?.nis}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
-                    <Mail className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">
-                        {t.profilPage.username}
-                      </p>
-                      <p className="font-medium text-sm text-black ">
-                        {user?.username}
-                      </p>
-                    </div>
-                  </div>
                   <div className="flex items-center p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-200">
                     <Type className="h-4 w-4 dark:text-neutral-800 text-primary mr-3" />
                     <div>

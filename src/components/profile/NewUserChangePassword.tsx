@@ -29,7 +29,7 @@ export default function NewUserChangePassword({
 
   const translations = {
     id: {
-      newUserTitle: "Ganti Password Wajib",
+      newUserTitle: "Buat Password Baru",
       newUserDescription:
         "Anda adalah pengguna baru. Silakan ganti password Anda untuk keamanan akun.",
       newPassword: "Masukkan password baru",

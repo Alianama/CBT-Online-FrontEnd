@@ -59,27 +59,27 @@ export default function UpdateProfile() {
     id: {
       updatebiodataNew: "Perbarui biodata",
       enterbiodataNew: "Silakan lengkapi biodata Anda.",
-      savebiodataNew: "Simpan biodata",
-      verifyPhone: "Verifikasi No HP",
-      phoneVerified: "Nomor HP berhasil diverifikasi!",
+      savebiodataNew: "Simpan Biodata",
+      verifyPhone: "Verifikasi No WA",
+      phoneVerified: "Nomor WA berhasil diverifikasi!",
       confirmChange: "Apakah Anda yakin ingin menyimpan perubahan biodata?",
-      successUpdate: "biodataNew berhasil diperbarui",
+      successUpdate: "Biodata berhasil diperbarui",
       errorOccurred: "Terjadi kesalahan",
       cancel: "Batal",
       beforeSave:
-        "Verifikasi No Telpon terlebih dahulu sebelum simpan biodata!!",
+        "Verifikasi nomor WA untuk melanjutkan.",
     },
     en: {
       updatebiodataNew: "Update biodata",
       enterbiodataNew: "Please complete your biodata.",
-      savebiodataNew: "Save biodata",
+      savebiodataNew: "Save Biodata",
       verifyPhone: "Verify Phone Number",
       phoneVerified: "Phone number verified successfully!",
       confirmChange: "Are you sure you want to save the biodata changes?",
-      successUpdate: "biodata updated successfully",
+      successUpdate: "Biodata updated successfully",
       errorOccurred: "An error occurred",
       cancel: "Cancel",
-      beforeSave: "Plaese Verify your phone number before save biodata!!",
+      beforeSave: "Plaese verify your phone number to continue.",
     },
   };
   const { generalUser, biodata, setBiodata, refreshUser, fetchUserProfile } =
@@ -150,13 +150,13 @@ export default function UpdateProfile() {
   }, [refreshUser]);
   const handleVerifyPhone = async (phone: string) => {
     if (!phone) {
-      toast.error("Nomor HP tidak boleh kosong");
+      toast.error("Nomor WA tidak boleh kosong");
       return;
     }
     try {
       const response = await sendOTP(phone);
       if (response.status === "success") {
-        toast.success("OTP telah dikirim ke nomor HP Anda!");
+        toast.success("Kode OTP berhasil terkirim!");
         setIsOtpSend(true);
         setDisableButton(true);
         let timeLeft = 120;
@@ -243,7 +243,7 @@ export default function UpdateProfile() {
   };
   const FormSchema = z.object({
     otp: z.string().min(6, {
-      message: "Your one-time password must be 6 characters.",
+      message: "Kode OTP harus 6 angka.",
     }),
   });
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -321,7 +321,7 @@ export default function UpdateProfile() {
       <div className="container gap-10 mx-auto py-6 px-4 md:px-6 flex flex-col">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            Update Profile
+            Lengkapi Biodata
           </h1>
         </div>
         <div className="flex max-md:flex-col gap-10">
@@ -574,7 +574,7 @@ export default function UpdateProfile() {
                 name="no_hp"
                 value={biodataNew.no_hp}
                 onChange={handlePhoneChange}
-                placeholder="Nomor HP"
+                placeholder="Nomor WA"
                 type="text"
               />
               <Button
@@ -583,7 +583,7 @@ export default function UpdateProfile() {
                 className="bg-primary hover:bg-green-700 text-white"
               >
                 {telponVerif
-                  ? "✅ Verified"
+                  ? "✅ Berhasil"
                   : disableButton
                     ? `Tunggu ${countdown}s`
                     : t.verifyPhone}
@@ -647,7 +647,7 @@ export default function UpdateProfile() {
                   name="otp"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>One-Time Password</FormLabel>
+                      <FormLabel>Masukkan Kode OTP</FormLabel>
                       <FormControl>
                         <InputOTP maxLength={6} {...field}>
                           <InputOTPGroup>
@@ -665,14 +665,14 @@ export default function UpdateProfile() {
                         className={verifyOTPMessage ? "text-red-500" : ""}
                       >
                         {verifyOTPMessage ||
-                          "Please enter the one-time password sent to your phone."}
+                          "Masukan kode OTP yang dikirim ke nomor WA."}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <Button type="submit">Verify</Button>
+                <Button type="submit">Verifikasi</Button>
               </form>
             </Form>
           </DialogContent>

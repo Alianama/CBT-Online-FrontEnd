@@ -48,8 +48,8 @@ const data = {
         icon: FileCheck,
       },
       {
-        name: "Update Profil",
-        url: "/update-profile",
+        name: "Profil",
+        url: "/profile",
         icon: UserPen ,
       },
 
@@ -81,8 +81,8 @@ const data = {
         icon: FileCheck,
       },
       {
-        name: "Update Profil",
-        url: "/update-profile",
+        name: "Profil",
+        url: "/profile",
         icon: UserPen ,
       },
     ],
