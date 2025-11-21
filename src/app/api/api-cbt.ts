@@ -509,7 +509,10 @@ export const sendLogUjian = async ({
       {
         id_peserta,
         reason,
-        time: new Date().toISOString().slice(0, 19).replace("T", " "), // Format: YYYY-MM-DD HH:mm:ss
+        time: new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " "),
       },
       {
         headers: {
