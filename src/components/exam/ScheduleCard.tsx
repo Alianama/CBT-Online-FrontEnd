@@ -86,28 +86,30 @@ export default function ScheduleCard({
 
   const currentHour = now.getHours();
 
-  switch (sesi_ujian) {
-    case 0:
-      if (isRemedial) {
-        if (!isSameMonthAsNow) {
-          isButtonDisabled = true;
-          examStatusText = "Bukan bulan remedial";
-        } else {
-          const todayExamStart = new Date(now);
-          todayExamStart.setHours(jam, menit, 0, 0);
-          const todayExamEnd = new Date(
-            todayExamStart.getTime() + data.durasi_ujian * 1000
-          );
+  if (isRemedial) {
+    if (!isSameMonthAsNow) {
+      isButtonDisabled = true;
+      examStatusText = "Bukan bulan remedial";
+    } else {
+      const todayExamStart = new Date(now);
+      todayExamStart.setHours(jam, menit, 0, 0);
+      const todayExamEnd = new Date(
+        todayExamStart.getTime() + data.durasi_ujian * 1000
+      );
 
-          if (now < todayExamStart) {
-            isButtonDisabled = true;
-            examStatusText = "Belum Waktunya";
-          } else if (now > todayExamEnd) {
-            isButtonDisabled = true;
-            examStatusText = "Waktu Habis";
-          }
-        }
-      } else {
+      const isInTimeWindow = now >= todayExamStart && now <= todayExamEnd;
+
+      isButtonDisabled = !isInTimeWindow;
+
+      if (now < todayExamStart) {
+        examStatusText = "Belum Waktunya";
+      } else if (now > todayExamEnd) {
+        examStatusText = "Waktu Habis";
+      }
+    }
+  } else {
+    switch (sesi_ujian) {
+      case 0:
         if (isToday(examDate)) {
           const isAfterStart = now >= examStartDate;
           const isExamExpired = now > examEndDate;
@@ -126,34 +128,8 @@ export default function ScheduleCard({
           isButtonDisabled = true;
           examStatusText = "Waktu Habis";
         }
-      }
-      break;
-    case 1:
-      if (isRemedial) {
-        if (!isSameMonthAsNow) {
-          isButtonDisabled = true;
-          examStatusText = "Bukan bulan remedial";
-        } else {
-          const todayExamStart = new Date(now);
-          todayExamStart.setHours(jam, menit, 0, 0);
-          const todayExamEnd = new Date(
-            todayExamStart.getTime() + data.durasi_ujian * 1000
-          );
-
-          const isFlexibleTime = currentHour >= 15 && currentHour < 17;
-          const isExactTime = currentHour === jam;
-
-          if (now > todayExamEnd) {
-            isButtonDisabled = true;
-            examStatusText = "Waktu Habis";
-          } else {
-            isButtonDisabled = !(isFlexibleTime || isExactTime);
-            if (!(isFlexibleTime || isExactTime)) {
-              examStatusText = "Belum Waktunya";
-            }
-          }
-        }
-      } else {
+        break;
+      case 1:
         if (isToday(examDate)) {
           const isFlexibleTime = currentHour >= 15 && currentHour < 17;
           const isExactTime = currentHour === jam;
@@ -175,31 +151,8 @@ export default function ScheduleCard({
           isButtonDisabled = true;
           examStatusText = "Waktu Habis";
         }
-      }
-      break;
-    case 2:
-      if (isRemedial) {
-        if (!isSameMonthAsNow) {
-          isButtonDisabled = true;
-          examStatusText = "Bukan bulan remedial";
-        } else {
-          const todayExamStart = new Date(now);
-          todayExamStart.setHours(jam, menit, 0, 0);
-          const todayExamEnd = new Date(
-            todayExamStart.getTime() + data.durasi_ujian * 1000
-          );
-
-          const isInTimeWindow = now >= todayExamStart && now <= todayExamEnd;
-
-          isButtonDisabled = !isInTimeWindow;
-
-          if (now < todayExamStart) {
-            examStatusText = "Belum Waktunya";
-          } else if (now > todayExamEnd) {
-            examStatusText = "Waktu Habis";
-          }
-        }
-      } else {
+        break;
+      case 2:
         if (isToday(examDate)) {
           const isRunning = now >= examStartDate && now <= examEndDate;
 
@@ -217,8 +170,8 @@ export default function ScheduleCard({
           isButtonDisabled = true;
           examStatusText = "Waktu Habis";
         }
-      }
-      break;
+        break;
+    }
   }
 
   const onSubmitWithoutToken = async () => {
