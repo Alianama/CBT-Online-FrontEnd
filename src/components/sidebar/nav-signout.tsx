@@ -28,16 +28,20 @@ export function NavSignout() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <Button
+        <SidebarMenuButton
           onClick={() => window.open(HELP_URL, "_blank")}
-          className="bg-primary w-full flex items-center gap-2 hover:bg-primary/90 transition-colors"
+          size="lg"
+          className="data-[state=open]:bg-primary flex item-center data-[state=open]:text-sidebar-accent-foreground "
         >
-          <HelpCircle className="size-4" />
+          <div className="flex aspect-square m-1 size-6 items-center justify-center text-sm rounded-lg bg-primary text-sidebar-primary-foreground">
+            <HelpCircle className="size-4" />
+          </div>
           <span className="font-medium">
             {locale === "id" ? "Bantuan" : "Help"}
           </span>
-        </Button>
+        </SidebarMenuButton>
       </SidebarMenuItem>
+
       <div className="h-px w-full bg-neutral-800/30 my-2" />
       <SidebarMenuItem>
         <Dialog>
@@ -47,7 +51,7 @@ export function NavSignout() {
               className="data-[state=open]:bg-neutral-900 flex item-center data-[state=open]:text-sidebar-accent-foreground "
             >
               <div className="flex aspect-square m-1 size-6 items-center justify-center text-sm rounded-lg bg-neutral-900 text-sidebar-primary-foreground">
-                <Power className="size-3" />
+                <Power className="size-4" />
               </div>
               Sign Out
             </SidebarMenuButton>

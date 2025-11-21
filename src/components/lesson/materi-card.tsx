@@ -34,11 +34,11 @@ interface MateriCardProps {
 }
 
 export default function MateriCard({ index,
-                                     materi,
-                                     subject,
-                                     idKelas,
-                                     idMapel,
-                                   }: MateriCardProps) {
+  materi,
+  subject,
+  idKelas,
+  idMapel,
+}: MateriCardProps) {
   const attachment_URL = materi.attachment?.replace(/\{\{DOMAIN}}/g, VITE_ASSET_DOMAIN);
 
   return (
@@ -71,8 +71,7 @@ export default function MateriCard({ index,
         </div>
 
         <span className="text-sm">
-          Materi berupa file <strong>{materi.tipe_materi}</strong> yang bisa kamu{" "}
-          {materi.tipe_materi === "text" ? "lihat" : "download"}.
+          Klik tombol lihat atau download dibawah.
         </span>
       </CardContent>
 
@@ -96,14 +95,14 @@ export default function MateriCard({ index,
                 size="sm"
                 disabled={materi.tipe_materi === "zip" || !attachment_URL}
               >
-                <ExternalLink className="h-4 w-4 mr-1" /> Open
+                <ExternalLink className="h-4 w-4 mr-1" /> Lihat
               </Button>
             </Link>
           ) : (
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="w-full text-xs h-8 px-2 bg-primary">
-                  <ExternalLink className="h-4 w-4 mr-1" /> Open
+                  <ExternalLink className="h-4 w-4 mr-1" /> Lihat
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -148,9 +147,6 @@ export default function MateriCard({ index,
             Download
           </Button>
         </div>
-        <span className="text-xs text-neutral-900/50">
-          *Klik Tombol Open untuk membuka file
-        </span>
       </CardFooter>
     </Card>
   );

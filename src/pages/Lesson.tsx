@@ -39,7 +39,7 @@ export default function Lesson() {
   const { data, error, isLoading } = useQuery({
     queryKey: ["mapel"],
     queryFn: () => getMapel(),
-    staleTime: 10 * 60 * 1000,
+    staleTime: 2 * 60 * 1000,
     refetchOnWindowFocus: true,
   });
   return (
@@ -83,7 +83,7 @@ export default function Lesson() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {data?.data.length === 0 ? (
                 <p className="text-center text-gray-500 col-span-full">
                   {pageData[safeLocale].noData}
@@ -92,7 +92,6 @@ export default function Lesson() {
                 data?.data
                   .filter(
                     (mapel: Mapel) =>
-                      mapel.total_materi > 0 &&
                       mapel.nama_mapel
                         .toLowerCase()
                         .includes(keyword.toLowerCase()),

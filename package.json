@@ -33,6 +33,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "eslint-plugin-react": "^7.37.5",
+    "force": "^0.0.3",
     "framer-motion": "^12.4.7",
     "html-react-parser": "^5.2.5",
     "input-otp": "^1.4.2",
