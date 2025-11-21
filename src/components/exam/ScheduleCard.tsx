@@ -81,94 +81,83 @@ export default function ScheduleCard({
   const isRemedial = sesi_remedial === 1;
   const isSameMonthAsNow = isSameMonth(examDate, now);
 
+  // fleksibel 15:00–17:00 di hari yang sama
+  const isSameDay = isToday(examDate);
+  const currentHour = now.getHours();
+  const isFlexibleTime = isSameDay && currentHour >= 15 && currentHour < 17;
+
   let isButtonDisabled = false;
   let examStatusText = "Mulai Ujian";
-
-  const currentHour = now.getHours();
 
   if (isRemedial) {
     if (!isSameMonthAsNow) {
       isButtonDisabled = true;
-      examStatusText = "Bukan bulan remedial";
+      examStatusText = "Ujian Berakhir";
     } else {
       const todayExamStart = new Date(now);
       todayExamStart.setHours(jam, menit, 0, 0);
-      const todayExamEnd = new Date(
-        todayExamStart.getTime() + data.durasi_ujian * 1000
-      );
 
-      const isInTimeWindow = now >= todayExamStart && now <= todayExamEnd;
-
-      isButtonDisabled = !isInTimeWindow;
+      isButtonDisabled = false;
 
       if (now < todayExamStart) {
-        examStatusText = "Belum Waktunya";
-      } else if (now > todayExamEnd) {
-        examStatusText = "Waktu Habis";
+        examStatusText = "Belum Ujian";
       }
     }
   } else {
     switch (sesi_ujian) {
       case 0:
-        if (isToday(examDate)) {
+        if (isSameDay) {
           const isAfterStart = now >= examStartDate;
-          const isExamExpired = now > examEndDate;
-
-          if (isExamExpired) {
+          if (!isAfterStart) {
             isButtonDisabled = true;
-            examStatusText = "Waktu Habis";
-          } else if (!isAfterStart) {
-            isButtonDisabled = true;
-            examStatusText = "Belum Waktunya";
+            examStatusText = "Belum Ujian";
           }
         } else if (now < examDate) {
           isButtonDisabled = true;
-          examStatusText = "Bukan Hari Ujian";
+          examStatusText = "Belum Ujian";
         } else {
           isButtonDisabled = true;
-          examStatusText = "Waktu Habis";
+          examStatusText = "Ujian Berakhir";
         }
         break;
       case 1:
-        if (isToday(examDate)) {
-          const isFlexibleTime = currentHour >= 15 && currentHour < 17;
-          const isExactTime = currentHour === jam;
-          const isExamExpired = now > examEndDate;
+        const isExamStarted = now >= examStartDate;
+        const isExamExpired = now > examEndDate;
 
-          if (isExamExpired) {
-            isButtonDisabled = true;
-            examStatusText = "Waktu Habis";
-          } else {
-            isButtonDisabled = !(isFlexibleTime || isExactTime);
-            if (!(isFlexibleTime || isExactTime)) {
-              examStatusText = "Belum Waktunya";
-            }
-          }
-        } else if (now < examDate) {
+        if (!isSameDay) {
           isButtonDisabled = true;
-          examStatusText = "Bukan Hari Ujian";
+          examStatusText = "Belum Ujian";
+        } else if (isFlexibleTime) {
+          isButtonDisabled = false;
+          examStatusText = "Mulai Ujian";
+        } else if (isExamExpired) {
+          isButtonDisabled = true;
+          examStatusText = "Ujian Berakhir";
+        } else if (isExamStarted) {
+          isButtonDisabled = false;
+          examStatusText = "Mulai Ujian";
         } else {
           isButtonDisabled = true;
-          examStatusText = "Waktu Habis";
+          examStatusText = "Belum Ujian";
         }
         break;
       case 2:
-        if (isToday(examDate)) {
+        if (isSameDay) {
           const isRunning = now >= examStartDate && now <= examEndDate;
 
           isButtonDisabled = !isRunning;
 
           if (now < examStartDate) {
-            examStatusText = "Belum Waktunya";
+            examStatusText = "Belum Ujian";
           } else if (now > examEndDate) {
-            examStatusText = "Waktu Habis";
+            examStatusText = "Ujian Berakhir";
           }
         } else if (now < examDate) {
           isButtonDisabled = true;
-          examStatusText = "Bukan Hari Ujian";
+          examStatusText = "Belum Ujian";
         } else {
           isButtonDisabled = true;
-          examStatusText = "Waktu Habis";
+          examStatusText = "Ujian Berakhir";
         }
         break;
     }
