@@ -65,7 +65,7 @@ export const useExamSocket = () => {
         resetTimer();
       },
       onError: (err) => {
-        // console.error("WebSocket error", err);
+        console.error("WebSocket error", err);
         resetTimer();
         setWsToken("");
         navigate("/exam");
