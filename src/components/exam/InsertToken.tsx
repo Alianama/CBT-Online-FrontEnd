@@ -92,9 +92,9 @@ export default function InsertToken({
             </div>
 
             <DialogHeader className="text-center">
-              <DialogTitle className="text-xl font-bold">Masukkan Token Ujian</DialogTitle>
+              <DialogTitle className="text-xl text-center font-bold">Token Ujian</DialogTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                Silakan masukkan token yang telah diberikan untuk memulai ujian
+                Masukkan token yang diberikan pengawas ujian.
               </p>
             </DialogHeader>
           </div>
@@ -107,7 +107,7 @@ export default function InsertToken({
                     name="token"
                     render={({ field }) => (
                         <FormItem className="flex flex-col items-center">
-                          <FormLabel>Token Ujian</FormLabel>
+                          <FormLabel>Masukkan Token Ujian</FormLabel>
                           <FormControl>
                             <OTPInputFields
                                 value={field.value}

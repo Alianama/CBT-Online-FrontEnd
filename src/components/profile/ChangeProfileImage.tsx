@@ -42,8 +42,8 @@ export default function ChangeProfileImage({
             uploadSuccess: "Foto profil berhasil diperbarui!",
             uploadFailed: "Gagal upload foto.",
             invalidFormat: "Format tidak didukung. Gunakan .jpeg, .jpg, atau .png.",
-            sizeExceeded: "Ukuran file maksimal 3MB.",
-            note: "Format yang didukung: .jpeg, .jpg, .png — Ukuran maksimal: 3MB",
+            sizeExceeded: "Ukuran file maksimal 3 MB.",
+            note: "Format yang didukung: .jpeg, .jpg, .png — Ukuran maksimal: 3 MB",
         },
         en: {
             title: "Change Profile Picture",
@@ -56,8 +56,8 @@ export default function ChangeProfileImage({
             uploadSuccess: "Profile picture updated successfully!",
             uploadFailed: "Failed to upload picture.",
             invalidFormat: "Unsupported format. Use .jpeg, .jpg, or .png.",
-            sizeExceeded: "Maximum file size is 3MB.",
-            note: "Supported formats: .jpeg, .jpg, .png — Max size: 3MB",
+            sizeExceeded: "Maximum file size is 3 MB.",
+            note: "Supported formats: .jpeg, .jpg, .png — Max size: 3 MB",
         }
     }[locale as "id" | "en"];
 

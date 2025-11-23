@@ -126,7 +126,7 @@ export default function ExamQuestions({
     }
 
     if (file.size > maxSize) {
-      toast.error("Ukuran file maksimal 3MB.");
+      toast.error("Ukuran file maksimal 3 MB.");
       return;
     }
 
@@ -154,10 +154,10 @@ export default function ExamQuestions({
     <div>
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
+          <h2 className="text-lg font-semibold">Soal Nomor</h2>
           <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold">
             {currentQuestion + 1}
           </span>
-          <h2 className="text-lg font-semibold">Question</h2>
         </div>
 
         <Card className="p-4 mb-4 flex-row flex">
@@ -166,6 +166,7 @@ export default function ExamQuestions({
 
         {question.tipe === "1" && (
           <div className="space-y-4">
+            <Label>Pilih Jawaban :</Label>
             <RadioGroup
               value={answers[question.id_soal_ujian] ?? question.jawaban ?? ""}
               onValueChange={handleMultipleChoiceChange}
@@ -206,13 +207,13 @@ export default function ExamQuestions({
 
         {question.tipe === "2" && (
           <div className="space-y-4">
-            <Label htmlFor="short-answer">Your Answer:</Label>
+            <Label htmlFor="short-answer">Ketik Jawaban :</Label>
             <Input
               id="short-answer"
               value={localAnswer}
               onChange={handleTextAnswerChange}
               onBlur={handleTextAnswerBlur}
-              placeholder="Type your answer here..."
+              placeholder="Masukkan jawaban disini..."
               className="w-full"
             />
           </div>
@@ -221,7 +222,7 @@ export default function ExamQuestions({
         {question.tipe === "3" && (
           <div className="space-y-4">
             <Label htmlFor={`upload-answer-${question.id_soal_ujian}`}>
-              Upload Jawaban (gambar maks. 3MB):
+              Upload Jawaban (gambar maks. 3 MB):
             </Label>
 
             <input
@@ -248,7 +249,7 @@ export default function ExamQuestions({
       </div>
 
       <div className="text-sm text-muted-foreground">
-        Question {currentQuestion + 1} of {questions.length}
+        Soal {currentQuestion + 1} dari {questions.length}
       </div>
 
       {isLoadingUpload && (

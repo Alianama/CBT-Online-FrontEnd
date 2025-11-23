@@ -21,15 +21,15 @@ export default function Lesson() {
   const pageData = {
     id: {
       title: "Materi",
-      header: "Portal Materi Pembelajaran",
-      subHeader: "Pilih mata pelajaran untuk melihat materi pembelajaran",
+      header: "Materi Pembelajaran",
+      subHeader: "Pilih mata pelajaran untuk melihat materi yang tersedia",
       searchPlaceholder: "Cari mata pelajaran...",
-      noData: "Tidak ada mata pelajaran tersedia.",
+      noData: "Mata pelajaran tidak tersedia.",
       error: "Terjadi kesalahan:",
     },
     en: {
       title: "Lesson",
-      header: "Learning Materials Portal",
+      header: "Learning Portal",
       subHeader: "Select a subject to view learning materials",
       searchPlaceholder: "Search subjects...",
       noData: "No subjects available.",

@@ -30,7 +30,7 @@ export default function ExamResults() {
   const translations = {
     id: {
       pageTitle: "Hasil Ujian",
-      studentInfo: "Informasi Siswa",
+      studentInfo: "Peserta Ujian",
       examResult: "Hasil Ujian",
       passed: "Lulus",
       notPassed: "Tidak Lulus",
@@ -39,14 +39,14 @@ export default function ExamResults() {
       wrong: "Salah",
       empty: "Kosong",
       examType: "Jenis Ujian",
-      subject: "Mata Pelajaran",
+      subject: "Ujian",
       start: "Mulai",
-      end: "Selesai",
+      end: "Submit",
       questionDetail: "Detail Soal",
       all: "Semua",
       back: "Kembali",
-      errorTitle: "Terjadi Kesalahan",
-      errorDesc: "Maaf, terjadi kesalahan saat memuat data. Silakan coba lagi nanti.",
+      errorTitle: "Ops..",
+      errorDesc: "Maaf, hasil ujian disembunyikan dari siswa.",
       loading: "Memuat hasil ujian...",
       yourAnswer: "Jawaban Anda",
       yourAnswerCorrect: "Jawaban Anda (Benar)",
@@ -76,7 +76,7 @@ export default function ExamResults() {
       all: "All",
       back: "Back",
       errorTitle: "An Error Occurred",
-      errorDesc: "Sorry, there was an error loading the data. Please try again later.",
+      errorDesc: "Sorry, please try again later.",
       loading: "Loading exam results...",
       yourAnswer: "Your Answer",
       yourAnswerCorrect: "Your Answer (Correct)",
@@ -284,7 +284,6 @@ export default function ExamResults() {
               return (
                 <TabsContent key={tab} value={tab} className="space-y-4">
                   {soal_ujian.filter(filter).map((soal: any, index: number) => {
-                    console.log(soal)
                     const isExpanded = expandedQuestions.includes(soal.id_soal_ujian)
                     const correct = soal.koreksi === 1
 

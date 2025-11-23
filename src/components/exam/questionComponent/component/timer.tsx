@@ -89,13 +89,13 @@ export default function Timer({ timeLeft, setTimeLeft, onTimeUp }: TimerProps) {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-orange-500">
               <AlertTriangle className="h-5 w-5" />
-              Peringatan Waktu
+              Peringatan
             </DialogTitle>
             <DialogDescription>
               Waktu tersisa 10 menit! Silakan periksa kembali jawaban Anda.
               {warningTimer > 0 && (
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Dialog akan tertutup dalam {warningTimer} detik
+                  Peringatan tertutup dalam {warningTimer} detik
                 </p>
               )}
             </DialogDescription>

@@ -53,19 +53,19 @@ export const useExamSocket = () => {
   const { sendJsonMessage, lastJsonMessage, readyState, getWebSocket } =
     useWebSocket(WSS_URL, {
       onOpen: () => {
-        console.log("WebSocket Connected, sending auth...");
+        // console.log("WebSocket Connected, sending auth...");
         if (!authSentRef.current) {
           sendJsonMessage({ token: wsToken, type: "auth" } as AuthMessage);
           authSentRef.current = true;
         }
       },
       onClose: () => {
-        console.log("WebSocket Disconnected");
+        // console.log("WebSocket Disconnected");
         authSentRef.current = false;
         resetTimer();
       },
       onError: (err) => {
-        console.error("WebSocket error", err);
+        // console.error("WebSocket error", err);
         resetTimer();
         setWsToken("");
         navigate("/exam");
@@ -93,7 +93,7 @@ export const useExamSocket = () => {
           setMapingJawaban(parsed);
         }
       } catch (e) {
-        console.error("Invalid saved mapping_jawaban");
+        // console.error("Invalid saved mapping_jawaban");
       }
     }
   }, []);
@@ -135,7 +135,7 @@ export const useExamSocket = () => {
 
     switch (message.type) {
       case "info-ujian":
-        console.log("Received info-ujian");
+        // console.log("Received info-ujian");
         setDataUjian(message.payload);
         localStorage.setItem("id_peserta", message.payload.id_peserta);
         setTimer(message.payload.sisa_timer);
@@ -149,7 +149,7 @@ export const useExamSocket = () => {
         }
 
         if (!soalRequestedRef.current && readyState === WebSocket.OPEN) {
-          console.log("Requesting soal...");
+          // console.log("Requesting soal...");
           sendJsonMessage({ type: "soal" });
           soalRequestedRef.current = true;
         }
@@ -196,7 +196,7 @@ export const useExamSocket = () => {
       const mappedJawaban = mapingJawaban[jawaban];
 
       if (!mappedJawaban) {
-        console.warn("Jawaban tidak ditemukan dalam mapping", jawaban);
+        // console.warn("Jawaban tidak ditemukan dalam mapping", jawaban);
         return;
       }
 

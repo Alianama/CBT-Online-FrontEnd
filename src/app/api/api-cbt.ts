@@ -28,7 +28,7 @@ export const userAuth = async (token: string) => {
 };
 export const getUserById = async (id: number | null) => {
   if (!id || isNaN(id)) {
-    console.log(id);
+    // console.log(id);
     throw new Error("Invalid user ID");
   }
   try {
@@ -292,7 +292,7 @@ export const sendOTP = async (no_hp: string) => {
         },
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error sending OTP:", error);
@@ -320,7 +320,7 @@ export const verifyOTP = async (no_hp: string, otp: string) => {
         },
       }
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -504,7 +504,7 @@ export const sendLogUjian = async ({
   id_peserta: number;
 }) => {
   try {
-    const response = await axiosInstance.post(
+    await axiosInstance.post(
       `${BASE_URL}/ujian-logs`,
       {
         id_peserta,
@@ -521,7 +521,6 @@ export const sendLogUjian = async ({
         },
       }
     );
-    console.log(response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(

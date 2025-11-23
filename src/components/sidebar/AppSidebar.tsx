@@ -38,14 +38,14 @@ const data = {
         icon: ClipboardList,
       },
       {
+        name: "Hasil",
+        url: "/result",
+        icon: FileCheck,
+      },
+      {
         name: "Agenda",
         url: "/agenda",
         icon: Calendar1,
-      },
-      {
-        name: "Hasil Ujian",
-        url: "/result",
-        icon: FileCheck,
       },
       {
         name: "Profil",
@@ -71,17 +71,17 @@ const data = {
         icon: ClipboardList,
       },
       {
+        name: "Result",
+        url: "/result",
+        icon: FileCheck,
+      },
+      {
         name: "Agenda",
         url: "/agenda",
         icon: Calendar1,
       },
       {
-        name: "Exam Result",
-        url: "/result",
-        icon: FileCheck,
-      },
-      {
-        name: "Profil",
+        name: "Profile",
         url: "/profile",
         icon: UserPen ,
       },

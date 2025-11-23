@@ -64,7 +64,7 @@ export default function QuestionNavigation({
                 <ChevronDown className="h-4 w-4" />
               )}
               <span className="ml-2">
-                {isOpen ? "Hide Number" : "Show Number"}
+                {isOpen ? "Sembunyikan" : "Tampilkan"}
               </span>
             </Button>
           </CollapsibleTrigger>

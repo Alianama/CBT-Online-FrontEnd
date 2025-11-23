@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import { examActivityTracker } from "@/utils/examActivityTracker";
 
 export default function ExamPage() {
-  const { soal, setTimer, timer, readyState, sendJawaban, submitUjian } =
+  const { dataUjian, soal, setTimer, timer, readyState, sendJawaban, submitUjian } =
     useExamSocket();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string | null>>({});
@@ -40,25 +40,23 @@ export default function ExamPage() {
     id: {
       examCompleted: "Ujian Selesai",
       thankYou: "Terima kasih telah menyelesaikan ujian.",
-      viewResult: "Lihat Detail Hasil",
+      viewResult: "Lihat Hasil Ujian",
       questions: "Daftar Soal",
-      examQuestions: "Soal Ujian",
-      submitTitle: "Submit Jawaban",
+      submitTitle: "Akhiri Ujian",
       submitDescription:
-        "Apakah kamu yakin ingin mengumpulkan jawabanmu sekarang? Aksi ini tidak bisa dibatalkan.",
+        "Apakah kamu yakin ingin mengakhiri ujian? Proses tidak dapat dibatalkan.",
       cancel: "Tidak",
-      confirmSubmit: "Ya, Submit",
+      confirmSubmit: "Ya, Submit Ujian",
       preparing: "Soal sedang disiapkan...",
       previous: "Sebelumnya",
       next: "Berikutnya",
-      finishExam: "Kumpulkan Ujian",
+      finishExam: "Akhiri Ujian",
     },
     en: {
       examCompleted: "Exam Completed",
       thankYou: "Thank you for completing the exam.",
       viewResult: "View Result",
       questions: "Questions",
-      examQuestions: "Exam Questions",
       submitTitle: "Submit Answers",
       submitDescription:
         "Are you sure you want to submit your answers now? This action cannot be undone.",
@@ -67,7 +65,7 @@ export default function ExamPage() {
       preparing: "Preparing questions...",
       previous: "Previous",
       next: "Next",
-      finishExam: "Finish Exam",
+      finishExam: "Submit Exam",
     },
   }[locale as "id" | "en"];
 
@@ -214,7 +212,7 @@ export default function ExamPage() {
         <div className={`flex-1 ${!isMobile ? "order-1" : ""}`}>
           <Card className="p-4 mb-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-xl font-bold">{t.examQuestions}</h1>
+              <h1 className="text-xl font-bold">{dataUjian?.kode_bank} - {dataUjian?.nama_bank}</h1>
               <div className="flex items-center gap-2">
                 <BadgeInfo
                   size={20}

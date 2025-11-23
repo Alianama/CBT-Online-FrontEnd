@@ -118,7 +118,7 @@ export default function SubjectPage() {
         )}
 
         {error && (
-          <p className="text-red-500">Gagal mengambil data: {error.message}</p>
+          <p className="text-red-500">{error.message}</p>
         )}
 
         <div className=" mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -139,9 +139,7 @@ export default function SubjectPage() {
                   materi={materi}
                 />
               ))
-          ) : (
-            <p className="text-gray-500">Tidak ada materi tersedia</p>
-          )}
+          ) : null}
         </div>
       </div>
     </Layout>
