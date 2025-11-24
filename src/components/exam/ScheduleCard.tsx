@@ -249,7 +249,6 @@ export default function ScheduleCard({
           </div>
         </CardContent>
         <CardFooter className="flex gap-10 justify-end">
-          <span>{"-->"}</span>
           <Button
             disabled={isButtonDisabled}
             onClick={async () => {

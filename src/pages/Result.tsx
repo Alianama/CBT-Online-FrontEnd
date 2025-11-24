@@ -1,14 +1,15 @@
-import {useState, useEffect, useContext, useCallback} from "react"
-import {ChevronLeft, ChevronRight, Eye, Loader2} from "lucide-react"
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table"
-import {Badge} from "@/components/ui/badge"
+import { useState, useEffect, useContext, useCallback } from "react"
+import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
 import Layout from "@/components/sidebar/Layout"
 import LanguageContext from "@/context/LanguageContext"
-import {getHasilUjian} from "@/app/api/api-cbt"
-import {useNavigate} from "react-router-dom"
+import { getHasilUjian } from "@/app/api/api-cbt"
+import { useNavigate } from "react-router-dom"
+import { useGlobal } from "@/context/GlobalContext.tsx";
 
 interface ExamResult {
   id_peserta: number
@@ -33,8 +34,8 @@ interface ApiResponse {
 
 type Locale = "id" | "en"
 const pageMeta: Record<Locale, { name: string; url: string }> = {
-  id: {name: "Hasil Ujian", url: "/"},
-  en: {name: "Exam Result", url: "/"},
+  id: { name: "Hasil Ujian", url: "/" },
+  en: { name: "Exam Result", url: "/" },
 }
 const translations: Record<Locale, Record<string, string>> = {
   id: {
@@ -77,7 +78,7 @@ const translations: Record<Locale, Record<string, string>> = {
     error: "Failed to load data. Please try again.",
     examName: "Exam Name",
     score: "Score",
-    status: "Jenis Ujian",
+    status: "Exam Type",
     time: "Time",
     action: "Action",
     correct: "Correct",
@@ -106,6 +107,7 @@ const translations: Record<Locale, Record<string, string>> = {
       "Displays complete information about student performance in exams, including grades, duration, and answer history.",
   },
 }
+
 export default function ExamResultsPage() {
   const [results, setResults] = useState<ApiResponse | null>(null)
   const [loading, setLoading] = useState(true)
@@ -113,7 +115,7 @@ export default function ExamResultsPage() {
   const [limit, setLimit] = useState(10)
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate();
-  const {locale} = useContext(LanguageContext)
+  const { locale } = useContext(LanguageContext)
   const pagedata = pageMeta[(locale as Locale) ?? "id"]
   const t = translations[(locale as Locale) ?? "id"]
   const fetchData = useCallback(async () => {
@@ -154,8 +156,13 @@ export default function ExamResultsPage() {
   //   return `${hours}h ${minutes}m ${seconds}s`
   // }
   const totalPages = results ? Math.ceil(results.total / limit) : 1
+
+  const { school } = useGlobal();
+  const pageTitle = "CBT Online | " + pagedata.name + " - " + school;
+
   return (
     <Layout data={[pagedata]}>
+      <title>{pageTitle}</title>
       <div className="container mx-auto py-8 px-4">
         <Card className="w-full shadow-sm">
           <CardHeader className="pb-3">
@@ -165,12 +172,12 @@ export default function ExamResultsPage() {
             <div className="flex flex-col space-y-6">
               {loading ? (
                 <div className="flex justify-center items-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary"/>
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
                   <span className="ml-2 text-muted-foreground">{t.loading}</span>
                 </div>
               ) : error ? (
                 <div className="text-center text-red-500 py-8">{results?.message}
-                <p className="text-xs" >{error}</p>
+                  <p className="text-xs" >{error}</p>
                 </div>
 
               ) : (
@@ -194,7 +201,7 @@ export default function ExamResultsPage() {
                             const isProses = typeof result.nilai !== "number"
                             return (
                               <TableRow key={result.id_peserta}
-                                        className="hover:bg-muted/30">
+                                className="hover:bg-muted/30">
                                 <TableCell>
                                   <div className="flex font-semibold flex-col">
                                     <span>{result.nama_bank}</span>
@@ -204,7 +211,7 @@ export default function ExamResultsPage() {
                                   <div className="flex flex-col">
                                     <span
                                       className={isLulus ? "text-primary text-sm font-semibold" : "text-red-500 text-sm font-semibold"}>{result.nilai}</span>
-                                    <span hidden={isProses}  className="text-xs text-muted-foreground">
+                                    <span hidden={isProses} className="text-xs text-muted-foreground">
                                       {t.correct}: {result.benar} | {t.wrong}: {result.salah}
                                     </span>
                                   </div>
@@ -228,7 +235,7 @@ export default function ExamResultsPage() {
                                     onClick={() => navigate(`/result/answer/${result.id_peserta}`)}
                                     className="h-8 p-3"
                                   >
-                                    <Eye className="h-4 w-4"/> {t.viewDetail}
+                                    <Eye className="h-4 w-4" /> {t.viewDetail}
                                     <span className="sr-only">{t.viewDetail}</span>
                                   </Button>
                                 </TableCell>
@@ -286,7 +293,7 @@ export default function ExamResultsPage() {
                                 onClick={() => navigate(`/result/answer/${result.id_peserta}`)}
                                 className="w-full justify-center bg-slate-300/30"
                               >
-                                <Eye className="h-4 w-4"/> {t.viewDetail}
+                                <Eye className="h-4 w-4" /> {t.viewDetail}
                                 <span className="sr-only">{t.viewDetail}</span>
                               </Button>
 
@@ -312,7 +319,7 @@ export default function ExamResultsPage() {
                           }}
                         >
                           <SelectTrigger className="w-[70px] h-8">
-                            <SelectValue placeholder="10"/>
+                            <SelectValue placeholder="10" />
                           </SelectTrigger>
                           <SelectContent>
                             {[5, 10, 20, 50].map((num) => (
@@ -333,7 +340,7 @@ export default function ExamResultsPage() {
                         disabled={page <= 1}
                         className="h-8 w-8 p-0"
                       >
-                        <ChevronLeft className="h-4 w-4"/>
+                        <ChevronLeft className="h-4 w-4" />
                         <span className="sr-only">{t.prevPage}</span>
                       </Button>
                       <span className="text-sm font-medium">{page}</span>
@@ -345,7 +352,7 @@ export default function ExamResultsPage() {
                         disabled={page >= totalPages}
                         className="h-8 w-8 p-0"
                       >
-                        <ChevronRight className="h-4 w-4"/>
+                        <ChevronRight className="h-4 w-4" />
                         <span className="sr-only">{t.nextPage}</span>
                       </Button>
                     </div>

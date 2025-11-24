@@ -38,6 +38,7 @@ export interface Translation {
         motto: string;
         alert: string;
         changeProfile: string;
+        lengkapi: string;
     }
     
 }

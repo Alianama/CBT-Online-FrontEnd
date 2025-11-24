@@ -5,9 +5,11 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { getAuthData } from "@/utils/storage.ts";
 import { UserData } from "@/types/types.ts";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useGlobal } from "@/context/GlobalContext.tsx";
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData>();
+  const { school } = useGlobal();
   const { locale } = useContext(LanguageContext);
   const t = useTranslation();
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
@@ -21,10 +23,11 @@ export default function Home() {
     id: { name: "Beranda", url: "/" },
     en: { name: "Home", url: "/" },
   };
+  const pageTitle = "CBT Online | " + pageData[safeLocale].name + " - " + school;
 
   return (
     <Layout data={[pageData[safeLocale]]}>
-      <title>{pageData[safeLocale].name}</title>
+      <title>{pageTitle}</title>
       <main className="min-h-screen bg-gradient-to-b from-background to-background/80">
         <section className="container mx-auto px-4 pt-0 pb-12">
           <div className="max-w-3xl mx-auto text-center">

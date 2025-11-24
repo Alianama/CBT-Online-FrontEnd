@@ -31,7 +31,8 @@ export default function ProfilPage() {
   const [isChangeProfile, setIsChangeProfile] = useState(false);
   const { locale } = useContext(LanguageContext);
   const t = useTranslation();
-  const pagedata = {
+  const safeLocale = locale === "id" || locale === "en" ? locale : "en";
+  const pageData: Record<"id" | "en", { name: string; url: string }> = {
     id: { name: "Profil", url: "/profile" },
     en: { name: "Profile", url: "/profile" },
   };
@@ -41,9 +42,13 @@ export default function ProfilPage() {
     fetchUserProfile();
   }, [fetchUserProfile]);
 
+  const { school } = useGlobal();
+  const pageTitle = "CBT Online | " + pageData[safeLocale].name + " - " + school;
+
   if (loading) {
     return (
-      <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
+      <Layout data={[pageData[safeLocale]]}>
+        <title>{pageTitle}</title>
         <div className="flex w-full gap-10 max-md:flex-col h-screen">
           <Skeleton className="h-1/2 w-1/2 max-md:w-full rounded-xl" />
           <Skeleton className="h-1/2 w-1/2 max-md:w-full rounded-xl" />
@@ -52,7 +57,8 @@ export default function ProfilPage() {
     );
   }
   return (
-    <Layout data={locale === "id" ? [pagedata.id] : [pagedata.en]}>
+    <Layout data={[pageData[safeLocale]]}>
+      <title>{pageTitle}</title>
       <ProfileAlert biodata={biodata} />
       <div className="p-10 bg-neutral-100 dark:bg-neutral-800 ">
         <div>
@@ -84,7 +90,7 @@ export default function ProfilPage() {
                         onClick={() => navigate(`/update-profile`)}
                         className="bg-blue-50 text-green-600 cursor-pointer border-blue-200 hover:bg-emerald-100 transition-colors duration-300 px-3 py-1"
                       >
-                        <UserRoundPen className="h-3.5 w-3.5 mr-1" /> Lengkapi Biodata
+                        <UserRoundPen className="h-3.5 w-3.5 mr-1" /> {t.profilPage.lengkapi}
                       </Badge>
                     </div>
                   </div>

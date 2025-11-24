@@ -57,7 +57,7 @@ interface Province {
 export default function UpdateProfile() {
   const translations = {
     id: {
-      updatebiodataNew: "Perbarui biodata",
+      updatebiodataNew: "Perbarui Biodata",
       enterbiodataNew: "Silakan lengkapi biodata Anda.",
       savebiodataNew: "Simpan Biodata",
       verifyPhone: "Verifikasi No WA",
@@ -70,7 +70,7 @@ export default function UpdateProfile() {
         "Verifikasi nomor WA untuk melanjutkan.",
     },
     en: {
-      updatebiodataNew: "Update biodata",
+      updatebiodataNew: "Update Biodata",
       enterbiodataNew: "Please complete your biodata.",
       savebiodataNew: "Save Biodata",
       verifyPhone: "Verify Phone Number",
@@ -82,7 +82,7 @@ export default function UpdateProfile() {
       beforeSave: "Plaese verify your phone number to continue.",
     },
   };
-  const { generalUser, biodata, setBiodata, refreshUser, fetchUserProfile } =
+  const { school, generalUser, biodata, setBiodata, refreshUser, fetchUserProfile } =
     useGlobal();
 
   useEffect(() => {
@@ -263,6 +263,9 @@ export default function UpdateProfile() {
       { name: "Profile Update", url: "#" },
     ],
   };
+
+  const pageTitle = "CBT Online | " + t.updatebiodataNew + " - " + school;
+
   const onOTPSubmit = async (data: z.infer<typeof FormSchema>) => {
     const otp = data.otp;
     setLoading(true);
@@ -318,10 +321,11 @@ export default function UpdateProfile() {
   };
   return (
     <Layout data={pageData[safeLocale]}>
+      <title>{pageTitle}</title>
       <div className="container gap-10 mx-auto py-6 px-4 md:px-6 flex flex-col">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            Lengkapi Biodata
+            {t.updatebiodataNew}
           </h1>
         </div>
         <div className="flex max-md:flex-col gap-10">

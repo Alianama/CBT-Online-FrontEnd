@@ -16,7 +16,7 @@ export default function Lesson() {
   const { locale } = useContext(LanguageContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
-  const { generalUser } = useGlobal();
+  const { generalUser, school } = useGlobal();
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
   const pageData = {
     id: {
@@ -42,10 +42,11 @@ export default function Lesson() {
     staleTime: 2 * 60 * 1000,
     refetchOnWindowFocus: true,
   });
+  const pageTitle = "CBT Online | " + pageData[safeLocale].title + " - " + school;
+
   return (
     <Layout data={[{ name: pageData[safeLocale].title, url: "/lesson" }]}>
-      <title>{pageData[safeLocale].title}</title>
-
+      <title>{pageTitle}</title>
       <div className="container mx-auto py-6 px-4 md:px-6">
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight mb-2">

@@ -11,9 +11,10 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import MateriCard from "@/components/lesson/materi-card.tsx";
 import { useMateriStore } from "@/stores/materiStore.ts"
 import { useEffect } from "react";
-
+import { useGlobal } from "@/context/GlobalContext.tsx";
 
 export default function SubjectPage() {
+  const { school } = useGlobal();
   const { subject, idKelas, idMapel } = useParams<{
     subject: string;
     idKelas: string;
@@ -30,11 +31,11 @@ export default function SubjectPage() {
   const keyword = searchParams.get("keyword") || ""; // Ambil keyword dari URL
   const currentSubject = subject
     ? subjectMap[subject] || {
-        title:
-          subject.charAt(0).toUpperCase() + subject.slice(1).replace("-", " "),
-        description: "Materi Pembelajaran",
-        color: "bg-gray-100",
-      }
+      title:
+        subject.charAt(0).toUpperCase() + subject.slice(1).replace("-", " "),
+      description: "Materi Pembelajaran",
+      color: "bg-gray-100",
+    }
     : { title: "", description: "", color: "" };
   const { data, isLoading, error } = useQuery({
     queryKey: ["Materi", id_kelas, id_mapel],
@@ -59,16 +60,19 @@ export default function SubjectPage() {
   const pageData: Record<"id" | "en", { name: string; url: string }[]> = {
     id: [
       { name: "Materi", url: "/lesson" },
-      { name: "Buku Materi", url: "#" },
+      { name: currentSubject.title, url: "#" },
     ],
     en: [
       { name: "Lesson", url: "/lesson" },
-      { name: "Lesson Book", url: "#" },
+      { name: currentSubject.title, url: "#" },
     ],
   };
+
+  const pageTitle = "CBT Online | " + pageData[safeLocale][0].name + " " + currentSubject.title + " - " + school;
+
   return (
     <Layout data={pageData[safeLocale]}>
-      <title>{`Materi - ${currentSubject.title}`}</title>
+      <title>{pageTitle}</title>
       <div className="container flex flex-col mx-auto py-6 px-4 md:px-6">
         <div className="mb-6">
           <Link

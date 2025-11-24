@@ -6,8 +6,10 @@ import { ArrowLeft } from "lucide-react";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { useMateriStore } from "@/stores/materiStore";
+import { useGlobal } from "@/context/GlobalContext.tsx";
 
 export default function DocumentOpen() {
+  const { school } = useGlobal();
   const materiList = useMateriStore((state) => state.materiList);
   const { tipe_materi, attachment, title, subject, idKelas, idMapel, index } =
     useParams<{
@@ -21,7 +23,7 @@ export default function DocumentOpen() {
     }>();
 
   const parsedIndex = index ? parseInt(index, 10) : -1;
-  const materi :any = materiList[parsedIndex];
+  const materi: any = materiList[parsedIndex];
   const { locale } = useContext(LanguageContext);
   const safeLocale = locale === "id" || locale === "en" ? locale : "en";
 
@@ -30,11 +32,11 @@ export default function DocumentOpen() {
   const pageData: Record<"id" | "en", { name: string; url: string }[]> = {
     id: [
       { name: "Materi", url: "/lesson" },
-      { name: "book", url: "#" },
+      { name: "Konten", url: "#" },
     ],
     en: [
       { name: "Lesson", url: "/lesson" },
-      { name: "Book", url: "#" },
+      { name: "Content", url: "#" },
     ],
   };
 
@@ -52,9 +54,11 @@ export default function DocumentOpen() {
   const isPdf = determinedFileType === "pdf";
   const isDoc = ["doc", "docx", "xlsx", "excel", "ppt", "pptx"].includes(determinedFileType || "");
 
+  const pageTitle = "CBT Online | " + pageData[safeLocale][0].name + " " + tipe_materi?.toUpperCase() + " - " + school;
+
   return (
     <Layout data={pageData[safeLocale]}>
-      <title>{`Materi - ${title}`}</title>
+      <title>{pageTitle}</title>
       <div className="container mx-auto py-6 px-4 md:px-6">
         <div className="mb-6">
           <Link

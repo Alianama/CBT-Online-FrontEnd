@@ -1,4 +1,4 @@
-import  { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext } from "react"
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
 } from "@/components/ui/card"
@@ -17,6 +17,7 @@ import Layout from "@/components/sidebar/Layout"
 import LanguageContext from "@/context/LanguageContext"
 import { Button } from "@/components/ui/button"
 import HTMLWithImagePreview from "@/components/exam/questionComponent/component/SafeHTMLWithImagePreview.tsx";
+import { useGlobal } from "@/context/GlobalContext.tsx";
 
 export default function ExamResults() {
   const [expandedQuestions, setExpandedQuestions] = useState<number[]>([])
@@ -71,7 +72,7 @@ export default function ExamResults() {
       examType: "Exam Type",
       subject: "Subject",
       start: "Start",
-      end: "End",
+      end: "Submit",
       questionDetail: "Question Details",
       all: "All",
       back: "Back",
@@ -102,6 +103,10 @@ export default function ExamResults() {
       { name: "Answer History", url: "#" },
     ],
   }
+
+  const { school } = useGlobal();
+  const pageTitleA = "CBT Online | " + t.pageTitle + " - " + school;
+  const pageTitleB = "CBT Online | " + t.answerHistory + " - " + school;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,6 +145,7 @@ export default function ExamResults() {
   if (isError) {
     return (
       <Layout data={pageData[safeLocale]}>
+        <title>{pageTitleB}</title>
         <div className="flex flex-col items-center justify-center h-screen space-y-4 text-center">
           <XCircle className="h-16 w-16 text-primary animate-pulse" />
           <h2 className="text-3xl font-bold text-primary mb-2">{t.errorTitle}</h2>
@@ -158,6 +164,7 @@ export default function ExamResults() {
   if (!examData) {
     return (
       <Layout data={pageData[safeLocale]}>
+        <title>{pageTitleA}</title>
         <div className="container mx-auto py-6 px-4 md:px-6 flex flex-col items-center justify-center animate-pulse">
           <div className="loader"></div>
           <h1 className="text-2xl font-bold mt-4 animate-blink">{t.loading}</h1>
@@ -166,13 +173,14 @@ export default function ExamResults() {
     )
   }
 
-
   const { info_ujian, soal_ujian } = examData
   const totalQuestions = (info_ujian?.benar || 0) + (info_ujian?.salah || 0) + (info_ujian?.kosong || 0)
+
   return (
     <Layout data={pageData[safeLocale]}>
+      <title>{pageTitleB}</title>
       <div className="container mx-auto py-6 px-4 md:px-6">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">{t.pageTitle}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-6">{t.answerHistory}</h1>
 
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="md:col-span-1">
@@ -319,91 +327,89 @@ export default function ExamResults() {
 
                               <div className="grid gap-2">
                                 {soal.tipe === "3" ? (
-                                    // Render untuk soal tipe 3 (jawaban berupa gambar)
-                                    <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
-                                      <div className="mb-2">
-                                        <strong>{t.yourAnswer}:</strong>
-                                        <div className="mt-1 p-2 rounded bg-gray-100 dark:bg-gray-800">
-                                          {soal.jawaban ? (
-                                              <img src={soal.jawaban} alt="Jawaban Anda" className="max-w-full h-auto rounded" />
-                                          ) : (
-                                              <em>({t.empty})</em>
+                                  // Render untuk soal tipe 3 (jawaban berupa gambar)
+                                  <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
+                                    <div className="mb-2">
+                                      <strong>{t.yourAnswer}:</strong>
+                                      <div className="mt-1 p-2 rounded bg-gray-100 dark:bg-gray-800">
+                                        {soal.jawaban ? (
+                                          <img src={soal.jawaban} alt="Jawaban Anda" className="max-w-full h-auto rounded" />
+                                        ) : (
+                                          <em>({t.empty})</em>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : soal.tipe === "2" ? (
+                                  // Render untuk soal tipe 2 (isian/essay)
+                                  <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
+                                    <div className="mb-2">
+                                      <strong>{t.yourAnswer}:</strong>
+                                      <div
+                                        className={`mt-1 p-2 rounded ${correct
+                                          ? "bg-green-100 text-green-800"
+                                          : "bg-red-100 text-red-800"
+                                          }`}
+                                      >
+                                        <HTMLWithImagePreview html={soal.jawaban || `<em>(${t.empty})</em>`} />
+                                      </div>
+                                    </div>
+                                    {soal.kunci_jawaban && (
+                                      <div className="mt-2">
+                                        <strong>{t.correctAnswer}:</strong>
+                                        <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
+                                          <HTMLWithImagePreview html={soal.kunci_jawaban} />
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                ) : (
+                                  // Render untuk soal pilihan ganda
+                                  ["a", "b", "c", "d", "e"].map((option) => {
+                                    const isCorrect = soal.kunci_jawaban?.toLowerCase() === option;
+                                    const isSelected = soal.jawaban?.toLowerCase() === option;
+                                    const hasAnswer = soal[option] && soal[option].trim() !== "";
+
+                                    if (!hasAnswer) return null;
+
+                                    let optionClass = "flex items-start p-3 rounded-md border";
+                                    if (isCorrect) {
+                                      optionClass += " bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800";
+                                    } else if (isSelected) {
+                                      optionClass += " bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800";
+                                    }
+
+                                    return (
+                                      <div key={option} className={optionClass}>
+                                        <div className="mr-3">
+                                          <div
+                                            className={`w-6 h-6 flex items-center justify-center rounded-full border ${isCorrect
+                                              ? "bg-green-500 text-white border-green-500"
+                                              : isSelected
+                                                ? "bg-red-500 text-white border-red-500"
+                                                : "border-gray-300"
+                                              }`}
+                                          >
+                                            {option.toUpperCase()}
+                                          </div>
+                                        </div>
+                                        <div className="flex-grow">
+                                          <HTMLWithImagePreview html={soal[option]} />
+                                        </div>
+                                        <div className="ml-2">
+                                          {isCorrect && (
+                                            <Badge className="bg-green-100 text-green-800 border-green-200">{t.correctAnswer}</Badge>
+                                          )}
+                                          {isSelected && !isCorrect && (
+                                            <Badge className="bg-red-100 text-red-800 border-red-200">{t.yourAnswer}</Badge>
+                                          )}
+                                          {isSelected && isCorrect && (
+                                            <Badge className="bg-green-100 text-green-800 border-green-200">{t.yourAnswerCorrect}</Badge>
                                           )}
                                         </div>
                                       </div>
-                                    </div>
-                                ) : soal.tipe === "2" ? (
-                                    // Render untuk soal tipe 2 (isian/essay)
-                                    <div className="flex flex-col p-3 rounded-md border bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
-                                      <div className="mb-2">
-                                        <strong>{t.yourAnswer}:</strong>
-                                        <div
-                                          className={`mt-1 p-2 rounded ${
-                                            correct
-                                              ? "bg-green-100 text-green-800"
-                                              : "bg-red-100 text-red-800"
-                                          }`}
-                                        >
-                                          <HTMLWithImagePreview html={soal.jawaban || `<em>(${t.empty})</em>`} />
-                                        </div>
-                                      </div>
-                                      {soal.kunci_jawaban && (
-                                        <div className="mt-2">
-                                          <strong>{t.correctAnswer}:</strong>
-                                          <div className="mt-1 p-2 rounded bg-green-50 text-green-900">
-                                            <HTMLWithImagePreview html={soal.kunci_jawaban} />
-                                          </div>
-                                        </div>
-                                      )}
-                                    </div>
-                                ) : (
-                                    // Render untuk soal pilihan ganda
-                                    ["a", "b", "c", "d", "e"].map((option) => {
-                                      const isCorrect = soal.kunci_jawaban?.toLowerCase() === option;
-                                      const isSelected = soal.jawaban?.toLowerCase() === option;
-                                      const hasAnswer = soal[option] && soal[option].trim() !== "";
-
-                                      if (!hasAnswer) return null;
-
-                                      let optionClass = "flex items-start p-3 rounded-md border";
-                                      if (isCorrect) {
-                                        optionClass += " bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800";
-                                      } else if (isSelected) {
-                                        optionClass += " bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800";
-                                      }
-
-                                      return (
-                                          <div key={option} className={optionClass}>
-                                            <div className="mr-3">
-                                              <div
-                                                  className={`w-6 h-6 flex items-center justify-center rounded-full border ${
-                                                      isCorrect
-                                                          ? "bg-green-500 text-white border-green-500"
-                                                          : isSelected
-                                                              ? "bg-red-500 text-white border-red-500"
-                                                              : "border-gray-300"
-                                                  }`}
-                                              >
-                                                {option.toUpperCase()}
-                                              </div>
-                                            </div>
-                                            <div className="flex-grow">
-                                              <HTMLWithImagePreview html={soal[option]} />
-                                            </div>
-                                            <div className="ml-2">
-                                              {isCorrect && (
-                                                  <Badge className="bg-green-100 text-green-800 border-green-200">{t.correctAnswer}</Badge>
-                                              )}
-                                              {isSelected && !isCorrect && (
-                                                  <Badge className="bg-red-100 text-red-800 border-red-200">{t.yourAnswer}</Badge>
-                                              )}
-                                              {isSelected && isCorrect && (
-                                                  <Badge className="bg-green-100 text-green-800 border-green-200">{t.yourAnswerCorrect}</Badge>
-                                              )}
-                                            </div>
-                                          </div>
-                                      );
-                                    })
+                                    );
+                                  })
                                 )}
                               </div>
 

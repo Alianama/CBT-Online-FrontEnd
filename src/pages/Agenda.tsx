@@ -8,6 +8,8 @@ import LanguageContext from "@/context/LanguageContext.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { getAgenda } from "@/app/api/api-cbt.ts";
+import { useGlobal } from "@/context/GlobalContext.tsx";
+
 // {data, isLoading, error} : { data?: AgendaResponse; isLoading: boolean; error?: Error | null }
 export default function SchedulePage() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -21,7 +23,8 @@ export default function SchedulePage() {
     );
   const handleToday = () => setCurrentDate(new Date());
   const { locale } = useContext(LanguageContext);
-  const pageData = {
+  const safeLocale = locale === "id" || locale === "en" ? locale : "en";
+  const pageData: Record<"id" | "en", { name: string; url: string }> = {
     id: { name: "Agenda", url: "/agenda" },
     en: { name: "Agenda", url: "/agenda" },
   };
@@ -31,9 +34,13 @@ export default function SchedulePage() {
     staleTime: 10 * 60 * 1000,
     refetchOnWindowFocus: true,
   });
+
+  const { school } = useGlobal();
+  const pageTitle = "CBT Online | " + pageData[safeLocale].name + " - " + school;
+
   return (
-    <Layout data={locale === "id" ? [pageData.id] : [pageData.en]}>
-      <title>Agenda</title>
+    <Layout data={[pageData[safeLocale]]}>
+      <title>{pageTitle}</title>
       <div className="flex flex-col min-h-screen">
         <CalendarHeader
           currentDate={currentDate}
