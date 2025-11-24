@@ -76,7 +76,7 @@ export default function Home() {
 
             <div className="aspect-video w-full overflow-hidden rounded-xl border shadow-lg bg-muted relative group">
               <iframe
-                src="https://www.youtube-nocookie.com/embed/UnZWhsRnUeY?si=vExx3Jatidi9nbWB&amp;controls=0"
+                src="https://www.youtube-nocookie.com/embed/5xKqBSMBNuY?si=vExx3Jatidi9nbWB&amp;controls=0"
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
